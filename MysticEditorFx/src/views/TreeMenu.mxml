@@ -9,7 +9,8 @@
 		 xmlns:ui="flash.ui.*"
 		 xmlns:contextmenu="org.riateam.utils.managers.contextmenu.*"
 		 xmlns:managers="org.riateam.utils.managers.*"
-		 xmlns:spicefactory="http://www.spicefactory.org/parsley" xmlns:menu="org.riateam.utils.managers.menu.*">
+		 xmlns:spicefactory="http://www.spicefactory.org/parsley"
+		 xmlns:menu="org.riateam.utils.managers.menu.*">
 	<spicefactory:Configure/>
 	<mx:Metadata>
 		  [ManagedEvents("getPage")]
@@ -67,7 +68,7 @@
 				var page:PageDTO=PageDTO.createPageFromXML(myTree.selectedItem as XML);
 				model.selectedPage=page;
 				pageService.getPage(page);
-				
+
 			}
 
 			[MessageHandler(selector="getTree")]
@@ -269,6 +270,7 @@
 
 			private function doPreview(evt:Event):void
 			{
+
 				CallbackManager.showFancyBox("http://google.com", "test");
 
 			}
@@ -278,6 +280,7 @@
 			{
 				LogContext.getLogger(this.className).debug("Response Delete " + event.page.Title);
 				if (!event.page.IsPersisted)
+
 				{
 					xmlDeleteNode(myTree.selectedItem as XML);
 				}
@@ -308,9 +311,9 @@
 		]]>
 	</mx:Script>
 	<menu:ContextMenuManager id="context"
-								 onDelete="doDelete(event)"
-								 onSelect="doSelect(event)"
-								 onPreview="doPreview(event)"/>
+							 onDelete="doDelete(event)"
+							 onSelect="doSelect(event)"
+							 onPreview="doPreview(event)"/>
 	<mx:Fade id="fadeIn"
 			 duration="500"
 			 target="{myTreeContainer}"
@@ -342,7 +345,7 @@
 							  resize="onTreeResize(event)"
 							  openItems="{model.treeXML..Item}"
 							  width="100%"
-							  horizontalCenter="0" 
+							  horizontalCenter="0"
 							  dataProvider="{model.treeXML.Item}"
 							  labelField="@Titolo"
 							  iconFunction="tree_iconFunc"

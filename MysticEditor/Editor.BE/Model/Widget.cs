@@ -14,7 +14,7 @@ namespace Editor.BE.Model {
         public virtual int State { get; set; }
         public virtual Content Content { get; set; }        
         public virtual Skin Skin { get; set; }
-        public virtual ISet<WidgetElement> Widgetelements { get; set; }
+        public virtual ISet<WidgetElement> WidgetElements { get; set; }
 
 
         public override bool Equals(object obj) {

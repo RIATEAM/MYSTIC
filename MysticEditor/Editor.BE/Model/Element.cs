@@ -11,9 +11,9 @@ namespace Editor.BE.Model
 		public virtual int Elementid { get; set; }
 		public virtual int Elementtypeid { get; set; }
 		public virtual int Structureid { get; set; }
-		public virtual ISet<ElementSkin> Elementskins { get; set; }
-        public virtual ElementType Elementtype { get; set; }
-        public virtual ISet<WidgetElement> Pageelements { get; set; }
+		public virtual ISet<ElementSkin> ElementSkins { get; set; }
+        public virtual ElementType ElementType { get; set; }
+        public virtual ISet<WidgetElement> PageElements { get; set; }
         public virtual Structure Structure { get; set; }
 		
 		public override bool Equals(object obj)

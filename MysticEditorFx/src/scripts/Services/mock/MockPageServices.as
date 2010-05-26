@@ -17,16 +17,16 @@ package scripts.Services.mock
 
 	use namespace mx_internal;
 
-	[ManagedEvents("getPage")]
-	[ManagedEvents("deletePage")]
-	[ManagedEvents("savePage")]
-	[ManagedEvents("publishPage")]
-	[ManagedEvents("movePage")]
 	/**
 	 *
 	 * @author gonte
 	 *
 	 */
+	[ManagedEvents("getPage")]
+	[ManagedEvents("deletePage")]
+	[ManagedEvents("savePage")]
+	[ManagedEvents("publishPage")]
+	[ManagedEvents("movePage")]
 	public class MockPageServices extends EventDispatcher implements IPageServices
 	{
 		[Inject(id="pageRO")]
