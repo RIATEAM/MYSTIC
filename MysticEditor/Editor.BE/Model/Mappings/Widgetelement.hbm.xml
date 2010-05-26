@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" namespace="Editor.BE.Model" assembly="Editor.BE" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="WidgetElement" lazy="true" table="`WIDGETELEMENT`">
+		<id name="Widgetelementid" access="property" column="`WIDGETELEMENTID`" length="22">
+      <generator class="sequence">
+        <param name="sequence">WIDGETELEMENT_SEQ</param>
+      </generator>
+		</id>
+		<property name="Elementid" column="`ELEMENTID`" length="22" />
+		<property name="Widgetid" column="`WIDGETID`" length="22" />
+		<property name="Value" column="`VALUE`" type="AnsiString"/>
+		
+    <many-to-one name="Element" 
+                 class="Element" 
+                 column="`ELEMENTID`" 
+                 not-null="true" 
+                 update="false"
+                 insert="false"/>
+    
+		<many-to-one name="Widget" 
+                 class="Widget" 
+                 column="`WIDGETID`" 
+                 not-null="true" 
+                 update="false"
+                 insert="false"/>
+	</class>
+</hibernate-mapping>

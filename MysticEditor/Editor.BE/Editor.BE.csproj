@@ -1,0 +1,186 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E9DC88C5-6F2D-4AEA-B8A8-8294DE0B63DA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Editor.BE</RootNamespace>
+    <AssemblyName>Editor.BE</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="NHibernate">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libraries\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate.Validator">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libraries\NHibernate.Validator.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libraries\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libraries\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.DynamicProxy2">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libraries\Castle.DynamicProxy2.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate.ByteCode.Castle">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libraries\NHibernate.ByteCode.Castle.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libraries\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libraries\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libraries\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Libraries\Iesi.Collections.license.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Libraries\NHibernate.license.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Libraries\log4net.license.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="hibernate.cfg.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="nhvalidator.cfg.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="log4net.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Model ItemGroup -->
+    <Compile Include="Model\Validation.cs" />
+    <Compile Include="Model\Content.cs" />
+    <Compile Include="Model\Element.cs" />
+    <Compile Include="Model\ElementSkin.cs" />
+    <Compile Include="Model\ElementType.cs" />
+    <Compile Include="Model\Page.cs" />
+    <Compile Include="Model\PageElement.cs" />
+    <Compile Include="Model\Skin.cs" />
+    <Compile Include="Model\Structure.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- HBM ItemGroup -->
+    <EmbeddedResource Include="Model\Mappings\Element.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CustomToolNamespace>Editor.BE.Model</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Model\Mappings\ElementSkin.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CustomToolNamespace>Editor.BE.Model</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Model\Mappings\ElementType.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CustomToolNamespace>Editor.BE.Model</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Model\Mappings\Page.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CustomToolNamespace>Editor.BE.Model</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Model\Mappings\PageElement.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CustomToolNamespace>Editor.BE.Model</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Model\Mappings\Skin.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CustomToolNamespace>Editor.BE.Model</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Model\Mappings\Structure.hbm.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CustomToolNamespace>Editor.BE.Model</CustomToolNamespace>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="HibernateHelper.cs" />
+    <Compile Include="Model\Enumerators.cs" />
+    <Compile Include="Model\RawHtml.cs" />
+    <Compile Include="Model\WidgetElement.cs" />
+    <Compile Include="Model\IPersistente.cs" />
+    <Compile Include="Model\Persistente.cs" />
+    <Compile Include="Model\Theme.cs" />
+    <Compile Include="Model\Widget.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Model\Mappings\Theme.hbm.xml">
+      <CustomToolNamespace>Editor.BE.Model</CustomToolNamespace>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Model\Mappings\Widget.hbm.xml">
+      <CustomToolNamespace>Editor.BE.Model</CustomToolNamespace>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Model\Mappings\WidgetElement.hbm.xml">
+      <CustomToolNamespace>Editor.BE.Model</CustomToolNamespace>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Model\Mappings\Content.hbm.xml">
+      <CustomToolNamespace>Editor.BE.Model</CustomToolNamespace>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Model\Mappings\RawHtml.hbm.xml">
+      <CustomToolNamespace>Editor.BE.Model</CustomToolNamespace>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nhv-mapping assembly="Editor.BE" namespace="Editor.BE.Model" xmlns="urn:nhibernate-validator-1.0">
+	<class name="Element">
+		<property name="Description">
+			<not-null />
+		</property>
+		<property name="Elementid">
+			<not-null />
+			<length max="22" />
+		</property>
+		<property name="Elementtypeid">
+			<not-null />
+			<length max="22" />
+		</property>
+		<property name="Structureid">
+			<not-null />
+			<length max="22" />
+		</property>
+	</class>
+</nhv-mapping>

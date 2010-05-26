@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" namespace="Editor.BE.Model" assembly="Editor.BE" xmlns="urn:nhibernate-mapping-2.2">
+  <class name="Theme" lazy="true" table="`THEME`">
+    <id name="Themeid" access="property" column="`THEMEID`" length="22">
+      <generator class="sequence">
+        <param name="sequence">THEME_SEQ</param>
+      </generator>
+    </id>
+    <property name="Description" column="`DESCRIPTION`" length="200" />
+    <property name="Path" column="`PATH`" length="200" />
+
+
+    <set name="Skins"
+          cascade="save-update"
+          inverse="true"
+          lazy="true">
+      <key column="`THEMEID`" />
+      <one-to-many class="Skin" />
+    </set>
+    
+  </class>
+</hibernate-mapping>

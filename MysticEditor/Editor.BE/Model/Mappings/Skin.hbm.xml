@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" namespace="Editor.BE.Model" assembly="Editor.BE" xmlns="urn:nhibernate-mapping-2.2">
+  <class name="Skin" lazy="true" table="`SKIN`">
+    <id name="Skinid" access="property" column="`SKINID`" length="22">
+      <generator class="sequence">
+        <param name="sequence">SKIN_SEQ</param>
+      </generator>
+    </id>
+    <property name="Description" column="`DESCRIPTION`" length="100" />
+    <property name="Themeid" column="`THEMEID`" length="22" />
+    <property name="Path" column="`PATH`" length="200" />
+
+    <many-to-one name="Theme"
+                 class="Theme"
+                 column="`THEMEID`"
+                 not-null="true"
+                 update="false"
+                 insert="false"/>
+
+    <set name="Elementskins"
+          cascade="save-update"
+          inverse="true"
+          lazy="true">
+      <key column="`SKINID`" />
+      <one-to-many class="Elementskin" />
+    </set>
+    <set name="Pages"
+          cascade="save-update"
+          inverse="true"
+          lazy="true">
+      <key column="`SKINID`" />
+      <one-to-many class="Page" />
+    </set>
+  </class>
+</hibernate-mapping>

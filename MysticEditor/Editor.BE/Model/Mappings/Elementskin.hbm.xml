@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" namespace="Editor.BE.Model" assembly="Editor.BE" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="ElementSkin" lazy="true" table="`ELEMENTSKIN`">
+		<id name="ElementSkinid" access="property" column="`ELEMENT_SKINID`" length="22">
+      <generator class="sequence">
+        <param name="sequence">ELEMENTSKIN_SEQ</param>
+      </generator>
+		</id>
+		<property name="Elementid" column="`ELEMENTID`" length="22" />
+		<property name="Skinid" column="`SKINID`" length="22" />
+		<many-to-one name="Element" 
+                 class="Element" 
+                 column="`ELEMENTID`" 
+                 not-null="true"
+                 update="false"
+                 insert="false"/>
+		
+    <many-to-one name="Skin" 
+                 class="Skin" 
+                 column="`SKINID`" 
+                 not-null="true"
+                 update="false"
+                 insert="false"/> 
+	</class>
+</hibernate-mapping>

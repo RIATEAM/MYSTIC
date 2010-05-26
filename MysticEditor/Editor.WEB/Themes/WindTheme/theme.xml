@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<theme>
+  <titolo>
+    WIND
+  </titolo>
+  <descrizione>
+    WIND
+  </descrizione>
+  <skins>
+    <skin ID="1" Descriozione="menu" Path="\Skin1" />
+    <skin ID="2" Descriozione="pages" Path="\Skin2" />
+    <skin ID="3" Descriozione="widget" Path="\Skin3" />
+  </skins>
+</theme>

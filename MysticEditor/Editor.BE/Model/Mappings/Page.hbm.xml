@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" namespace="Editor.BE.Model" assembly="Editor.BE" xmlns="urn:nhibernate-mapping-2.2">
+  <class name="Page" lazy="true" table="`PAGE`">
+    <id name="Pageid" access="property" column="`PAGEID`" length="22">
+      <generator class="sequence">
+        <param name="sequence">PAGE_SEQ</param>
+      </generator>
+    </id>
+    <property name="Contentid" column="`CONTENTID`" length="22" />
+    <property name="Parentpageid" column="`PARENTPAGEID`" length="22" />
+    <property name="Structureid" column="`STRUCTUREID`" length="22" />
+    <property name="Position" column="`POSITION`" length="22" />
+    <property name="Level" column="`LIVELLO`" length="22" />
+    <property name="Publictitle" column="`PUBLICTITLE`" length="100" />
+    <property name="Skinid" column="`SKINID`" length="22"/>
+    <property name="State" column="`STATE`" length="22" />
+    <property name="Title" column="`TITLE`" length="100" />
+
+
+    <many-to-one name="Content"
+                 class="Content"
+                 column="`CONTENTID`"
+                 not-null="true"
+                 update="false"
+                 insert="false"/>
+
+    <set  name="Pageelements"
+          cascade="save-update"
+          inverse="true"
+          lazy="true">
+      <key column="`PAGEID`" />
+      <one-to-many class="Pageelement" />
+    </set >
+
+    <many-to-one name="Skin"
+                 class="Skin"
+                 column="`SKINID`"
+                 not-null="true"
+                 update="false"
+                 insert="false"/>
+  </class>
+</hibernate-mapping>

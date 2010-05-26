@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" namespace="Editor.BE.Model" assembly="Editor.BE" xmlns="urn:nhibernate-mapping-2.2">
+  <class name="Element" lazy="true" table="`ELEMENT`">
+    <id name="Elementid" access="property" column="`ELEMENTID`" length="22">
+      <generator class="sequence">
+        <param name="sequence">ELEMENT_SEQ</param>
+      </generator>
+    </id>
+    <property name="Description" column="`DESCRIPTION`" length="100" />
+    <property name="Elementtypeid" column="`ELEMENTTYPEID`" length="22" />
+    <property name="Structureid" column="`STRUCTUREID`" length="22" />
+    
+    <set name="Elementskins" 
+         cascade="save-update" 
+         inverse="true" 
+         lazy="true">
+      <key column="`ELEMENTID`" />
+      <one-to-many class="Elementskin" />
+    </set>
+
+    <many-to-one name="Elementtype" 
+                 class="Elementtype" 
+                 column="`ELEMENTTYPEID`"  
+                 not-null="true"  
+                 update="false"
+                 insert="false"/>
+
+    <set name="Pageelements" 
+         cascade="save-update" 
+         inverse="true" 
+         lazy="true">
+      <key column="`ELEMENTID`" />
+      <one-to-many class="Pageelement" />
+    </set>
+
+    <many-to-one name="Structure" 
+                 class="Structure" 
+                 column="`STRUCTUREID`"  
+                 not-null="true"
+                 update="false"
+                 insert="false"/>
+
+
+  </class>
+</hibernate-mapping>
