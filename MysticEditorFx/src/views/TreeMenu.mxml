@@ -257,15 +257,13 @@
 
 			private function doPreview(evt:Event):void
 			{
-
-
 			}
 
 			[MessageHandler(selector="deletePage")]
-			private function deleteItemSuccess(event:PageViewEvent):void
+			public function deleteItemSuccess(event:PageViewEvent):void
 			{
 				LogContext.getLogger(this.className).debug("Response Delete " + event.page.Title);
-				if (event.page.IsPersisted=false)
+				if (event.page.IsPersisted==false)
 				{
 					xmlDeleteNode(myTree.selectedItem as XML);
 				}
