@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+		   width="100%"
+		   height="100%"
+		   xmlns:spicefactory="http://www.spicefactory.org/parsley">
+	<spicefactory:Configure/>
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.rpc.remoting.mxml.RemoteObject;
+			import mx.rpc.events.FaultEvent;
+			import mx.collections.ArrayCollection;
+			import mx.rpc.AsyncToken;
+			import mx.rpc.events.ResultEvent;
+			import mx.rpc.AsyncResponder;
+			import org.spicefactory.lib.reflect.types.Void;
+
+			[Inject(id="contentRO")]
+			public var service:RemoteObject;
+
+			var contents:ArrayCollection;
+
+
+			public function getContents():void
+			{
+				service.GetContents().addResponder(new AsyncResponder(getContent_result, faultHandler));
+			}
+
+			private function getContent_result(event:ResultEvent, token:AsyncToken):void
+			{
+				contents=event.result as ArrayCollection;
+				Scrivi();
+			}
+
+			private function faultHandler(event:FaultEvent, a:Object):void
+			{
+				Alert.show(event.fault.faultString);
+			}
+
+
+			private function Scrivi():void
+			{
+				//label.text = contents.getItemAt(0));
+			}
+		]]>
+	</mx:Script>
+	<mx:Button x="37"
+			   y="60"
+			   label="Button"
+			   click="getContents()"/>
+
+</mx:Canvas>

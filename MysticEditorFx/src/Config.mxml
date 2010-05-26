@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Object xmlns:mx="http://www.adobe.com/2006/mxml"
+		   xmlns:Services="scripts.Services.*"
+		   xmlns:Model="scripts.Model.*" xmlns:mock="scripts.Services.mock.*">
+	
+	<mx:TraceTarget id="traceTarget"
+					fieldSeparator="->"
+					includeLevel="true"
+					includeCategory="true"
+					includeTime="true"/>
+
+	<mx:RemoteObject id="pageRO"
+					 showBusyCursor="true"
+					 destination="GenericDestination"
+					 source="Editor.Services.PageServices"/>
+					 
+	<!--<Services:PageServices/>-->	
+	<mock:MockPageServices/>
+	
+	<mx:HTTPService id="treeHS" url="http://www.editor.welsy.org/content.xml"
+		 showBusyCursor="true"
+		 resultFormat="e4x"
+		 useProxy="false"
+		 method="POST">
+		 </mx:HTTPService>
+		
+	<Services:TreeServices/>
+	
+	<Model:Model/>
+	
+</mx:Object>

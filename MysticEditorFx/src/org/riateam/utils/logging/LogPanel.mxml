@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<utils:EscapeWindow xmlns:mx="http://www.adobe.com/2006/mxml"
+					width="400"
+					minHeight="30"
+					movable="true"
+					resizable="true"
+					doubleClick="swapState()"
+					creationComplete="closeHanlder()"
+					close="closeHanlder()"
+					doubleClickEnabled="true"
+					showCloseButton="true"
+					currentState="MINIMIZE"
+					title="..:: Logging ::.."
+					status="{currentState}"
+					xmlns:utils="org.riateam.utils.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.core.Application;
+			import mx.managers.PopUpManager;
+			import mx.managers.DragManager;
+			import mx.core.IFlexDisplayObject;
+			import mx.core.UIComponent;
+			import mx.core.DragSource;
+			[Bindable]
+			private var maximize_height:Number=300;
+
+
+
+			private function setVerticalPosition():void
+			{
+				this.output.verticalScrollPosition=this.output.maxVerticalScrollPosition + 1;
+			}
+
+			private function swapState():void
+			{
+				if (currentState == "MINIMIZE")
+					currentState="MAXIMIZE";
+				else
+					currentState="MINIMIZE";
+			}
+
+			private function closeHanlder():void
+			{
+				currentState="MINIMIZE";
+				var newX:Number=Application.application.width - this.width;
+				var newY:Number=50;
+				this.move(newX, newY);
+
+			}
+		]]>
+	</mx:Script>
+	<utils:states>
+		<mx:State name="MINIMIZE">
+			<mx:SetProperty name="height"
+							value="{minHeight}"/>
+		</mx:State>
+		<mx:State name="MAXIMIZE">
+			<mx:SetProperty name="height"
+							value="{maximize_height}"/>
+		</mx:State>
+	</utils:states>
+	<utils:transitions>
+		<mx:Transition fromState="*"
+					   toState="MINIMIZE">
+			<mx:Resize/>
+		</mx:Transition>
+		<mx:Transition fromState="*"
+					   toState="MAXIMIZE">
+			<mx:Resize/>
+		</mx:Transition>
+	</utils:transitions>
+	<mx:TextArea id="output"
+				 width="100%"
+				 height="100%"
+				 editable="false"
+				 updateComplete="this.setVerticalPosition()"
+				 verticalScrollPolicy="on"/>
+</utils:EscapeWindow>

@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Mystic© Editor Fx</title>
+<style type="text/css">
+<!--
+html,body{height:100%;}
+body  {
+	font: 100% Myriad Pro;
+	font-size:13px;
+	background: #666666;
+	margin: 0; /* è buona norma impostare a zero i valori margin e padding dell'elemento body per tenere conto delle diverse impostazioni predefinite dei browser*/
+	padding: 0;
+	text-align: center; /* centra il contenitore nei browser IE 5*. Il testo viene quindi impostato con l'allineamento predefinito a sinistra nel selettore #container */
+	color: #000000;
+}
+.clearfloat { /* questa classe deve essere inserita in un elemento div o break e deve essere l'elemento finale prima della chiusura di un contenitore che deve contenere per intero un elemento mobile */
+	clear:both;
+    height:0;
+    font-size: 1px;
+    line-height: 0px;
+}
+.swfStyle{
+
+	margin-left: auto;
+	margin-right: auto;
+	/*border: 1px solid #FF6633;*/
+
+}
+.alternativeContentStyle{
+
+	margin-left: auto;
+	margin-right: auto;
+	border: 1px solid #FF6633;
+	text-align:center;
+
+}
+-->
+</style>
+<script src="js/jquery-1.4.min.js" language="javascript">
+        </script>
+        <script src="js/flexBridge.js" language="javascript">
+        </script>
+</head>
+
+<body >
+ <script language="JavaScript" type="text/javascript">
+            <!--
+            $(document).ready(function(){  });
+			   -->
+        </script>
+
+
+  <div id="wrapper">
+   <script src="js/swfobject.js" type="text/javascript">
+        </script>
+	<script type="text/javascript">
+			function setFlashHeight(newHeight){
+        	//assuming flashDiv is the name of the div contains flex app.
+        	var flashContentHolderDiv = document.getElementById('flashDiv');
+        	flashContentHolderDiv.style.height = newHeight;
+			alert("newHeight =" +newHeight)
+			/*var flashContentHolderDiv = document.getElementById('flashDiv');
+			$("#flashDiv").height = newHeight;
+
+			alert("newHeight =" +newHeight)*/
+
+		}
+
+			var flashvars = { };
+				flashvars.enableDebug ="false";		//abilita il debug tracing dell'applicazione flex (popup, labels)
+
+			var params = { };
+				 params.scale = "noScale";
+				 params.allowFullScreen = "true";
+		  		 params.wmode = "transparent";
+			var attributes = {};
+				attributes.id = "flashDiv";				//id del div che conterrà il flash
+				attributes.styleclass = "swfStyle"; //style css del div che conterrà il flash
+
+			 var swfName="MysticEditorFx.swf";				//swf da caricare
+			  var swfWidth = "100%";
+			 var swfHeight = "100%";
+
+			 var playerVersion="10.0.0";
+
+			 swfobject.embedSWF(swfName, "myAlternativeContent", swfWidth, swfHeight, playerVersion, "expressInstall.swf", flashvars, params, attributes);
+	</script>
+
+	 <div id="myAlternativeContent" class="alternativeContentStyle">
+		<h1>Alternative content</h1>
+				<p>
+					<a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" border="0"/></a>
+				</p>
+	</div>
+	 <!-- EMBEDDING swfApplication -->
+<!-- end #wrapper --></div>
+
+</body>
+</html>

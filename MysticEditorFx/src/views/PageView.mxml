@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+		 width="100%"
+		 xmlns:sf="http://www.spicefactory.org/parsley">
+	<sf:Configure/>
+	<mx:Script>
+		<![CDATA[
+			import scripts.Events.PageViewEvent;
+
+			[MessageHandler(selector="getPage")]
+			public function pageChangeHandler(event:PageViewEvent):void
+			{
+				titolo.text=event.page.Title;
+				thumb.source=event.page.thumb;
+			}
+
+			private function growUp():void
+			{
+				/* 	RedBox.height=Number(inputHeight.text); */
+				RedBoxResizer.heightTo=Number(inputHeight.text)
+				RedBoxResizer.play();
+			}
+
+			private function shrinkUp():void
+			{
+				RedBox.height=100;
+			}
+		]]>
+	</mx:Script>
+
+	<mx:Resize id="RedBoxResizer"
+			   target="{RedBox}"/>
+	<mx:Button label="Salva"/>
+	<mx:HBox width="100%">
+		<mx:TextInput id="inputHeight"
+					  text="200"
+					  restrict="[0-9]"/>
+		<mx:Button click="growUp()"
+				   label="growUp"/>
+		<mx:Button click="shrinkUp()"
+				   label="shrinkUp"/>
+	</mx:HBox>
+
+	<mx:Label y="10"
+			  text="Titolo:"/>
+
+	<mx:TextInput id="titolo"
+				  width="250"/>
+	<mx:Image id="thumb"
+			  width="250"
+			  height="170"
+			  scaleContent="true"/>
+	<mx:Panel title="RedBox"
+			  id="RedBox"
+			  height="100"
+			  width="30%"
+			  backgroundColor="#ff0000"/>
+
+</mx:VBox>

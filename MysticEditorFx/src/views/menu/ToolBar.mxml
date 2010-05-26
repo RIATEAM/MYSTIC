@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml"
+		 styleName="toolBar"
+		 width="100%"
+		 height="40"
+		 paddingLeft="10"
+		 paddingRight="10"
+		 verticalAlign="middle">
+	<mx:Metadata>
+		[Event(name="saveEvent", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			import mx.events.ListEvent;
+			public static var SAVE:String="saveEvent";
+			[Bindable]
+			private var _locales:Array=["English", "Italiano"];
+
+			private function changeLocale():void
+			{
+			/* 	var newLocale:String=myCombo.selectedItem as String;
+			 setLocale(newLocale); */
+			}
+
+			private function treeClicked(evt:ListEvent):void
+			{
+				trace(evt.target);
+			/* var selectedNode:Object=evt.currentTarget.selectedItem;
+
+			   if (treeSIDEnTYPES.dataDescriptor.isBranch(selectedNode))
+			   {
+			   treeSIDEnTYPES.selectedItem=null;
+			   return;
+			   }
+			   itemSideID=selectedNode.@ITEMSIDEID;
+			   itemTypeID=selectedNode.@ITEMTYPEID;
+			   var msg:String="Continuare?";
+
+			   if (selectedItem != null)
+			   {
+			   if (selectedItem.Dirty)
+			   msg+="\n Le modifiche saranno perse";
+
+			   Alert.show(msg, "Creazione Nuovo Item", Alert.YES | Alert.NO, this, confirmCreateNewItem, Assets.me().alert);
+			   }
+			   else
+			   setNewItem();
+			 */
+			/* btnEdit.close(); */
+			}
+
+			private function doSave():void
+			{
+				dispatchEvent(new Event(SAVE));
+			}
+		]]>
+	</mx:Script>
+	<!--<mx:XML id="editMenuXml"
+		 source="XMLdata/editMenuXml.xml"/>
+
+		 <mx:PopUpButton id="btnEdit"
+		 label="Edit"
+		 openAlways="true"
+		 styleName="editMenu"
+		 width="100"
+		 addedToStage="btnEdit.popUp = editMenuPopUp">
+		 <mx:popUp>
+		 <mx:Canvas width="200"
+		 height="200"
+		 id="editMenuPopUp"
+		 backgroundColor="0xdddddd">
+		 <mx:HBox width="100%"
+		 height="100%">
+		 <mx:Spacer width="20"
+		 height="100%"/>
+		 <mx:VRule height="100%"/>
+
+		 </mx:HBox>
+		 <mx:VBox width="100%"
+		 left="24"
+		 id="newMenuContainer"
+		 verticalGap="2"
+		 horizontalAlign="left"
+		 height="100%">
+
+		 <mx:Tree id="treeSIDEnTYPES"
+		 paddingLeft="5"
+		 paddingRight="5"
+		 rowHeight="18"
+		 showRoot="false"
+		 backgroundAlpha="0"
+		 folderClosedIcon="{null}"
+		 folderOpenIcon="{null}"
+		 disclosureOpenIcon="{null}"
+		 disclosureClosedIcon="{null}"
+		 defaultLeafIcon="{null}"
+		 borderStyle="none"
+		 itemClick="treeClicked(event)"
+		 dataProvider="{editMenuXml}"
+		 selectedIndex="1"
+		 height="100%"
+		 width="100%"
+		 rowCount="24"
+		 labelField="@Description"
+		 textAlign="left"/>
+
+		 </mx:VBox>
+		 </mx:Canvas>
+		 </mx:popUp>
+		 </mx:PopUpButton>-->
+	<mx:Label text="Language"/>
+	<mx:ComboBox id="myCombo"
+				 styleName="menuBar"
+				 dataProvider="{_locales}"
+				 change="changeLocale()"/>
+	<mx:MenuBar id="menuBar"
+				height="35"
+				width="100%"
+				styleName="menuBar"
+				labelField="@label"
+				showRoot="false"
+				horizontalCenter="0"
+				verticalCenter="0">
+		<mx:dataProvider>
+			<mx:XML>
+				<root>
+					<parent label="Edit">
+						<node label="a) File"/>
+						<node label="b) File"/>
+						<node label="c) File"/>
+						<node label="d) File"/>
+						<node label="e) File"/>
+					</parent>
+					<parent label="View">
+						<node label="a) Edit"/>
+						<node label="b) Edit"/>
+					</parent>
+					<parent label="Publish">
+						<parent label="a) View"/>
+						<parent label="b) View"/>
+						<parent label="c) View"/>
+					</parent>
+					<parent label="Advanced">
+						<parent label="a) Favorites"/>
+					</parent>
+					<parent label="Help">
+						<node label="a) Help"/>
+						<node label="b) Help"/>
+						<node label="c) Help"/>
+						<node label="d) Help"/>
+					</parent>
+				</root>
+			</mx:XML>
+		</mx:dataProvider>
+	</mx:MenuBar>
+
+	<!--<mx:PopUpButton label="View"
+		 width="150">
+
+		 </mx:PopUpButton>
+		 <mx:PopUpButton label="Publish"
+		 width="150">
+
+		 </mx:PopUpButton>
+		 <mx:PopUpButton label="Advanced"
+		 width="150">
+
+		 </mx:PopUpButton>-->
+	<mx:Spacer width="100%"/>
+
+
+	<mx:Button label="Save"
+			   click="doSave()"/>
+	<mx:Button label="Logout"/>
+</mx:HBox>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"
+				layout="absolute"
+				title="XML Inspector"
+				showCloseButton="true"
+				close="PopUpManager.removePopUp(this)"
+				width="540"
+				height="300">
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			[Bindable]
+			private var _Text:String;
+
+			public function set Text(value:String):void
+			{
+				_Text=value;
+			}
+		]]>
+	</mx:Script>
+	<mx:TextArea width="100%"
+				 height="100%"
+				 editable="false"
+				 text="{_Text}"/>
+</mx:TitleWindow>

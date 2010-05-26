@@ -1,0 +1,99 @@
+/* CSS file */
+Application{
+	themeColor: #D6D6D6;/*#ff9900;*/
+   	color: #333333;
+   	background-color:#ffffff;
+	font-family: 'Trebuchet MS';
+	font-anti-alias-type :advanced;   
+    font-grid-fit-type:pixel;
+    font-sharpness:-400;
+    font-thickness:200; 
+}
+.toolBar{
+	background-color:#9E9E9E;
+	border-style:solid;
+	border-color:#333333;
+
+}
+.editMenu { 
+	arrow-button-width:0;
+	
+	text-indent:2;
+	background-alpha:0;
+	 border-color:#ffffff;
+	arrow-button-width:25;
+	 highlightAlphas: 0.15, 0.15;
+  	 fillAlphas: 0.20, 0, 0, 0;
+   	fillColors: #ffffff, #ffffff, #ffffff, #ffffff;
+   	skin:ClassReference("mx.skins.halo.ButtonSkin");
+   	over-skin:ClassReference("mx.skins.halo.ButtonSkin");
+   	down-skin:ClassReference("mx.skins.halo.ButtonSkin");
+   	pop-up-style-name:"popUpContainer";
+}
+.editMenuItem{
+
+}
+.editMenuItemOver{
+	corner-radius:2;
+	background-color:#EC872B;
+	background-alpha:.6;
+	border-color:#EC872B;
+	border-style:solid;
+	border-thickness:0;
+	text-align:center;
+}
+.menuBar{
+	backgroundAlpha: 0;
+	 
+	skin:Embed(source="skin/MysticEditorFx.swf#none");
+	/*item-over-skin:Embed(source="assets/skin/MysticEditorFx.swf#none");
+	item-down-skin:Embed(source="assets/skin/MysticEditorFx.swf#none");
+	item-up-skin-skin:Embed(source="assets/skin/MysticEditorFx.swf#none"); 
+	 */
+	corner-radius:2;
+	horizontal-gap:20;
+	
+}
+.treeMenuStyle{
+	  rollOverColor: #cccccc;
+   textRollOverColor: #000000;
+   selectionColor: #999999;
+   color: #000000;
+   textSelectedColor: #ffffff;
+  
+   fontSize: 13;
+}
+.debugInfo{
+	backgroundColor: #FFFFFF;
+	backgroundAlpha: .5;
+	color: #666666;
+	cornerRadius: 10;
+	borderStyle: solid;
+	borderColor: #666666;
+	paddingLeft: 10;
+	paddingRight: 10;
+	
+}
+Alert{
+	creationCompleteEffect: alertCreationCompleteEffect;
+	color : #333333;
+	font-size:13px;
+	title-style-name : “alertTitle”;
+	header-height:25;
+	border-thickness: 1;
+	drop-shadow-enabled: true;
+	drop-shadow-color :#333333;
+	shadow-direction:center	;
+	background-color: #CCCCCC;
+	corner-radius :6;
+	border-style :solid;
+	/*header-colors : #90a4d1, #5970a0;footer-colors : #9db6d9, #ffffff; */
+	header-colors : #eeeeee, #CCCCCC;
+	border-color : #CCCCCC;
+}
+.alertTitle{
+	font-size :12px;
+	font-weight :bold;
+	text-align :left;
+	color :#ffffff;
+}

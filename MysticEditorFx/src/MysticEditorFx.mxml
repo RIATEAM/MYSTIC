@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+				xmlns:sf="http://www.spicefactory.org/parsley"
+				layout="absolute"
+				initialize="initApp()"
+				xmlns:views="views.*"
+				xmlns:menu="views.menu.*"
+				xmlns:events="flash.events.*"
+				xmlns:managers="org.riateam.utils.managers.*">
+
+	<sf:ContextBuilder config="Config"/>
+	<mx:Script>
+		<![CDATA[
+			import org.riateam.utils.managers.CapabilitiesManager;
+			import mx.managers.PopUpManager;
+			import mx.logging.Log;
+			import mx.logging.LogEventLevel;
+			import org.riateam.utils.logging.LogPanel;
+			import org.riateam.utils.logging.LogPanelTarget;
+			import mx.collections.XMLListCollection;
+			import mx.controls.Alert;
+			[Bindable]
+			private var DEBUG:Boolean=true;
+			private var target:LogPanelTarget;
+			public var logPanel:LogPanel;
+
+			private function initApp():void
+			{
+				getSwfParamters();
+				//CallbackManager.RegisterCallbacks();
+
+				if (!DEBUG)
+					return;
+				logPanel=new LogPanel();
+
+				PopUpManager.addPopUp(logPanel, this, false);
+				logPanel.x=this.width - logPanel.width;
+				logPanel.y=50; //this.height - logPanel.height ;
+				this.target=new LogPanelTarget(logPanel.output);
+				this.target.level=LogEventLevel.ALL;
+				this.target.includeCategory=true;
+				this.target.includeTime=true;
+				Log.addTarget(this.target);
+			}
+
+			private function getSwfParamters():void
+			{
+			/* if (Application.application.parameters.jsessionid)
+			 JSESSIONID=Application.application.parameters.jsessionid; */
+			}
+
+			private function onSave():void
+			{
+
+				var xml:XMLListCollection=XMLListCollection(tree.myTree.dataProvider);
+				Log.getLogger(this.className).debug(xml.toString());
+
+			}
+			private var _lastMeasuredHeight:Number;
+
+			/* override protected function measure():void
+			   {
+			   super.measure();
+			   if (measuredHeight != _lastMeasuredHeight)
+			   {
+			   _lastMeasuredHeight=measuredHeight;
+			   Log.getLogger(this.className).debug("_lastMeasuredHeight=" + _lastMeasuredHeight);
+			   if (ExternalInterface.available)
+			   {
+			   ExternalInterface.call("setFlashHeight", measuredHeight);
+			   }
+
+			   }
+			 } */
+		]]>
+	</mx:Script>
+	<mx:Style source="assets/css/style.css"/>
+	<!-- EFFECT PER ALERT WINDOW dichiarata in stile.css -->
+	<mx:Parallel id="alertCreationCompleteEffect">
+		<mx:Fade duration="500"/>
+		<mx:Move yFrom="0"
+				 duration="300"/>
+	</mx:Parallel>
+	<mx:VBox id="appContainer"
+			 width="99%"
+			 verticalGap="0">
+
+		<menu:ToolBar id="toolbar"
+					  saveEvent="onSave()"/>
+		<mx:HDividedBox width="100%"
+						verticalScrollPolicy="off"
+						clipContent="false"
+						height="{Math.max(tree.height,pageView.height)}">
+			<views:TreeMenu id="tree" 
+							verticalScrollPolicy="off"
+							minWidth="100"
+							width="30%"/>
+			<views:PageView id="pageView"
+							verticalScrollPolicy="off"
+							width="70%"/>
+		</mx:HDividedBox>
+	</mx:VBox>
+	<managers:CapabilitiesPanel visible="{DEBUG}"/>
+</mx:Application>

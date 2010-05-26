@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+	<item Description="New Page" Selectable="true" Enabled="true">
+		<item Description="Insert word generator" Selectable="true" Enabled="true"/>
+		<item Description="Insert existing XML template" Selectable="true" Enabled="true"/>
+	</item>
+	<item Description="New SubPage" Selectable="true" Enabled="true">
+		<item Description="Insert word generator" Selectable="true" Enabled="true"/>
+		<item Description="Insert existing XML template" Selectable="true" Enabled="true"/>
+	</item>
+</items>

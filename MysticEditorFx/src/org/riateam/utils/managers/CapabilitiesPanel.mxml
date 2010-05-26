@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<utils:EscapeWindow xmlns:mx="http://www.adobe.com/2006/mxml"
+					width="250"
+					minHeight="220"
+					movable="true"
+					resizable="true"
+					styleName="debugInfo"
+					title="App Info"
+					creationComplete="init()"
+					xmlns:managers="org.riateam.utils.managers.*"
+					xmlns:utils="org.riateam.utils.*"
+					verticalGap="1">
+	<mx:Script>
+		<![CDATA[
+			import mx.core.Application;
+
+			private function init():void
+			{
+				this.x=Application.application.width - this.width - 20;
+				this.y=Application.application.height - this.height - 20;
+			}
+		]]>
+	</mx:Script>
+	<managers:CapabilitiesManager id="manager"/>
+	<mx:Label text="{manager.screenResolutionX} x {manager.screenResolutionY}"/>
+	<mx:Label text="screenColor: {manager.screenColor}"/>
+	<mx:Label text="screenDPI: {manager.screenDPI}"/>
+	<mx:Label text="OS: {manager.os}"/>
+
+	<mx:Label text="js interface: {manager.externalInterfaceAvailable}"/>
+	<mx:Label text="manufacturer: {manager.manufacturer}"/>
+	<mx:Label text="isDebugger: {manager.isDebugger}"/>
+	<mx:Label text="language: {manager.language}"/>
+	<mx:Label text="version: {manager.version}"/>
+</utils:EscapeWindow>
