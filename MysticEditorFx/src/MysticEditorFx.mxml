@@ -20,7 +20,7 @@
 			import mx.collections.XMLListCollection;
 			import mx.controls.Alert;
 			[Bindable]
-			private var DEBUG:Boolean=true;
+			private var DEBUG:Boolean=false;
 			private var target:LogPanelTarget;
 			public var logPanel:LogPanel;
 
