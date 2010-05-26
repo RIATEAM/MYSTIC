@@ -24,12 +24,12 @@
                  update="false"
                  insert="false"/>
 
-    <set  name="Pageelements"
+    <set  name="PageElements"
           cascade="save-update"
           inverse="true"
           lazy="true">
       <key column="`PAGEID`" />
-      <one-to-many class="Pageelement" />
+      <one-to-many class="PageElement" />
     </set >
 
     <many-to-one name="Skin"

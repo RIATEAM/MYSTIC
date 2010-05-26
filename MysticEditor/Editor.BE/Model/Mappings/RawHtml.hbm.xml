@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" namespace="Editor.BE.Model" assembly="Editor.BE" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="RawHtml" lazy="true" table="`RAWHTML`">
+		<id name="Rawhtmlid" access="property" column="`RAWHTMLID`" length="22">
+      <generator class="sequence">
+        <param name="sequence">RAWHTML_SEQ</param>
+      </generator>
+		</id>
+		<property name="PageElementid" column="`PAGE_ELEMENTID`" length="22" />
+		<property name="Value" column="`VALUE`" type="AnsiString"/>
+
+	</class>
+</hibernate-mapping>

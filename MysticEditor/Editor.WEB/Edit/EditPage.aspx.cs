@@ -28,9 +28,9 @@ namespace Editor.Web.Edit {
 
                             TitoloAlbero.Text = page.Publictitle;
 
-                            foreach (Editor.BE.Model.PageElement pgEl in page.Pageelements) {
+                            foreach (Editor.BE.Model.PageElement pgEl in page.PageElements) {
 
-                                switch (pgEl.Element.Elementtype.Description) {
+                                switch (pgEl.Element.ElementType.Description) {
 
                                     case "LabelText":
                                         TableRow row = new TableRow();

@@ -17,12 +17,12 @@
                  update="false"
                  insert="false"/>
 
-    <set name="Elementskins"
+    <set name="ElementSkins"
           cascade="save-update"
           inverse="true"
           lazy="true">
       <key column="`SKINID`" />
-      <one-to-many class="Elementskin" />
+      <one-to-many class="ElementSkin" />
     </set>
     <set name="Pages"
           cascade="save-update"

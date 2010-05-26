@@ -20,12 +20,12 @@
                  update="false"
                  insert="false"/>
 
-    <set  name="Widgetelements"
+    <set  name="WidgetElements"
           cascade="save-update"
           inverse="true"
           lazy="true">
 			<key column="`WIDGETID`" />			
-			<one-to-many class="Widgetelement" />
+			<one-to-many class="WidgetElement" />
 		</set >
 		
     <many-to-one name="Skin" 

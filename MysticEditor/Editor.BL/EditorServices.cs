@@ -265,7 +265,7 @@ namespace Editor.BL {
 
             XmlNode page = docXml.CreateNode(XmlNodeType.Element, "Page", null);
 
-            foreach (PageElement pel in pagina.Pageelements) {
+            foreach (PageElement pel in pagina.PageElements) {
                 XmlNode nodo = docXml.CreateNode(XmlNodeType.Element, pel.Element.Description, null);
                 XmlNode nodoValue = docXml.CreateNode(XmlNodeType.CDATA, null, null);
 
@@ -273,7 +273,7 @@ namespace Editor.BL {
 
                 nodo.AppendChild(nodoValue);
 
-                var el = (from c in pel.Element.Elementskins
+                var el = (from c in pel.Element.ElementSkins
                           where c.Elementid == pel.Element.Elementid
                           select c).FirstOrDefault();
 
@@ -601,8 +601,8 @@ namespace Editor.BL {
 
                         setMnEl.Add(LinkEl);
 
-                        menu.Pageelements = setMnEl;
-                        setMnEl = menu.Pageelements;
+                        menu.PageElements = setMnEl;
+                        setMnEl = menu.PageElements;
                         menu.Parentpageid = menu.Pageid;
                         menu.Dirty = true;
                         HibernateHelper.Persist(menu, session);
@@ -679,8 +679,8 @@ namespace Editor.BL {
                         contraw.PageElementid = contEl.PageElementid;
                         contraw.Value = body.Substring(body.IndexOf("</h") + 5);
 
-                        page.Pageelements = setPgEl;
-                        setPgEl = page.Pageelements;
+                        page.PageElements = setPgEl;
+                        setPgEl = page.PageElements;
                         page.Parentpageid = page.Pageid;
                         page.Dirty = true;
                         HibernateHelper.Persist(page, session);
