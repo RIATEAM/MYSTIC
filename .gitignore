@@ -1,0 +1,12 @@
+build/
+release/
+*.suo
+*.user
+bin
+Bin
+obj_ReSharper*
+*.csproj.user
+*.resharper.user
+*.suo
+*.cache
+

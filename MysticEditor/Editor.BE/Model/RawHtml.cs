@@ -8,7 +8,6 @@ namespace Editor.BE.Model {
     public class RawHtml : Persistente {
 
         public virtual int Rawhtmlid { get; set; }
-        public virtual int PageElementid { get; set; }
         public virtual String Value { get; set; }
     }
 }

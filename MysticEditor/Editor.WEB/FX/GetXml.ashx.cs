@@ -7,6 +7,7 @@ using System.Web.Services;
 using Editor.BL;
 using Editor.DTO;
 using Editor.Services;
+using System.Xml;
 
 namespace Editor.Web.FX {
     /// <summary>
@@ -28,10 +29,14 @@ namespace Editor.Web.FX {
 
             ds = ConvertToDataSet(pages);
 
+            XmlDocument docXml = new XmlDocument();
+            docXml.AppendChild(docXml.CreateXmlDeclaration("1.0", "utf-8", "yes"));
+            docXml.InnerXml += ds.GetXml();
+
 
             context.Response.ContentType = "text/xml";
             context.Response.ContentEncoding = Encoding.UTF8;
-            context.Response.Output.Write(ds.GetXml());
+            context.Response.Output.Write(docXml.InnerXml);
         }
 
         private DataSet ConvertToDataSet(List<PageDTO> pages) {
@@ -39,23 +44,32 @@ namespace Editor.Web.FX {
             DataTable dt = new DataTable("PAGE");
             dt = EditorServices.ToDataTable<PageDTO>(pages);
 
-            foreach (DataRow dr in dt.Rows) {
-                if (Convert.ToInt32(dr["Pageid"]) == Convert.ToInt32(dr["Parentpageid"])) {
-                    dr["Parentpageid"] = 0;
-                }
-            }
-
+           
             dt.TableName = "PAGE";
             
             ds.Tables.Add(dt);
 
-            DataRelation relation = new DataRelation("ParentChild",
-    ds.Tables["PAGE"].Columns["Pageid"],
-    ds.Tables["PAGE"].Columns["Parentpageid"], false);
+            DataRelation relation = new DataRelation("ParentChild",ds.Tables["PAGE"].Columns["Pageid"]
+   , ds.Tables["PAGE"].Columns["Parentpageid"]
+    ,true);
 
             relation.Nested = true;
             ds.Relations.Add(relation);
+            
 
+            DataRow Cestino = dt.Rows[0];
+
+            foreach (DataRow dr in dt.Rows) {
+                if (Convert.ToInt32(dr["State"]) == 99) {
+                   Cestino =dr ;                    
+                }
+            }
+
+            if (Convert.ToInt32(Cestino["State"]) == 99) {
+                ds.Tables["PAGE"].Rows.Remove(Cestino);            
+            }
+            
+           
             ds.Tables["PAGE"].Columns.Remove("PageelementsList");
             ds.Tables["PAGE"].Columns.Remove("Title");
             ds.Tables["PAGE"].Columns["Pageid"].ColumnMapping = MappingType.Attribute;
@@ -70,14 +84,17 @@ namespace Editor.Web.FX {
             ds.Tables["PAGE"].Columns["State"].ColumnMapping = MappingType.Attribute;
 
             ds.Tables["PAGE"].Columns["IsPersisted"].ColumnMapping = MappingType.Hidden;
-
             ds.Tables["PAGE"].Columns["IsNew"].ColumnMapping = MappingType.Hidden;
-
             ds.Tables["PAGE"].Columns["Dirty"].ColumnMapping = MappingType.Hidden;
-
             ds.Tables["PAGE"].Columns["Deleted"].ColumnMapping = MappingType.Hidden;
-
             ds.Tables["PAGE"].Columns["HasChanged"].ColumnMapping = MappingType.Hidden;
+
+
+            foreach (DataRow dr in dt.Rows) {
+                if (Convert.ToInt32(dr["Pageid"]) == Convert.ToInt32(dr["Parentpageid"])) {
+                    dr["Parentpageid"] = DBNull.Value;
+                }
+            }
 
 
             return ds;
