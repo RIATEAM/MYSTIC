@@ -2,7 +2,11 @@
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
 				xmlns:sf="http://www.spicefactory.org/parsley"
 				layout="absolute"
+				horizontalScrollPolicy="off"
 				initialize="initApp()"
+				
+				creationComplete="init()"
+				preloader="org.riateam.utils.FlashPreloader"
 				xmlns:views="views.*"
 				xmlns:menu="views.menu.*"
 				xmlns:events="flash.events.*"
@@ -11,6 +15,7 @@
 	<sf:ContextBuilder config="Config"/>
 	<mx:Script>
 		<![CDATA[
+			import org.riateam.utils.managers.CallbackManager;
 			import org.riateam.utils.managers.CapabilitiesManager;
 			import mx.managers.PopUpManager;
 			import mx.logging.Log;
@@ -20,12 +25,13 @@
 			import mx.collections.XMLListCollection;
 			import mx.controls.Alert;
 			[Bindable]
-			private var DEBUG:Boolean=false;
+			private var DEBUG:Boolean=true;
 			private var target:LogPanelTarget;
 			public var logPanel:LogPanel;
 
 			private function initApp():void
 			{
+				//Security.loadPolicyFile("cross-domain.xml");
 				getSwfParamters();
 				//CallbackManager.RegisterCallbacks();
 
@@ -45,8 +51,13 @@
 
 			private function getSwfParamters():void
 			{
-			/* if (Application.application.parameters.jsessionid)
-			 JSESSIONID=Application.application.parameters.jsessionid; */
+				if (Application.application.parameters.enableDebug)
+					DEBUG=Boolean(Application.application.parameters.enableDebug);
+			}
+
+			private function init():void
+			{
+				CallbackManager.RegisterCallbacks();
 			}
 
 			private function onSave():void
@@ -58,20 +69,19 @@
 			}
 			private var _lastMeasuredHeight:Number;
 
-			/* override protected function measure():void
-			   {
-			   super.measure();
-			   if (measuredHeight != _lastMeasuredHeight)
-			   {
-			   _lastMeasuredHeight=measuredHeight;
-			   Log.getLogger(this.className).debug("_lastMeasuredHeight=" + _lastMeasuredHeight);
-			   if (ExternalInterface.available)
-			   {
-			   ExternalInterface.call("setFlashHeight", measuredHeight);
-			   }
+			override protected function measure():void
+			{
+				super.measure();
+				if (measuredHeight != _lastMeasuredHeight)
+				{
+					_lastMeasuredHeight=measuredHeight;
+					Log.getLogger(this.className).debug("_lastMeasuredHeight=" + _lastMeasuredHeight);
 
-			   }
-			 } */
+					CallbackManager.setFlashHeight(_lastMeasuredHeight)
+
+
+				}
+			}
 		]]>
 	</mx:Script>
 	<mx:Style source="assets/css/style.css"/>
@@ -79,10 +89,13 @@
 	<mx:Parallel id="alertCreationCompleteEffect">
 		<mx:Fade duration="500"/>
 		<mx:Move yFrom="0"
+				 yTo="200"
 				 duration="300"/>
 	</mx:Parallel>
+	<!-- -->
+
 	<mx:VBox id="appContainer"
-			 width="99%"
+			 width="100%"
 			 verticalGap="0">
 
 		<menu:ToolBar id="toolbar"
@@ -91,7 +104,7 @@
 						verticalScrollPolicy="off"
 						clipContent="false"
 						height="{Math.max(tree.height,pageView.height)}">
-			<views:TreeMenu id="tree" 
+			<views:TreeMenu id="tree"
 							verticalScrollPolicy="off"
 							minWidth="100"
 							width="30%"/>

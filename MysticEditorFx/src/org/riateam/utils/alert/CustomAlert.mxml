@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"
+				width="400"
+				height="300"
+				layout="vertical"
+				horizontalAlign="center"
+				showCloseButton="true"
+				close="closeMe()"
+				title="Services in error"
+				paddingLeft="10"
+				paddingRight="10">
+	<mx:Script>
+		<![CDATA[
+			import mx.core.IFlexDisplayObject;
+			import mx.managers.PopUpManager;
+			import Welsy3.UI.utils.Graphics.Assets;
+			[Bindable]
+			private var _errorMessage:String;
+			[Bindable]
+			private var _errorIcon:Class=Assets.me().alert;
+
+			public function set ErrorMessage(value:String):void
+			{
+				_errorMessage=value;
+			}
+
+			[Bindable]
+			private var _errorMessageDetailed:String;
+
+			public function set ErrorMessageDetailed(value:String):void
+			{
+				_errorMessageDetailed=value;
+			}
+
+			public function set ErrorIcon(value:Class):void
+			{
+				_errorIcon=value;
+			}
+
+			private function closeMe():void
+			{
+				PopUpManager.removePopUp(this as IFlexDisplayObject);
+			}
+		]]>
+	</mx:Script>
+
+	<mx:HBox width="100%"
+			 height="30"
+			 verticalAlign="middle">
+		<mx:Box width="30"
+				height="30"
+				horizontalAlign="center"
+				verticalAlign="middle">
+			<mx:Image source="{_errorIcon}"/>
+		</mx:Box>
+		<mx:Text text="{_errorMessage}"
+				 width="100%"/>
+	</mx:HBox>
+
+	<mx:HBox width="100%"
+			 height="100%"
+			 paddingLeft="30">
+		<mx:TextArea text="{_errorMessageDetailed}"
+					 editable="false"
+					 width="100%"
+					 height="100%"
+					 backgroundAlpha="1"/>
+	</mx:HBox>
+	<mx:Button label="OK"
+			   click="closeMe()"
+			   width="80"/>
+</mx:TitleWindow>

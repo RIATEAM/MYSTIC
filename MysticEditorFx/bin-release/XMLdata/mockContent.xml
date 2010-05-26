@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Menu>
+	<Item Id="1" Titolo="DESCRIZIONE GENERALE" State="1" Href="1_5__DESCRIZIONE_GENERALE.html" Target="mainframe">
+		<Item Id="2" Titolo="DESCRIZIONE" State="1" Href="2_5_1_DESCRIZIONE.html" Target="mainframe">
+			<Item Id="3" Titolo="Opzioni tariffarie" State="2" Href="3_5_1_1_Opzioni_tariffarie.html" Target="mainframe"/>
+			<Item Id="4" Titolo="Promozioni" State="2" Href="4_5_1_2_Promozioni.html" Target="mainframe"/>
+			<Item Id="5" Titolo="Soglia commercializzazione" State="1" Href="5_5_1_3_Soglia_commercializzazione.html" Target="mainframe"/>
+			<Item Id="6" Titolo="Priorità applicazione sconti" State="2" Href="6_5_1_4_Priorità_applicazione_sconti.html" Target="mainframe"/>
+			<Item Id="7" Titolo="Cambio offerta" State="1" Href="7_5_1_5_Cambio_offerta.html" Target="mainframe"/>
+		</Item>
+		<Item Id="8" Titolo="A CHI E’ RISERVATA" State="1" Href="8_5_2_A_CHI_E’_RISERVATA.html" Target="mainframe"/>
+		<Item Id="9" Titolo="COSTI" State="2" Href="9_5_3_COSTI.html" Target="mainframe">
+			<Item Id="10" Titolo="Contributo disattivazione" State="1" Href="10_5_3_1_ Contributo_disattivazione.html" Target="mainframe"/>
+		</Item>
+		<Item Id="11" Titolo="COMPATIBILITA’ DELL’OFFERTA" State="1" Href="11_5_4_COMPATIBILITA’_DELL’OFFERTA.html" Target="mainframe">
+			<Item Id="12" Titolo="Servizi disponibili" State="2" Href="12_5_4_1_Servizi_disponibili.html" Target="mainframe"/>
+		</Item>
+		<Item Id="13" Titolo="CANALI DI ATTIVAZIONE  INGRESSO" State="1" Href="13_5_5_CANALI_DI_ATTIVAZIONE__INGRESSO.html" Target="mainframe"/>
+	</Item>
+	<Item Id="14" Titolo="ASSISTENZA" State="1" Href="14_6__ASSISTENZA.html" Target="mainframe">
+		<Item Id="15" Titolo="FRONT END" State="1" Href="15_6_1_FRONT_END.html" Target="mainframe">
+			<Item Id="16" Titolo="Richiesta Informazioni" State="1" Href="16_6_1_1___Richiesta_Informazioni.html" Target="mainframe"/>
+			<Item Id="17" Titolo="Richiesta attivazione" State="1" Href="17_6_1_2_Richiesta_attivazione.html" Target="mainframe"/>
+			<Item Id="18" Titolo="Richiesta cambio offerta ampliamento" State="2" Href="18_6_1_3_Richiesta_cambio_offerta_ampliamento.html" Target="mainframe"/>
+			<Item Id="19" Titolo="Richiesta disattivazione" State="1" Href="19_6_1_4_Richiesta_disattivazione.html" Target="mainframe"/>
+			<Item Id="20" Titolo="Evidenza In Fattura" State="1" Href="20_6_1_5_Evidenza_In_Fattura.html" Target="mainframe"/>
+		</Item>
+		<Item Id="21" Titolo="BACK OFFICE" State="1" Href="21_6_2_BACK_OFFICE.html" Target="mainframe">
+			<Item Id="22" Titolo="Attivazione" State="1" Href="22_6_2_1_Attivazione.html" Target="mainframe"/>
+			<Item Id="23" Titolo="Disattivazione" State="1" Href="23_6_2_2_Disattivazione.html" Target="mainframe"/>
+		</Item>
+		<Item Id="24" Titolo="DESCRIZIONE PROCESSO" State="1" Href="24_6_3_DESCRIZIONE_PROCESSO.html" Target="mainframe">
+			<Item Id="25" Titolo="On demand" State="2" Href="25_6_3_1_On_demand.html" Target="mainframe"/>
+			<Item Id="26" Titolo="Diagramma di flusso" State="2" Href="26_6_3_2_Diagramma_di_flusso.html" Target="mainframe"/>
+			<Item Id="27" Titolo="Comunicazione al cliente" State="1" Href="27_6_3_3_Comunicazione_al_cliente.html" Target="mainframe"/>
+		</Item>
+	</Item>
+	<Item Id="28" Titolo="TRIPLETTE" State="1" Href="28_7__TRIPLETTE.html" Target="mainframe">
+		<Item Id="29" Titolo="TRIPLETTE" State="1" Href="29_7_1_TRIPLETTE.html" Target="mainframe"/>
+	</Item>
+	<Item Id="1" Titolo="DESCRIZIONE GENERALE" State="1" Href="1_5__DESCRIZIONE_GENERALE.html" Target="mainframe">
+		<Item Id="2" Titolo="DESCRIZIONE" State="1" Href="2_5_1_DESCRIZIONE.html" Target="mainframe">
+			<Item Id="3" Titolo="Opzioni tariffarie" State="2" Href="3_5_1_1_Opzioni_tariffarie.html" Target="mainframe"/>
+			<Item Id="4" Titolo="Promozioni" State="2" Href="4_5_1_2_Promozioni.html" Target="mainframe"/>
+			<Item Id="5" Titolo="Soglia commercializzazione" State="1" Href="5_5_1_3_Soglia_commercializzazione.html" Target="mainframe"/>
+			<Item Id="6" Titolo="Priorità applicazione sconti" State="2" Href="6_5_1_4_Priorità_applicazione_sconti.html" Target="mainframe"/>
+			<Item Id="7" Titolo="Cambio offerta" State="1" Href="7_5_1_5_Cambio_offerta.html" Target="mainframe"/>
+		</Item>
+		<Item Id="8" Titolo="A CHI E’ RISERVATA" State="1" Href="8_5_2_A_CHI_E’_RISERVATA.html" Target="mainframe"/>
+		<Item Id="9" Titolo="COSTI" State="2" Href="9_5_3_COSTI.html" Target="mainframe">
+			<Item Id="10" Titolo="Contributo disattivazione" State="1" Href="10_5_3_1_ Contributo_disattivazione.html" Target="mainframe"/>
+		</Item>
+		<Item Id="11" Titolo="COMPATIBILITA’ DELL’OFFERTA" State="1" Href="11_5_4_COMPATIBILITA’_DELL’OFFERTA.html" Target="mainframe">
+			<Item Id="12" Titolo="Servizi disponibili" State="2" Href="12_5_4_1_Servizi_disponibili.html" Target="mainframe"/>
+		</Item>
+		<Item Id="13" Titolo="CANALI DI ATTIVAZIONE  INGRESSO" State="1" Href="13_5_5_CANALI_DI_ATTIVAZIONE__INGRESSO.html" Target="mainframe"/>
+	</Item>
+	<Item Id="14" Titolo="ASSISTENZA" State="1" Href="14_6__ASSISTENZA.html" Target="mainframe">
+		<Item Id="15" Titolo="FRONT END" State="1" Href="15_6_1_FRONT_END.html" Target="mainframe">
+			<Item Id="16" Titolo="Richiesta Informazioni" State="1" Href="16_6_1_1___Richiesta_Informazioni.html" Target="mainframe"/>
+			<Item Id="17" Titolo="Richiesta attivazione" State="1" Href="17_6_1_2_Richiesta_attivazione.html" Target="mainframe"/>
+			<Item Id="18" Titolo="Richiesta cambio offerta ampliamento" State="2" Href="18_6_1_3_Richiesta_cambio_offerta_ampliamento.html" Target="mainframe"/>
+			<Item Id="19" Titolo="Richiesta disattivazione" State="1" Href="19_6_1_4_Richiesta_disattivazione.html" Target="mainframe"/>
+			<Item Id="20" Titolo="Evidenza In Fattura" State="1" Href="20_6_1_5_Evidenza_In_Fattura.html" Target="mainframe"/>
+		</Item>
+		<Item Id="21" Titolo="BACK OFFICE" State="1" Href="21_6_2_BACK_OFFICE.html" Target="mainframe">
+			<Item Id="22" Titolo="Attivazione" State="1" Href="22_6_2_1_Attivazione.html" Target="mainframe"/>
+			<Item Id="23" Titolo="Disattivazione" State="1" Href="23_6_2_2_Disattivazione.html" Target="mainframe"/>
+		</Item>
+		<Item Id="24" Titolo="DESCRIZIONE PROCESSO" State="1" Href="24_6_3_DESCRIZIONE_PROCESSO.html" Target="mainframe">
+			<Item Id="25" Titolo="On demand" State="2" Href="25_6_3_1_On_demand.html" Target="mainframe"/>
+			<Item Id="26" Titolo="Diagramma di flusso" State="2" Href="26_6_3_2_Diagramma_di_flusso.html" Target="mainframe"/>
+			<Item Id="27" Titolo="Comunicazione al cliente" State="1" Href="27_6_3_3_Comunicazione_al_cliente.html" Target="mainframe"/>
+		</Item>
+	</Item>
+	<Item Id="28" Titolo="TRIPLETTE" State="1" Href="28_7__TRIPLETTE.html" Target="mainframe">
+		<Item Id="29" Titolo="TRIPLETTE" State="1" Href="29_7_1_TRIPLETTE.html" Target="mainframe"/>
+	</Item>
+	<Theme Path="\Themes\WindTheme\Skin1"/>
+</Menu>

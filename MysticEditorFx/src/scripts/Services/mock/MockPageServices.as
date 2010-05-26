@@ -110,7 +110,7 @@ package scripts.Services.mock
 			if (event.result != null)
 			{
 				page.IsPersisted=false; //fake delete
-				dispatchEvent(new PageViewEvent(PageViewEvent.DELETE, page));
+				dispatchEvent(new PageViewEvent(PageViewEvent.DELETE, page, true));
 			}
 
 		}

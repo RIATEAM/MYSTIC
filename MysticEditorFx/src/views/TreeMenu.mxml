@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
 		 width="100%"
+		 backgroundColor="#2f3d46"
 		 verticalScrollPolicy="off"
 		 xmlns:observer="com.adobe.cairngorm.observer.*"
 		 xmlns:utils="org.riateam.utils.*"
@@ -8,17 +9,20 @@
 		 xmlns:ui="flash.ui.*"
 		 xmlns:contextmenu="org.riateam.utils.managers.contextmenu.*"
 		 xmlns:managers="org.riateam.utils.managers.*"
-		 xmlns:spicefactory="http://www.spicefactory.org/parsley">
+		 xmlns:spicefactory="http://www.spicefactory.org/parsley" xmlns:menu="org.riateam.utils.managers.menu.*">
 	<spicefactory:Configure/>
 	<mx:Metadata>
-		/* [ManagedEvents("getPage")]
+		  [ManagedEvents("getPage")]
 		[ManagedEvents("deletePage")]
 		[ManagedEvents("savePage")]
 		[ManagedEvents("publishPage")]
-		[ManagedEvents("movePage")] */
+		[ManagedEvents("movePage")]  
 	</mx:Metadata>
 	<mx:Script>
 		<![CDATA[
+			import mx.managers.PopUpManager;
+			import org.riateam.utils.alert.CustomAlert;
+			import org.riateam.utils.managers.CallbackManager;
 			import scripts.Events.PageViewEvent;
 			import scripts.Classes.PageDTO;
 			import org.spicefactory.lib.logging.LogContext;
@@ -63,6 +67,7 @@
 				var page:PageDTO=PageDTO.createPageFromXML(myTree.selectedItem as XML);
 				model.selectedPage=page;
 				pageService.getPage(page);
+				
 			}
 
 			[MessageHandler(selector="getTree")]
@@ -79,7 +84,7 @@
 			}
 			// --------------------------------------------
 
-			[Embed("assets/file.gif")]
+			[Embed("assets/file.png")]
 			private var FileIcon:Class;
 
 			[Embed("assets/fileno.GIF")]
@@ -238,7 +243,14 @@
 
 
 
-				Alert.show("Eliminare l'elemento " + selectedPage.Title, "Conferma", Alert.YES | Alert.NO, Application.application.appContainer, deleteItem);
+				/* var errorDetailedView:CustomAlert=new CustomAlert();
+				   errorDetailedView.ErrorMessage="Conferma";
+				   errorDetailedView.ErrorMessageDetailed="Eliminare l'elemento \n" + selectedPage.Title
+
+				   PopUpManager.addPopUp(errorDetailedView, Application.application.appContainer, true);
+				 PopUpManager.centerPopUp(errorDetailedView); */
+
+				Alert.show("Eliminare l'elemento: \n" + selectedPage.Title, "Confermi?", Alert.YES | Alert.NO, Application.application.appContainer, deleteItem);
 
 			}
 
@@ -257,15 +269,15 @@
 
 			private function doPreview(evt:Event):void
 			{
-
+				CallbackManager.showFancyBox("http://google.com", "test");
 
 			}
 
 			[MessageHandler(selector="deletePage")]
-			private function deleteItemSuccess(event:PageViewEvent):void
+			public function deleteItemSuccess(event:PageViewEvent):void
 			{
 				LogContext.getLogger(this.className).debug("Response Delete " + event.page.Title);
-				if (event.page.IsPersisted=false)
+				if (!event.page.IsPersisted)
 				{
 					xmlDeleteNode(myTree.selectedItem as XML);
 				}
@@ -295,7 +307,7 @@
 			private var lastRollOverIndex:int;
 		]]>
 	</mx:Script>
-	<managers:ContextMenuManager id="context"
+	<menu:ContextMenuManager id="context"
 								 onDelete="doDelete(event)"
 								 onSelect="doSelect(event)"
 								 onPreview="doPreview(event)"/>
@@ -318,9 +330,6 @@
 			 paddingBottom="10"
 			 paddingTop="10"
 			 borderStyle="solid"
-			 backgroundColor="#ffffff"
-			 borderColor="#333333"
-			 borderThickness="1"
 			 verticalScrollPolicy="off"
 			 alpha="0">
 
@@ -333,7 +342,7 @@
 							  resize="onTreeResize(event)"
 							  openItems="{model.treeXML..Item}"
 							  width="100%"
-							  horizontalCenter="0"
+							  horizontalCenter="0" 
 							  dataProvider="{model.treeXML.Item}"
 							  labelField="@Titolo"
 							  iconFunction="tree_iconFunc"

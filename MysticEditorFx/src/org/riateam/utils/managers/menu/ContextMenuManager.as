@@ -1,4 +1,4 @@
-package org.riateam.utils.managers
+package org.riateam.utils.managers.menu
 {
 	import flash.events.ContextMenuEvent;
 	import flash.events.Event;
@@ -66,7 +66,7 @@ package org.riateam.utils.managers
 			cm.customItems.push(copyItem);
 			
 			/****** PREVIEW ******/
-			var previewItem:ContextMenuItem=new ContextMenuItem("Preview..",false);
+			var previewItem:ContextMenuItem=new ContextMenuItem("Anteprima..",false);
 			previewItem.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, function onPreview(evt:ContextMenuEvent):void
 				{
 					dispatchEvent(new Event(PREVIEW));
