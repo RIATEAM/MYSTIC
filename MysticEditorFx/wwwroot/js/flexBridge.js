@@ -4,3 +4,21 @@ function setFlashHeight(newHeight){
         flashContentHolderDiv.style.height = newHeight;
 		alert("newHeight =" +newHeight)
 }
+
+function showFancyBox(url,title) {
+ 
+		var frameUrl =  url;
+		 alert(frameUrl);
+		$.fancybox({
+			'padding'		: 0,
+			'margin'		: 0,
+			'transitionIn'	: 'elastic',
+			'transitionOut'	: 'elastic',
+			'title'			: title,
+			'width'			: '75%',
+			'height'		: '90%',
+			'href'			: frameUrl,
+			'type'			: 'iframe'
+		});
+		return false;
+}

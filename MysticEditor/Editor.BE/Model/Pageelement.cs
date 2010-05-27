@@ -12,6 +12,7 @@ namespace Editor.BE.Model
 		public virtual int Pageid { get; set; }
 		public virtual String Value { get; set; }
         public virtual String Filename { get; set; }
+        public virtual int Rawhtmlid { get; set; }
 
         public virtual Element Element { get; set; }        
         public virtual Page Page { get; set; }

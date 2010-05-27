@@ -12,7 +12,7 @@ namespace Editor.BE.Model
         public virtual int Skinid { get; set; }
         public virtual int Themeid { get; set; }
         public virtual Theme Theme { get; set; }
-		public virtual ISet<ElementSkin> Elementskins { get; set; }
+		public virtual ISet<ElementSkin> ElementSkins { get; set; }
 		public virtual ISet<Page> Pages { get; set; }
 
         public override bool Equals(object obj) {

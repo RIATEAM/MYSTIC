@@ -65,10 +65,10 @@ namespace Editor.BL {
                         testo += " " + line + System.Environment.NewLine;
 
                         if (lastlivello == 0) {//////
-                            lastlivello = thislivello =  System.Convert.ToInt32(testo.Trim().Substring(2, 1));
+                            lastlivello = thislivello = System.Convert.ToInt32(testo.Trim().Substring(2, 1));
                             inserire = false;
                         } else {
-                            thislivello =  System.Convert.ToInt32(testo.Trim().Substring(2, 1));
+                            thislivello = System.Convert.ToInt32(testo.Trim().Substring(2, 1));
                             if (check) {
                                 if (lastlivello == thislivello) {
                                     inserire = false;
@@ -196,9 +196,9 @@ namespace Editor.BL {
                            select f).First<Page>();
                     return dad;
                 } else {
-                  return  GetDadID(dad, lev, fam);
+                    return GetDadID(dad, lev, fam);
                 }
-            }            
+            }
         }
 
         public static List<T> GetContents<T>() {
@@ -225,6 +225,16 @@ namespace Editor.BL {
             List<Page> pageList = HibernateHelper.SelectCommand<Page>(session, " PARENTPAGEID =" + tmpPage + " AND CONTENTID =" + tmpCont) as List<Page>;
             pageList.Sort(delegate(Page pg1, Page pg2) { return pg1.Position.CompareTo(pg2.Position); });
             return pageList;
+        }
+
+        public static Page GetBasket(NHibernate.ISession session, int contentId) {
+
+            List<Page> Pages = GetPageByContent(session, contentId);
+
+            return (from c in Pages
+                    where c.State == 99
+                    select c).FirstOrDefault<Page>();
+
         }
 
         public static List<Page> GetPageByContent(ISession session, int contentId) {
@@ -265,7 +275,7 @@ namespace Editor.BL {
 
             XmlNode page = docXml.CreateNode(XmlNodeType.Element, "Page", null);
 
-            foreach (PageElement pel in pagina.Pageelements) {
+            foreach (PageElement pel in pagina.PageElements) {
                 XmlNode nodo = docXml.CreateNode(XmlNodeType.Element, pel.Element.Description, null);
                 XmlNode nodoValue = docXml.CreateNode(XmlNodeType.CDATA, null, null);
 
@@ -273,7 +283,7 @@ namespace Editor.BL {
 
                 nodo.AppendChild(nodoValue);
 
-                var el = (from c in pel.Element.Elementskins
+                var el = (from c in pel.Element.ElementSkins
                           where c.Elementid == pel.Element.Elementid
                           select c).FirstOrDefault();
 
@@ -457,7 +467,7 @@ namespace Editor.BL {
                 }
             }
         }
-        
+
         public static Content SavePages(List<String> Files, Content contnt, ISession session) {
             ITransaction transaction = session.BeginTransaction();
             try {
@@ -601,8 +611,8 @@ namespace Editor.BL {
 
                         setMnEl.Add(LinkEl);
 
-                        menu.Pageelements = setMnEl;
-                        setMnEl = menu.Pageelements;
+                        menu.PageElements = setMnEl;
+                        setMnEl = menu.PageElements;
                         menu.Parentpageid = menu.Pageid;
                         menu.Dirty = true;
                         HibernateHelper.Persist(menu, session);
@@ -671,16 +681,18 @@ namespace Editor.BL {
                         contEl.Pageid = page.Pageid;
                         contEl.Page = page;
                         contEl.IsNew = true;
-                        HibernateHelper.Persist(contEl, session);
-                        setPgEl.Add(contEl);
 
                         RawHtml contraw = new RawHtml();
                         contraw.IsNew = true;
-                        contraw.PageElementid = contEl.PageElementid;
                         contraw.Value = body.Substring(body.IndexOf("</h") + 5);
+                        HibernateHelper.Persist(contraw, session);
 
-                        page.Pageelements = setPgEl;
-                        setPgEl = page.Pageelements;
+                        contEl.Rawhtmlid = contraw.Rawhtmlid;
+                        HibernateHelper.Persist(contEl, session);
+                        setPgEl.Add(contEl);
+
+                        page.PageElements = setPgEl;
+                        setPgEl = page.PageElements;
                         page.Parentpageid = page.Pageid;
                         page.Dirty = true;
                         HibernateHelper.Persist(page, session);
@@ -705,6 +717,6 @@ namespace Editor.BL {
                 throw ex;
             }
         }
-        
+
     }
 }

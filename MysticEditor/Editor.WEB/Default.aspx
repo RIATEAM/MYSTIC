@@ -36,7 +36,7 @@
     <br />
     <div>
         <asp:HyperLink ID="HyperLink1" runat="server" 
-            NavigateUrl="~/FX/GetXml.ashx">Albero Contenuti</asp:HyperLink>
+            NavigateUrl="~/FX/GetXml.ashx?contentID=1">Albero Contenuti</asp:HyperLink>
     </div>
     </form>
 </body>

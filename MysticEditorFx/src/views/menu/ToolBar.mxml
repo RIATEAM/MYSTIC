@@ -11,6 +11,10 @@
 	</mx:Metadata>
 	<mx:Script>
 		<![CDATA[
+			import mx.logging.Log;
+			import mx.controls.Alert;
+			import org.spicefactory.lib.reflect.types.Void;
+			import mx.events.MenuEvent;
 			import mx.events.ListEvent;
 			public static var SAVE:String="saveEvent";
 			[Bindable]
@@ -53,123 +57,77 @@
 			{
 				dispatchEvent(new Event(SAVE));
 			}
+
+			private function onMenuItemClick(event:MenuEvent):void
+			{
+				Log.getLogger(this.className).debug(event.item.@action);
+
+			}
 		]]>
 	</mx:Script>
-	<!--<mx:XML id="editMenuXml"
-		 source="XMLdata/editMenuXml.xml"/>
-
-		 <mx:PopUpButton id="btnEdit"
-		 label="Edit"
-		 openAlways="true"
-		 styleName="editMenu"
-		 width="100"
-		 addedToStage="btnEdit.popUp = editMenuPopUp">
-		 <mx:popUp>
-		 <mx:Canvas width="200"
-		 height="200"
-		 id="editMenuPopUp"
-		 backgroundColor="0xdddddd">
-		 <mx:HBox width="100%"
-		 height="100%">
-		 <mx:Spacer width="20"
-		 height="100%"/>
-		 <mx:VRule height="100%"/>
-
-		 </mx:HBox>
-		 <mx:VBox width="100%"
-		 left="24"
-		 id="newMenuContainer"
-		 verticalGap="2"
-		 horizontalAlign="left"
-		 height="100%">
-
-		 <mx:Tree id="treeSIDEnTYPES"
-		 paddingLeft="5"
-		 paddingRight="5"
-		 rowHeight="18"
-		 showRoot="false"
-		 backgroundAlpha="0"
-		 folderClosedIcon="{null}"
-		 folderOpenIcon="{null}"
-		 disclosureOpenIcon="{null}"
-		 disclosureClosedIcon="{null}"
-		 defaultLeafIcon="{null}"
-		 borderStyle="none"
-		 itemClick="treeClicked(event)"
-		 dataProvider="{editMenuXml}"
-		 selectedIndex="1"
-		 height="100%"
-		 width="100%"
-		 rowCount="24"
-		 labelField="@Description"
-		 textAlign="left"/>
-
-		 </mx:VBox>
-		 </mx:Canvas>
-		 </mx:popUp>
-		 </mx:PopUpButton>-->
-	<mx:Label text="Language"/>
-	<mx:ComboBox id="myCombo"
-				 styleName="menuBar"
-				 dataProvider="{_locales}"
-				 change="changeLocale()"/>
+	<mx:Spacer width="100"/>
 	<mx:MenuBar id="menuBar"
 				height="35"
 				width="100%"
-				styleName="menuBar"
 				labelField="@label"
 				showRoot="false"
 				horizontalCenter="0"
-				verticalCenter="0">
+				verticalCenter="0"
+				itemClick="onMenuItemClick(event)">
 		<mx:dataProvider>
 			<mx:XML>
 				<root>
-					<parent label="Edit">
-						<node label="a) File"/>
-						<node label="b) File"/>
-						<node label="c) File"/>
-						<node label="d) File"/>
-						<node label="e) File"/>
+					<parent label="Modifica">
+						<node label="Nuova pagina" action="NEW_PAGE">
+							<node label="Inserisci word generator" action="NEW_PAGE_INSERT_WORD_GENERATOR"/>
+							<node label="Inserisci un template XML esistente" action="NEW_PAGE_INSERT_EXISTING_XML"/>
+							<node label="Inserisci nuovo template XML" action="NEW_PAGE_INSERT_NEW_XML"/>
+						</node>
+						<node label="Nuova sottopagina" action="NEW_SUBPAGE">
+							<node label="Inserisci word generator" action="NEW_SUBPAGE_INSERT_NEW_XML"/>
+							<node label="Inserisci un template XML esistente" action="NEW_SUBPAGE_INSERT_NEW_XML"/>
+							<node label="Inserisci nuovo template XML" action="NEW_SUBPAGE_INSERT_NEW_XML"/>
+						</node>
+						<node label="Clona" action="CLONE"/>
+						<node label="Clona vuoto" action="CLONE_EMPTY"/>
+						<node label="Rinomina voce menu" action="RENAME_ITEM_MENU"/>
+						<node label="Rinomina nomefile pagina" action="RENAME_PAGE_FILENAME"/>
+
 					</parent>
-					<parent label="View">
-						<node label="a) Edit"/>
-						<node label="b) Edit"/>
+					<parent label="Visualizza" action="VIEW">
+						<node label="Stage XML" action="VIEW_STAGE"/>
+						<node label="Stage Antemprima" action="VIEW_PREVIEW"/>
+						<node label="Produzione" action="VIEW_PRODUCTION"/>
 					</parent>
-					<parent label="Publish">
-						<parent label="a) View"/>
-						<parent label="b) View"/>
-						<parent label="c) View"/>
+					<parent label="Pubblica" action="PUBLISH">
+						<node label="Questa pagina" action="PUBLISH_THIS_PAGE"/>
+						<node label="Questa directory" action="PUBLISH_THIS_ROOT"/>
+						<node label="Tutto il sito" action="PUBLISH_ALL_SITE"/>
+						<node label="Ripristina pagina da backup" action="PUBLISH_RESTORE_FROM_BACKUP"/>
+						<node label="Ripristina pagina da produzione" action="PUBLISH_RESTORE_FROM_PRODUCTION"/>
 					</parent>
-					<parent label="Advanced">
-						<parent label="a) Favorites"/>
-					</parent>
-					<parent label="Help">
-						<node label="a) Help"/>
-						<node label="b) Help"/>
-						<node label="c) Help"/>
-						<node label="d) Help"/>
-					</parent>
+
 				</root>
 			</mx:XML>
+			<!--<parent label="Avanzate">
+				 <node label="Profilatura">
+				 <node label="Profila il sito"/>
+				 <node label="Profila ?"/>
+				 <node label="Profila questa pagina"/>
+				 </node>
+				 <node label="Temi">
+				 <node label="Tema di default"/>
+				 <node label="Seleziona altro.."/>
+				 <node label="Profila questa pagina"/>
+				 </node>
+				 </parent>
+				 <parent label="Aiuto">
+				 <node label="Inserisci"/>
+				 <node label="Inserisci"/>
+				 <node label="Inserisci"/>
+				 </parent>-->
 		</mx:dataProvider>
 	</mx:MenuBar>
 
-	<!--<mx:PopUpButton label="View"
-		 width="150">
-
-		 </mx:PopUpButton>
-		 <mx:PopUpButton label="Publish"
-		 width="150">
-
-		 </mx:PopUpButton>
-		 <mx:PopUpButton label="Advanced"
-		 width="150">
-
-		 </mx:PopUpButton>-->
 	<mx:Spacer width="100%"/>
-
-
-	<mx:Button label="Save"
-			   click="doSave()"/>
-	<mx:Button label="Logout"/>
 </mx:HBox>

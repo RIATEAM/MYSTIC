@@ -10,27 +10,27 @@
     <property name="Elementtypeid" column="`ELEMENTTYPEID`" length="22" />
     <property name="Structureid" column="`STRUCTUREID`" length="22" />
     
-    <set name="Elementskins" 
+    <set name="ElementSkins" 
          cascade="save-update" 
          inverse="true" 
          lazy="true">
       <key column="`ELEMENTID`" />
-      <one-to-many class="Elementskin" />
+      <one-to-many class="ElementSkin" />
     </set>
 
-    <many-to-one name="Elementtype" 
-                 class="Elementtype" 
+    <many-to-one name="ElementType" 
+                 class="ElementType" 
                  column="`ELEMENTTYPEID`"  
                  not-null="true"  
                  update="false"
                  insert="false"/>
 
-    <set name="Pageelements" 
+    <set name="PageElements" 
          cascade="save-update" 
          inverse="true" 
          lazy="true">
       <key column="`ELEMENTID`" />
-      <one-to-many class="Pageelement" />
+      <one-to-many class="PageElement" />
     </set>
 
     <many-to-one name="Structure" 

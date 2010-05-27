@@ -22,19 +22,19 @@ namespace Editor.BE.Model {
 
         public virtual Content Content { get; set; }
         public virtual Skin Skin { get; set; }
-        public virtual ISet<PageElement> Pageelements { get; set; }
+        public virtual ISet<PageElement> PageElements { get; set; }
 
-        private IList<PageElement> _PageelementsList;
+        private IList<PageElement> _PageElementsList;
 
         public virtual IList<PageElement> PageelementsList {
             get {
-                if (Pageelements != null) {
-                    _PageelementsList= Pageelements.ToList<PageElement>();
+                if (PageElements != null) {
+                    _PageElementsList= PageElements.ToList<PageElement>();
                 }             
                 
-                return _PageelementsList;             
+                return _PageElementsList;             
             }  
-            set { _PageelementsList = value; }
+            set { _PageElementsList = value; }
         }
 
 
