@@ -9,4 +9,6 @@ obj_ReSharper*
 *.resharper.user
 *.suo
 *.cache
+*.dll
+*.pbd
 
