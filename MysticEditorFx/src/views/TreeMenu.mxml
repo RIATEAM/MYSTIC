@@ -207,18 +207,12 @@
 			}
 			
 			[MessageHandler(selector="deletePage")]
-			public function deleteItemSuccess(event:PageViewEvent):void
-			{
+			public function deleteItemSuccess(event:PageViewEvent):void {
 				LogContext.getLogger(this.className).debug("Response Delete " + event.page.Title);
-				if (!event.page.IsPersisted)
-
-				{
+				if (event.page.IsPersisted) {
 					xmlDeleteNode(myTree.selectedItem as XML);
-				}
-				else
-				{
+				} else {
 					Alert.show("Errore cancellazione", "Attenzione");
-
 				}
 			}
 			
@@ -237,32 +231,45 @@
 			/**************************************************************************/
 			/******************************** START COPY ****************************/
 			private function doCopy(evt:Event):void {
-				var selectedPage:PageDTO=PageDTO.createPageFromXML(myTree.selectedItem as XML);
 					var pageid:int=int(myTree.selectedItem.@Pageid);
 					LogContext.getLogger(this.className).debug("Call Copia " + pageid);
 					var selectedPage:PageDTO=PageDTO.createPageFromXML(myTree.selectedItem as XML);
+					selectedPage.Publictitle = "copia di " + selectedPage.Publictitle;
+					selectedPage.Position = getPositionCopy(XML(myTree.selectedItem))+1;
 					selectedPage.IsNew = true;
 					pageService.copyPage(selectedPage);
 			}
 			
+			private function getPositionCopy(currentXml:XML):int {
+				var cn:XMLList=XMLList(currentXml.parent()).children();
+				var lastNode:XML;
+				for (var i:Number=0; i < cn.length(); i++) {
+					lastNode = cn[i];
+				}
+				return lastNode.@Position;
+			}
 			[MessageHandler(selector="copyPage")]
 			public function copyItemSuccess(event:PageViewEvent):void {
 				LogContext.getLogger(this.className).debug("Response Copia " + event.page.Title);
-				if (!event.page.IsPersisted) {
-					var xml:XML = XML(myTree.selectedItem).copy()
-					xmlCopyNode(xml);
+				if (event.page.IsPersisted) {
+					var xml:XML = XML(myTree.selectedItem).copy();
+					xml.@Publictitle = event.page.Publictitle;
+					xml.@Title = event.page.Title;
+					xml.@Position = event.page.Position;
+					xmlCopyNode(XML(myTree.selectedItem), xml);
 				} else {
 					Alert.show("Errore copia", "Attenzione");
 				}
 			}
 			
-			private function xmlCopyNode(xml:XML):void {
-				var cn:XMLList=XMLList(myTree.dataProvider.source);
+			private function xmlCopyNode(currentXml:XML, xml:XML):void {
+				var cn:XMLList=XMLList(currentXml.parent()).children();
 				var lastNode:XML;
 				for (var i:Number=0; i < cn.length(); i++) {
 					lastNode = cn[i];
 				}
-				lastNode.appendChild(xml);
+				lastNode
+				XML(lastNode.parent()).appendChild(xml);
 			}
 			/******************************** END COPY ********************************/
 			/**************************************************************************/
@@ -272,18 +279,6 @@
 			{
 				myTree.selectedIndex=lastRollOverIndex;
 			}
-//
-//			private function doCopy(evt:Event):void
-//			{
-////				var selectedPage:PageDTO=PageDTO.createPageFromXML(myTree.selectedItem as XML);
-//
-//				var pageid:int=int(myTree.selectedItem.@Pageid);
-//				LogContext.getLogger(this.className).debug("Call Copy " + pageid);
-//				var selectedPage:PageDTO=PageDTO.createPageFromXML(myTree.selectedItem as XML);
-//				selectedPage.Deleted=true;
-//				pageService.deletePage(selectedPage);
-//			}
-
 
 			private function doPreview(evt:Event):void
 			{

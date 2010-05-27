@@ -51,7 +51,7 @@ package scripts.Services
 		/******************************** COPY ****************************/
 		public function copyPage(page:PageDTO):AsyncToken {
 			currentEvent = PageViewEvent.COPY;
-			var token:AsyncToken=pageService.DeletePage(page);
+			var token:AsyncToken=pageService.SavePage(page);
 			token.addResponder(new AsyncResponder(copyPageResult, faultHandler, page));
 			return token;
 		}
