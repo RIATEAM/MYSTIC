@@ -56,9 +56,11 @@ package scripts.Classes
 		public static function createPageFromXML(item:XML):PageDTO
 		{
 			var page:PageDTO=new PageDTO();
-			page.Pageid=item.@id;
-			page.Title=item.@Titolo;
+			page.Pageid=item.@Pageid;
+			page.Title=item.@Publictitle;
 			page.State=item.@State;
+			page.Position=item.@Position;
+			page.Parentpageid=item.@Parentpageid;
 			return page;
 		}
 

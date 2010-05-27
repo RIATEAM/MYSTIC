@@ -1,12 +1,12 @@
 package scripts.Services
 {
 	import flash.events.EventDispatcher;
-
+	
 	import mx.controls.Alert;
 	import mx.rpc.events.FaultEvent;
 	import mx.rpc.events.ResultEvent;
 	import mx.rpc.http.HTTPService;
-
+	
 	import scripts.Events.TreeMenuEvent;
 	import scripts.Model.Model;
 
@@ -27,6 +27,7 @@ package scripts.Services
 		[Init]
 		public function getTree():void
 		{
+			treeHTTPService.url = "http://www.editor.welsy.org/FX/GetXml.ashx?contentID=" + 1;
 			treeHTTPService.addEventListener(ResultEvent.RESULT, result_handler);
 			treeHTTPService.addEventListener(FaultEvent.FAULT, fault_handler);
 			treeHTTPService.send();

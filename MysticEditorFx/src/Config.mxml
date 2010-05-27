@@ -14,10 +14,10 @@
 					 destination="GenericDestination"
 					 source="Editor.Services.PageServices"/>
 					 
-	<!--<Services:PageServices/>-->	
-	<mock:MockPageServices/>
+	<Services:PageServices/>	
+	<!--<mock:MockPageServices/>-->
 	
-	<mx:HTTPService id="treeHS" url="http://www.editor.welsy.org/content.xml"
+	<mx:HTTPService id="treeHS"
 		 showBusyCursor="true"
 		 resultFormat="e4x"
 		 useProxy="false"

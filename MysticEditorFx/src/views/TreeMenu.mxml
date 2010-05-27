@@ -217,13 +217,41 @@
 				myTree.hideDropFeedback(event);
 			}
 
+			private var itemDragged:XML;
+			private function doDragStart(event:DragEvent):void
+			{
+				// hide the "drop line" that is shown in Tree control
+				// when dropping in a Tree
+		//		myTree.hideDropFeedback(event);
+			//	var x:XMLList = event.currentTarget as XMLList;
+			itemDragged = myTree.selectedItem as XML;
+			}
 			private function doDragComplete(event:DragEvent):void
 			{
 				// hide the "drop line" that is shown in Tree control
 				// when dropping in a Tree
 				myTree.hideDropFeedback(event);
+				getPosition(itemDragged);
+				
 			}
 
+			private function getPosition(xml:XML):Boolean
+			{
+				var cn:XMLList=XMLList(xml.parent()).children();
+
+				xml.@Parentpageid = XML(xml.parent()).@Pageid;
+				
+				for (var i:Number=0; i < cn.length(); i++)
+				{
+					if (cn[i] == xml)
+					{
+						xml.@Position = i + 1;
+						var selectedPage:PageDTO=PageDTO.createPageFromXML(xml as XML);
+						return true;
+					}
+				}
+				return false;
+			}
 
 			/************************ ContextMenu Handlers  ***************************/
 
@@ -232,11 +260,26 @@
 				myTree.selectedIndex=lastRollOverIndex;
 			}
 
+			private function doCopy(evt:Event):void
+			{
+//				var selectedPage:PageDTO=PageDTO.createPageFromXML(myTree.selectedItem as XML);
+
+				var pageid:int=int(myTree.selectedItem.@Pageid);
+				LogContext.getLogger(this.className).debug("Call Copy " + pageid);
+				var selectedPage:PageDTO=PageDTO.createPageFromXML(myTree.selectedItem as XML);
+				selectedPage.Deleted=true;
+				pageService.deletePage(selectedPage);
+			}
+
 			private function doDelete(evt:Event):void
 			{
+				
 				var selectedPage:PageDTO=PageDTO.createPageFromXML(myTree.selectedItem as XML);
 
-
+				if ( selectedPage.State == 99 ){
+					Alert.show("Non puoi cancellare il cestino");
+					return;
+				}
 
 				Alert.show("Eliminare l'elemento " + selectedPage.Title, "Conferma", Alert.YES | Alert.NO, Application.application.appContainer, deleteItem);
 
@@ -246,7 +289,7 @@
 			{
 				if (event.detail == Alert.YES)
 				{
-					var pageid:int=int(myTree.selectedItem.@Id);
+					var pageid:int=int(myTree.selectedItem.@Pageid);
 					LogContext.getLogger(this.className).debug("Call Delete " + pageid);
 					var selectedPage:PageDTO=PageDTO.createPageFromXML(myTree.selectedItem as XML);
 					selectedPage.Deleted=true;
@@ -274,6 +317,22 @@
 				}
 			}
 
+//			private function xmlMove(xmlToDelete:XML):Boolean
+//			{
+//				var cn:XMLList=myTree.dataProvider.source as XMLList;
+//
+//				var newXml = xmlToDelete.copy();
+//				for (var i:Number=0; i < cn.length(); i++)
+//				{
+//					if (cn[i].@State == "99")
+//					{
+//						(cn[i] as XML).appendChild(newXml);
+//						return true;
+//					}
+//				}		
+//				return false;		
+//			}
+
 			private function xmlDeleteNode(xmlToDelete:XML):Boolean
 			{
 				var cn:XMLList=XMLList(xmlToDelete.parent()).children();
@@ -282,6 +341,7 @@
 				{
 					if (cn[i] == xmlToDelete)
 					{
+//						xmlMove(cn[i]);
 						delete cn[i];
 						return true;
 					}
@@ -294,6 +354,7 @@
 		]]>
 	</mx:Script>
 	<managers:ContextMenuManager id="context"
+		             			 onCopy="doCopy(event)"
 								 onDelete="doDelete(event)"
 								 onSelect="doSelect(event)"
 								 onPreview="doPreview(event)"/>
@@ -329,15 +390,17 @@
 							  rowHeight="18"
 							  backgroundAlpha="0"
 							  resize="onTreeResize(event)"
-							  openItems="{model.treeXML..Item}"
+							  openItems="{model.treeXML..PAGE}"
 							  width="100%"
 							  horizontalCenter="0"
-							  dataProvider="{model.treeXML.Item}"
-							  labelField="@Titolo"
+							  dataProvider="{model.treeXML.PAGE}"
+							  labelField="@Publictitle"
 							  iconFunction="tree_iconFunc"
 							  dragOver="doDragOver(event)"
 							  dragEnter="doDragEnter(event)"
 							  dragExit="doDragExit(event)"
+							  dragComplete="doDragComplete(event)"
+							  dragStart="doDragStart(event)"
 							  dragEnabled="true"
 							  dragMoveEnabled="true"
 							  dropEnabled="true"
