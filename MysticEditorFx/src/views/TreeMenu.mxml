@@ -228,11 +228,6 @@
 				itemDragged = myTree.selectedItem as XML;
 			}
 			
-			private function mmm(event:DragEvent):void {
-				myTree.hideDropFeedback(event);
-				getPosition(itemDragged);
-			}
-			
 			private function doDragComplete(event:DragEvent):void {
 				myTree.hideDropFeedback(event);
 				getPosition(itemDragged);
