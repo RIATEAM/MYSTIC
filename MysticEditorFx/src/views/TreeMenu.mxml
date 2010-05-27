@@ -148,12 +148,89 @@
 			/************************************ EVENTS ********************************/
 			/****************************************************************************/
 			/****************************** START DRAG n DROP ***************************/
+			private function doDragEnter(event:DragEvent):void
+			{
+				// Cancel default behaviour
+				event.preventDefault();
+				// Tell the DragManager that the Tree will accent the DragDrop
+				DragManager.acceptDragDrop(Tree(event.target));
+				// hide the "drop line" that is shown in Tree control
+				// when dropping in a Tree
+				myTree.showDropFeedback(event);
+			}
+
+			private function doDragDrop(event:DragEvent):void
+			{
+				var item:XML;
+				// cancel default
+				event.preventDefault();
+
+				// get the drag format (its always items in our case
+				// when you are dragging FROM a Tree its treeItems
+				var draggedFormat:String=event.dragSource.formats[0];
+
+				// Get the dragged items
+				var draggedItems:Array=event.dragSource.dataForFormat(draggedFormat) as Array;
+
+				// Calculate the index in the Tree where the items were dropped 
+				var dropIndex:int=myTree.calculateDropIndex(event);
+
+				// Set the selected index of the Tree to the dropIndex
+
+				// Add the new object to the drop target.      
+
+				myTree.selectedIndex=dropIndex;
+
+				// Check if we are dropping on a node
+
+				// Add each dragged item to the Tree by apppending it
+				// as a child of the selected node in the Tree.
+			/* for each (var object:Object in draggedItems)
+			   {
+			   // create item
+			   item=<item></item>;
+			   // set the name
+			   item.@Titolo=object.Titolo;
+
+			   // use appendChild to add the item.
+			   // (if selected item is an item then append to parent)
+			   if ((myTree.selectedItem as XML).name() == "Item")
+			   {
+			   (myTree.selectedItem as XML).appendChild(item);
+			   }
+			   else
+			   {
+			   (myTree.selectedItem as XML).parent().appendChild(item);
+			   }
+			 } */
+			}
+
+			private function doDragOver(event:DragEvent):void
+			{
+				// Show the default "drop line" in the Tree control
+				myTree.showDropFeedback(event);
+				// Cancel default behavious
+				event.preventDefault();
+			}
+
+			private function doDragExit(event:DragEvent):void
+			{
+				// hide the "drop line" that is shown in Tree control
+				// when dropping in a Tree
+				myTree.selectedIndex=myTree.calculateDropIndex(event);
+				myTree.hideDropFeedback(event);
+			}
 			private var originalTree:XMLList;
 			private var itemDragged:XML;
 			
 			private function doDragStart(event:DragEvent):void {
 				originalTree = XMLList(myTree.dataProvider.source).copy();
 				itemDragged = myTree.selectedItem as XML;
+			}
+			
+			private function mmm(event:DragEvent):void {
+				myTree.hideDropFeedback(event);
+				getPosition(itemDragged);
 			}
 			
 			private function doDragComplete(event:DragEvent):void {
@@ -302,16 +379,17 @@
 			 duration="500"
 			 target="{myTreeContainer}"
 			 alphaTo="1"/>
+			 
 	<observer:Observe source="{model.treeXML}"
 					  handler="showTree"/>
-
-
+					  
 	<mx:HTTPService id="service"
 					url="http://www.editor.welsy.org/GetXm.ashx?contentid=1"
 					showBusyCursor="true"
 					resultFormat="e4x"
 					useProxy="false"
 					method="POST"/>
+					
 	<mx:VBox id="myTreeContainer"
 			 width="100%"
 			 paddingBottom="10"
@@ -338,6 +416,9 @@
 							  dragEnabled="true"
 							  dragMoveEnabled="true"
 							  dropEnabled="true"
+							  dragOver="doDragOver(event)"
+							  dragEnter="doDragEnter(event)"
+							  dragExit="doDragExit(event)"
 							  change="getPage(myTree.selectedItem)"/>
 	</mx:VBox>
 
