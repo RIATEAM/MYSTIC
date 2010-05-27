@@ -13,11 +13,12 @@
 		 xmlns:menu="org.riateam.utils.managers.menu.*">
 	<spicefactory:Configure/>
 	<mx:Metadata>
-		  [ManagedEvents("getPage")]
+		[ManagedEvents("getPage")]
 		[ManagedEvents("deletePage")]
 		[ManagedEvents("savePage")]
 		[ManagedEvents("publishPage")]
 		[ManagedEvents("movePage")]  
+		[ManagedEvents("copyPage")]  
 	</mx:Metadata>
 	<mx:Script>
 		<![CDATA[
@@ -58,17 +59,13 @@
 			[Bindable]
 			public var model:Model;
 
-			private function init():void
-			{
-
+			private function init():void {
 			}
 
-			public function getPage(selectedItem:Object):void
-			{
+			public function getPage(selectedItem:Object):void {
 				var page:PageDTO=PageDTO.createPageFromXML(myTree.selectedItem as XML);
 				model.selectedPage=page;
 				pageService.getPage(page);
-
 			}
 
 			[MessageHandler(selector="getTree")]
@@ -147,155 +144,53 @@
 				fadeIn.play();
 			}
 
-			/****************************** DRAG n DROP ***************************/
-
-
-			private function doDragEnter(event:DragEvent):void
-			{
-				// Cancel default behaviour
-				event.preventDefault();
-				// Tell the DragManager that the Tree will accent the DragDrop
-				DragManager.acceptDragDrop(Tree(event.target));
-				// hide the "drop line" that is shown in Tree control
-				// when dropping in a Tree
-				myTree.showDropFeedback(event);
-			}
-
-			private function doDragDrop(event:DragEvent):void
-			{
-				var item:XML;
-				// cancel default
-				event.preventDefault();
-
-				// get the drag format (its always items in our case
-				// when you are dragging FROM a Tree its treeItems
-				var draggedFormat:String=event.dragSource.formats[0];
-
-				// Get the dragged items
-				var draggedItems:Array=event.dragSource.dataForFormat(draggedFormat) as Array;
-
-				// Calculate the index in the Tree where the items were dropped 
-				var dropIndex:int=myTree.calculateDropIndex(event);
-
-				// Set the selected index of the Tree to the dropIndex
-
-				// Add the new object to the drop target.      
-
-				myTree.selectedIndex=dropIndex;
-
-				// Check if we are dropping on a node
-
-				// Add each dragged item to the Tree by apppending it
-				// as a child of the selected node in the Tree.
-			/* for each (var object:Object in draggedItems)
-			   {
-			   // create item
-			   item=<item></item>;
-			   // set the name
-			   item.@Titolo=object.Titolo;
-
-			   // use appendChild to add the item.
-			   // (if selected item is an item then append to parent)
-			   if ((myTree.selectedItem as XML).name() == "Item")
-			   {
-			   (myTree.selectedItem as XML).appendChild(item);
-			   }
-			   else
-			   {
-			   (myTree.selectedItem as XML).parent().appendChild(item);
-			   }
-			 } */
-			}
-
-			private function doDragOver(event:DragEvent):void
-			{
-				// Show the default "drop line" in the Tree control
-				myTree.showDropFeedback(event);
-				// Cancel default behavious
-				event.preventDefault();
-			}
-
-			private function doDragExit(event:DragEvent):void
-			{
-				// hide the "drop line" that is shown in Tree control
-				// when dropping in a Tree
-				myTree.selectedIndex=myTree.calculateDropIndex(event);
-				myTree.hideDropFeedback(event);
-			}
-
+			/****************************************************************************/
+			/************************************ EVENTS ********************************/
+			/****************************************************************************/
+			/****************************** START DRAG n DROP ***************************/
+			private var originalTree:XMLList;
 			private var itemDragged:XML;
-			private function doDragStart(event:DragEvent):void
-			{
-				// hide the "drop line" that is shown in Tree control
-				// when dropping in a Tree
-		//		myTree.hideDropFeedback(event);
-			//	var x:XMLList = event.currentTarget as XMLList;
-			itemDragged = myTree.selectedItem as XML;
+			
+			private function doDragStart(event:DragEvent):void {
+				originalTree = XMLList(myTree.dataProvider.source).copy();
+				itemDragged = myTree.selectedItem as XML;
 			}
-			private function doDragComplete(event:DragEvent):void
-			{
-				// hide the "drop line" that is shown in Tree control
-				// when dropping in a Tree
+			
+			private function doDragComplete(event:DragEvent):void {
 				myTree.hideDropFeedback(event);
 				getPosition(itemDragged);
-				
 			}
 
-			private function getPosition(xml:XML):Boolean
-			{
+			private function getPosition(xml:XML):void {
 				var cn:XMLList=XMLList(xml.parent()).children();
 
 				xml.@Parentpageid = XML(xml.parent()).@Pageid;
 				
-				for (var i:Number=0; i < cn.length(); i++)
-				{
-					if (cn[i] == xml)
-					{
+				for (var i:Number=0; i < cn.length(); i++) {
+					if (cn[i] == xml) {
 						xml.@Position = i + 1;
 						var selectedPage:PageDTO=PageDTO.createPageFromXML(xml as XML);
-						return true;
+						selectedPage.Dirty = true;
+						pageService.movePage(selectedPage);
+						return;
 					}
 				}
-				return false;
 			}
-
-			/************************ ContextMenu Handlers  ***************************/
-
-			private function doSelect(evt:Event):void
-			{
-				myTree.selectedIndex=lastRollOverIndex;
-			}
-
-			private function doCopy(evt:Event):void
-			{
-//				var selectedPage:PageDTO=PageDTO.createPageFromXML(myTree.selectedItem as XML);
-
-				var pageid:int=int(myTree.selectedItem.@Pageid);
-				LogContext.getLogger(this.className).debug("Call Copy " + pageid);
-				var selectedPage:PageDTO=PageDTO.createPageFromXML(myTree.selectedItem as XML);
-				selectedPage.Deleted=true;
-				pageService.deletePage(selectedPage);
-			}
-
-			private function doDelete(evt:Event):void
-			{
-				
-				var selectedPage:PageDTO=PageDTO.createPageFromXML(myTree.selectedItem as XML);
-
-				if ( selectedPage.State == 99 ){
-					Alert.show("Non puoi cancellare il cestino");
-					return;
+			
+			[MessageHandler(selector="movePage")]
+			public function moveItemSuccess(event:PageViewEvent):void {
+				LogContext.getLogger(this.className).debug("Response Move " + event.page.Title);
+				if (!event.page.IsPersisted) {
+					var xml:XML = XML("<PAGES>" + originalTree[0] + "</PAGES>");
+					model.treeXML = xml;
 				}
-
-				/* var errorDetailedView:CustomAlert=new CustomAlert();
-				   errorDetailedView.ErrorMessage="Conferma";
-				   errorDetailedView.ErrorMessageDetailed="Eliminare l'elemento \n" + selectedPage.Title
-
-				   PopUpManager.addPopUp(errorDetailedView, Application.application.appContainer, true);
-				 PopUpManager.centerPopUp(errorDetailedView); */
-
+			}
+			/****************************** END DRAG n DROP ***************************/
+			/**************************************************************************/
+			/******************************** START DELETE ****************************/
+			private function doDelete(evt:Event):void {
+				var selectedPage:PageDTO=PageDTO.createPageFromXML(myTree.selectedItem as XML);
 				Alert.show("Eliminare l'elemento: \n" + selectedPage.Title, "Confermi?", Alert.YES | Alert.NO, Application.application.appContainer, deleteItem);
-
 			}
 
 			private function deleteItem(event:CloseEvent):void
@@ -305,19 +200,12 @@
 					var pageid:int=int(myTree.selectedItem.@Pageid);
 					LogContext.getLogger(this.className).debug("Call Delete " + pageid);
 					var selectedPage:PageDTO=PageDTO.createPageFromXML(myTree.selectedItem as XML);
-					selectedPage.Deleted=true;
+					selectedPage.Dirty = true;
 					pageService.deletePage(selectedPage);
 				}
 
 			}
-
-			private function doPreview(evt:Event):void
-			{
-
-				CallbackManager.showFancyBox("http://google.com", "test");
-
-			}
-
+			
 			[MessageHandler(selector="deletePage")]
 			public function deleteItemSuccess(event:PageViewEvent):void
 			{
@@ -333,43 +221,82 @@
 
 				}
 			}
-
-//			private function xmlMove(xmlToDelete:XML):Boolean
-//			{
-//				var cn:XMLList=myTree.dataProvider.source as XMLList;
-//
-//				var newXml = xmlToDelete.copy();
-//				for (var i:Number=0; i < cn.length(); i++)
-//				{
-//					if (cn[i].@State == "99")
-//					{
-//						(cn[i] as XML).appendChild(newXml);
-//						return true;
-//					}
-//				}		
-//				return false;		
-//			}
-
-			private function xmlDeleteNode(xmlToDelete:XML):Boolean
-			{
+			
+			private function xmlDeleteNode(xmlToDelete:XML):Boolean {
 				var cn:XMLList=XMLList(xmlToDelete.parent()).children();
 
-				for (var i:Number=0; i < cn.length(); i++)
-				{
-					if (cn[i] == xmlToDelete)
-					{
-//						xmlMove(cn[i]);
+				for (var i:Number=0; i < cn.length(); i++) {
+					if (cn[i] == xmlToDelete) {
 						delete cn[i];
 						return true;
 					}
 				}
 				return false;
 			}
+			/******************************** END DELETE ******************************/
+			/**************************************************************************/
+			/******************************** START COPY ****************************/
+			private function doCopy(evt:Event):void {
+				var selectedPage:PageDTO=PageDTO.createPageFromXML(myTree.selectedItem as XML);
+					var pageid:int=int(myTree.selectedItem.@Pageid);
+					LogContext.getLogger(this.className).debug("Call Copia " + pageid);
+					var selectedPage:PageDTO=PageDTO.createPageFromXML(myTree.selectedItem as XML);
+					selectedPage.IsNew = true;
+					pageService.copyPage(selectedPage);
+			}
+			
+			[MessageHandler(selector="copyPage")]
+			public function copyItemSuccess(event:PageViewEvent):void {
+				LogContext.getLogger(this.className).debug("Response Copia " + event.page.Title);
+				if (!event.page.IsPersisted) {
+					var xml:XML = XML(myTree.selectedItem).copy()
+					xmlCopyNode(xml);
+				} else {
+					Alert.show("Errore copia", "Attenzione");
+				}
+			}
+			
+			private function xmlCopyNode(xml:XML):void {
+				var cn:XMLList=XMLList(myTree.dataProvider.source);
+				var lastNode:XML;
+				for (var i:Number=0; i < cn.length(); i++) {
+					lastNode = cn[i];
+				}
+				lastNode.appendChild(xml);
+			}
+			/******************************** END COPY ********************************/
+			/**************************************************************************/
+			/************************ ContextMenu Handlers  ***************************/
+
+			private function doSelect(evt:Event):void
+			{
+				myTree.selectedIndex=lastRollOverIndex;
+			}
+//
+//			private function doCopy(evt:Event):void
+//			{
+////				var selectedPage:PageDTO=PageDTO.createPageFromXML(myTree.selectedItem as XML);
+//
+//				var pageid:int=int(myTree.selectedItem.@Pageid);
+//				LogContext.getLogger(this.className).debug("Call Copy " + pageid);
+//				var selectedPage:PageDTO=PageDTO.createPageFromXML(myTree.selectedItem as XML);
+//				selectedPage.Deleted=true;
+//				pageService.deletePage(selectedPage);
+//			}
+
+
+			private function doPreview(evt:Event):void
+			{
+
+				CallbackManager.showFancyBox("http://google.com", "test");
+
+			}
 
 			[Bindable]
 			private var lastRollOverIndex:int;
 		]]>
 	</mx:Script>
+	
 	<menu:ContextMenuManager id="context"
 		             			 onCopy="doCopy(event)"
 								 onDelete="doDelete(event)"
@@ -385,7 +312,7 @@
 
 
 	<mx:HTTPService id="service"
-					url="http://www.provider.welsy.org/content.xml"
+					url="http://www.editor.welsy.org/GetXm.ashx?contentid=1"
 					showBusyCursor="true"
 					resultFormat="e4x"
 					useProxy="false"
@@ -411,9 +338,6 @@
 							  dataProvider="{model.treeXML.PAGE}"
 							  labelField="@Publictitle"
 							  iconFunction="tree_iconFunc"
-							  dragOver="doDragOver(event)"
-							  dragEnter="doDragEnter(event)"
-							  dragExit="doDragExit(event)"
 							  dragComplete="doDragComplete(event)"
 							  dragStart="doDragStart(event)"
 							  dragEnabled="true"

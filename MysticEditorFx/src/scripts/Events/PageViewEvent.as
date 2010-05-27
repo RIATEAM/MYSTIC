@@ -28,6 +28,7 @@ package scripts.Events
 		public static const DELETE:String="deletePage";
 		public static const SAVE:String="savePage";
 		public static const MOVE:String="movePage";
+		public static const COPY:String="copyPage";
 		public static const PUBLISH:String="publishPage";
 
 
