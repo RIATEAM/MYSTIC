@@ -59,45 +59,44 @@ namespace Editor.BE {
 
         public static List<T> SelectCommand<T>(ISession session, string[] fields, object[] ids, Operators[] operators) {
 
-            using (ITransaction transaction = session.BeginTransaction()) {
-                ICriteria criteria = session.CreateCriteria(typeof(T));
-                try {
-                    for (int i = 0; i < fields.Length; i++) {
-                        ICriterion se = null;
-                        if (operators != null) {
-                            switch (operators[i]) {
-                                case Operators.Eq: se = Expression.Eq(fields[i], ids[i]); break;
-                                case Operators.Like: se = Expression.Like(fields[i], ids[i]); break;
-                                //     case Operators.In: se = Expression.In(fields[i], ids[i]); break;
-                                case Operators.Ge: se = Expression.Ge(fields[i], ids[i]); break;
-                                case Operators.Gt: se = Expression.Gt(fields[i], ids[i]); break;
-                                case Operators.InsensitiveLike: se = Expression.InsensitiveLike(fields[i], ids[i]); break;
-                                case Operators.IsNull: se = Expression.IsNull(fields[i]); break;
-                                case Operators.IsNotNull: se = Expression.IsNotNull(fields[i]); break;
-                                case Operators.IsEmpty: se = Expression.IsEmpty(fields[i]); break;
-                                case Operators.Le: se = Expression.Le(fields[i], ids[i]); break;
-                                case Operators.Lt: se = Expression.Lt(fields[i], ids[i]); break;
-                                case Operators.Distinct:
-                                    se = Expression.Gt(fields[i], ids[i]);
-                                    criteria.Add(se);
-                                    se = Expression.Lt(fields[i], ids[i]);
-                                    break;
-                                default: se = Expression.Eq(fields[i], ids[i]); break;
-                            }
-
-                            if (se != null) {
+            ICriteria criteria = session.CreateCriteria(typeof(T));
+            try {
+                for (int i = 0; i < fields.Length; i++) {
+                    ICriterion se = null;
+                    if (operators != null) {
+                        switch (operators[i]) {
+                            case Operators.Eq: se = Expression.Eq(fields[i], ids[i]); break;
+                            case Operators.Like: se = Expression.Like(fields[i], ids[i]); break;
+                            //     case Operators.In: se = Expression.In(fields[i], ids[i]); break;
+                            case Operators.Ge: se = Expression.Ge(fields[i], ids[i]); break;
+                            case Operators.Gt: se = Expression.Gt(fields[i], ids[i]); break;
+                            case Operators.InsensitiveLike: se = Expression.InsensitiveLike(fields[i], ids[i]); break;
+                            case Operators.IsNull: se = Expression.IsNull(fields[i]); break;
+                            case Operators.IsNotNull: se = Expression.IsNotNull(fields[i]); break;
+                            case Operators.IsEmpty: se = Expression.IsEmpty(fields[i]); break;
+                            case Operators.Le: se = Expression.Le(fields[i], ids[i]); break;
+                            case Operators.Lt: se = Expression.Lt(fields[i], ids[i]); break;
+                            case Operators.Distinct:
+                                se = Expression.Gt(fields[i], ids[i]);
                                 criteria.Add(se);
-                            }
-                        } else {
-                            se = Expression.Eq(fields[i], ids[i]);
+                                se = Expression.Lt(fields[i], ids[i]);
+                                break;
+                            default: se = Expression.Eq(fields[i], ids[i]); break;
+                        }
+
+                        if (se != null) {
                             criteria.Add(se);
                         }
+                    } else {
+                        se = Expression.Eq(fields[i], ids[i]);
+                        criteria.Add(se);
                     }
-                } catch {
-                    return new List<T>();
                 }
-                return (List<T>)criteria.List<T>();
+            } catch {
+                return new List<T>();
             }
+            return (List<T>)criteria.List<T>();
+
         }
 
         /// <summary>
@@ -117,26 +116,26 @@ namespace Editor.BE {
         public static List<T> SelectCommand<T>(ISession session, string SQLwhere) {
             List<T> List = new List<T>();
 
-                ICriteria criteria = session.CreateCriteria(typeof(T));
-                IResultTransformer resultTransformer = new DistinctRootEntityResultTransformer();
+            ICriteria criteria = session.CreateCriteria(typeof(T));
+            IResultTransformer resultTransformer = new DistinctRootEntityResultTransformer();
 
-                try {
-                    ICriterion se = null;
-                    if (SQLwhere.Length > 0) {
-                        se = Expression.Sql(SQLwhere);
-                    } else {
-                        se = Expression.Sql(" 1 = 1");
-                    }
-
-                    if (se != null) {
-                        criteria.Add(se);
-                        criteria.SetResultTransformer(resultTransformer);
-                    }
-
-                } catch (Exception ex) {
-                    throw ex;
+            try {
+                ICriterion se = null;
+                if (SQLwhere.Length > 0) {
+                    se = Expression.Sql(SQLwhere);
+                } else {
+                    se = Expression.Sql(" 1 = 1");
                 }
-                List = (List<T>)criteria.List<T>();
+
+                if (se != null) {
+                    criteria.Add(se);
+                    criteria.SetResultTransformer(resultTransformer);
+                }
+
+            } catch (Exception ex) {
+                throw ex;
+            }
+            List = (List<T>)criteria.List<T>();
 
             return List;
         }

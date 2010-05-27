@@ -1,6 +1,36 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <TestLists xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2006">
+  <TestList name="PageServicies" id="4ffa22ea-4d65-4a36-b96f-f94a411dfbe1" parentListId="8c43106b-9dc1-4907-a29f-aa66a61bf5b6">
+    <TestLinks>
+      <TestLink id="a4bd4da2-6cd6-1162-0ba2-8faec8f4807b" name="A_CreateContent" storage="editor.testservices\bin\debug\editor.testservices.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="e6b9b79b-c5cb-5c48-e130-677d9dd0928b" name="H_DeletePage" storage="editor.testservices\bin\debug\editor.testservices.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="e24a648d-ef2c-a3dc-74ee-e35354284927" name="I_GetInvalidPage" storage="editor.testservices\bin\debug\editor.testservices.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="3b5714cc-1f11-2886-0b4b-90f760ea90dc" name="E_UpdateExistingPage" storage="editor.testservices\bin\debug\editor.testservices.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="9fba8cb6-1ec2-9451-cec7-cb0f024a93aa" name="D_GetExistingPage" storage="editor.testservices\bin\debug\editor.testservices.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="b3e65004-d849-32cc-5a98-7791c1e7b1a7" name="B_CreateBasket" storage="editor.testservices\bin\debug\editor.testservices.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="f81bac4f-dd15-d7d6-b340-d5d3ca35c838" name="G_ClonePageStructureValue" storage="editor.testservices\bin\debug\editor.testservices.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="1bcea363-63eb-b160-3c5d-bfebbefb00a7" name="F_ClonePageStructure" storage="editor.testservices\bin\debug\editor.testservices.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="215aad5f-a630-31e0-9f5b-ce0a62d625ba" name="C_CreateValidPage" storage="editor.testservices\bin\debug\editor.testservices.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+    </TestLinks>
+  </TestList>
   <TestList name="Elenco di test" id="8c43106b-9dc1-4907-a29f-aa66a61bf5b6">
     <RunConfiguration id="78581ba4-d6e0-46f2-a269-13950a99b5f8" name="Esecuzione locale dei test" storage="localtestrun.testrunconfig" type="Microsoft.VisualStudio.TestTools.Common.TestRunConfiguration, Microsoft.VisualStudio.QualityTools.Common,   PublicKeyToken=b03f5f7f11d50a3a" />
+  </TestList>
+  <TestList name="PageInvalidPage" id="a0a1a98b-9173-4e11-90c0-de2dde1ba0ae" parentListId="8c43106b-9dc1-4907-a29f-aa66a61bf5b6">
+    <TestLinks>
+      <TestLink id="31d9be61-9f76-3fb7-52dd-fc1a6443cf3c" name="B_GetInvalidPage" storage="editor.testservices\bin\debug\editor.testservices.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="457334b0-9ecc-1874-2383-2a9e1852a94b" name="A_CreateInvalidPage" storage="editor.testservices\bin\debug\editor.testservices.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+    </TestLinks>
+  </TestList>
+  <TestList name="PageMove" id="ffd46654-b8a1-4395-889a-7b9b59a9596f" parentListId="8c43106b-9dc1-4907-a29f-aa66a61bf5b6">
+    <Description>Ciclo di test Per spostare un set di Pagine</Description>
+    <TestLinks>
+      <TestLink id="7466e74d-27dd-2b35-784a-4839186a1254" name="D_Move_Page10_to_Page1" storage="editor.testservices\bin\debug\editor.testservices.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="31d890fe-c300-90cf-b917-f2f539aa3068" name="A_CreateContent" storage="editor.testservices\bin\debug\editor.testservices.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="f6a82677-69d9-fae6-7573-fbd82b54057f" name="B_CreateStructurePage" storage="editor.testservices\bin\debug\editor.testservices.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="70d6d101-f5bd-e258-0ac8-fb8fe949c16d" name="E_Move_Page8_to_Page5" storage="editor.testservices\bin\debug\editor.testservices.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="6264d542-46f5-1f1d-eaa6-ffba986ba2a1" name="C_Move_Page9_to_Page2" storage="editor.testservices\bin\debug\editor.testservices.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="d9cd35a7-4e85-c725-0e65-a3efa8a682b8" name="F_Move_Page3_to_Page7" storage="editor.testservices\bin\debug\editor.testservices.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+    </TestLinks>
   </TestList>
 </TestLists>

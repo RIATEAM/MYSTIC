@@ -184,32 +184,43 @@ namespace Editor.Services {
         public PageDTO MovePage(PageDTO pagedto) {
             using (ISession session = HibernateHelper.GetSession().OpenSession()) {
                 using (ITransaction transaction = session.BeginTransaction()) {
-                    Page page = new Page();
-                    Mapper.CreateMap<PageDTO, Page>();
-                    Mapper.CreateMap<PageElementDTO, PageElement>();
-                    //Mappo la PageDTO in Page
-                    page = Mapper.Map<PageDTO, Page>(pagedto);
-
-
-                    //Prendo i Figli del nuovo padre della pagina DTO
-                    List<Page> Figli = new List<Page>();
-                    Figli = EditorServices.GetPageByParent(session, 1, page.Parentpageid);
-
-                    //Incremento la posizione dei figli successivi al DTO
-                    foreach (Page pg in Figli) {
-                        if (pg.Position >= pagedto.Position) {
-                            pg.Position = pg.Position + 1;
-                            pg.Dirty = true;
-                            HibernateHelper.Persist(pg, session);
-                        }
-                    }
-
-                    //Aggiorno il Pagedto Salvato
-                    HibernateHelper.Persist(page, session);
-
-                    transaction.Commit();
-
                     try {
+
+                        //Prendo i Figli del nuovo padre della pagina DTO
+                        List<Page> Figli = new List<Page>();
+                        Figli = EditorServices.GetPageByParent(session, pagedto.Contentid, pagedto.Parentpageid);
+
+                        bool update = false;
+
+                        //Incremento la posizione dei figli successivi al DTO
+                        foreach (Page pg in Figli) {
+                            if (pg.Position >= pagedto.Position) {
+                                pg.Position = pg.Position + 1;
+                                pg.Dirty = true;
+                                HibernateHelper.Persist(pg, session);
+                            }
+                            // Se il padre è lo stesso potrebbe verificarsi il clona dell oggetto page
+                            if (pagedto.Pageid == pg.Pageid) {
+                                pg.Position = pagedto.Position;
+                                pg.Parentpageid = pagedto.Parentpageid;
+                                pg.Dirty = true;
+                                HibernateHelper.Persist(pg, session);
+                                update = true;
+                            }
+                        }
+
+                        if (!update) {
+                            Page page = new Page();
+                            Mapper.CreateMap<PageDTO, Page>();
+                            Mapper.CreateMap<PageElementDTO, PageElement>();
+                            //Mappo la PageDTO in Page
+                            page = Mapper.Map<PageDTO, Page>(pagedto);
+
+                            HibernateHelper.Persist(page, session);
+                        }
+
+                        transaction.Commit();
+
                     } catch (Exception ex) {
                         transaction.Rollback();
                         throw ex;
@@ -288,12 +299,17 @@ namespace Editor.Services {
                         page.Dirty = true;
                         HibernateHelper.Persist(page, session);
 
+                        
                         //Rimappo l'oggetto da restituire
                         Mapper.CreateMap<Page, PageDTO>();
                         Mapper.CreateMap<PageElement, PageElementDTO>();
                         //Mappo la PageDTO in Page
                         pagedto = Mapper.Map<Page, PageDTO>(page);
+                        
+                        
                         transaction.Commit();
+                    
+                    
                     } catch (Exception ex) {
                         transaction.Rollback();
                         throw ex;
@@ -321,15 +337,15 @@ namespace Editor.Services {
 
                         //Prendo i Figli del padre della pagina DTO
                         List<Page> Figli = new List<Page>();
-                        Figli = EditorServices.GetPageByParent(session, 1, page.Parentpageid);
+                        Figli = EditorServices.GetPageByParent(session, page.Contentid, page.Parentpageid);
 
                         //Sposto il Pagedto Salvato accodandolo all'ultima posizione del cestino 
                         Page Cestino = new Page();
-                        Cestino = EditorServices.GetBasket(session, 1);
+                        Cestino = EditorServices.GetBasket(session, page.Contentid);
                         int actualpos = 0;
                         if (Cestino != null) {
                             List<Page> Cestinati = new List<Page>();
-                            Cestinati = EditorServices.GetPageByParent(session, 1, Cestino.Pageid);
+                            Cestinati = EditorServices.GetPageByParent(session, page.Contentid, Cestino.Pageid);
                             actualpos = (from c in Cestinati
                                          select c.Position).Max();
                         }
@@ -352,14 +368,14 @@ namespace Editor.Services {
                         }
 
                         transaction.Commit();
-
+                        status = true;
                     } catch (Exception ex) {
                         transaction.Rollback();
+                        status = false;
                         throw ex;
                     } finally {
                         session.Flush();
                         session.Close();
-                        status = true;
                     }
                 }
             }
@@ -470,7 +486,7 @@ namespace Editor.Services {
 
 
 
-        public PageDTO Savenew() {
+        private  PageDTO Savenew() {
 
             PageDTO page = new PageDTO();
 

@@ -15,17 +15,22 @@ namespace Editor.TestServices
     public class PageWorkflowTests
     {
         private PageServices svc;
+        private ContentServices csvc;
         private static PageDTO page;
-
+        private static ContentDTO content;
+        private TestContext testContextInstance;
+        
+        
         public PageWorkflowTests()
         {
             //
             // TODO: aggiungere qui la logica del costruttore
             //
             svc = new PageServices();
+            csvc = new ContentServices();
+           
+           
         }
-
-        private TestContext testContextInstance;
 
         /// <summary>
         ///Ottiene o imposta il contesto del test che fornisce
@@ -65,15 +70,51 @@ namespace Editor.TestServices
         //
         #endregion
 
-        
+
         [TestMethod]
-        public void A_CreateValidPage()
+        public void A_CreateContent() {
+             
+            content = new ContentDTO();
+            content.IsNew = true;
+            content.Title = "Nuovo Content";
+            content.Skinid = 1;
+
+            content = csvc.SaveContent(content);
+
+            Assert.IsTrue(content.IsPersisted, "Il content non risulta salvato: isPersisted is False!");
+            Assert.IsTrue(content.Contentid > 0, "Il content non ha un identificativo proprio!");
+        
+        }
+
+        [TestMethod]
+        public void B_CreateBasket() {
+
+            PageDTO basket = new PageDTO();
+
+            basket.Title = basket.Publictitle = "Cestino";
+            basket.Contentid = content.Contentid;
+            basket.State = 99;
+            basket.Structureid = 1;
+            basket.Position = 1;
+            basket.IsNew = true;
+
+            basket = svc.SavePage(basket);
+
+            Assert.IsTrue(basket.IsPersisted, "la pagina Cestino non risulta salvata: isPersisted is False!");
+            Assert.IsTrue(basket.Pageid > 0, "la pagina Cestino non ha un identificativo proprio!");
+            Assert.IsNotNull(basket.PageelementsList, "il sistema non ha creato gli elementi previsti dalla struttura Cestino");
+                              
+        
+        }
+
+        [TestMethod]
+        public void C_CreateValidPage()
         {
-            // verifico che una pagina con rif. Contenuto, Titolo pubblico, Struttura, Posizione venga salvata correttamente
+            // Verifico che una pagina con rif. Contenuto, Titolo pubblico, Struttura, Posizione venga salvata correttamente
 
             page = new PageDTO();
 
-            page.Contentid = 2;
+            page.Contentid = content.Contentid; 
             page.Publictitle = "nuova pagina";
             page.Structureid = 1;
             page.Position = 1;
@@ -88,7 +129,7 @@ namespace Editor.TestServices
         }
         
         [TestMethod]
-        public void B_GetExistingPage()
+        public void D_GetExistingPage()
         {
             // verifico il recupero di una pagina tramite identificativo
 
@@ -98,7 +139,7 @@ namespace Editor.TestServices
         }
 
         [TestMethod]
-        public void C_UpdateExistingPage()
+        public void E_UpdateExistingPage()
         {
             // verifico il salvataggio delle modifiche al titolo
             page.Publictitle = "nuova pagina modificata";
@@ -115,7 +156,7 @@ namespace Editor.TestServices
         }
 
         [TestMethod]
-        public void D_ClonePageStructure()
+        public void F_ClonePageStructure()
         {
             // verifico la clonazione di una pagina ma non di tutti i suoi valori
 
@@ -137,7 +178,31 @@ namespace Editor.TestServices
         }
 
         [TestMethod]
-        public void E_DeletePage()
+        public void G_ClonePageStructureValue() {
+            
+            PageDTO newPage = new PageDTO();
+            newPage.Publictitle = "copia di " + page.Publictitle;
+            newPage.Contentid = page.Contentid;
+            newPage.Structureid = page.Structureid;
+            newPage.Position = page.Position++;
+            
+            //valorizzo la proprietà ISNEW per forzare la creazione (copia)
+            newPage.IsNew = true;
+
+            // Valorizzo il PageID al Padre da clonare
+            newPage.Pageid = page.Pageid;
+
+            newPage = svc.ClonePage(newPage);
+
+            Assert.AreNotEqual(page, newPage, "la pagina è la stessa!");
+            Assert.AreNotEqual(page.Pageid, newPage.Pageid, "stesso ID!");
+            Assert.AreEqual(page.Structureid, newPage.Structureid, "struttura diversa!!");
+
+
+        }
+
+        [TestMethod]
+        public void H_DeletePage()
         {
             Boolean result = false;
             result = svc.DeletePage(page);
@@ -146,14 +211,16 @@ namespace Editor.TestServices
         }
 
         [TestMethod]
-        public void F_GetInvalidPage() 
+        public void I_GetInvalidPage() 
         {
             // verifico il recupero della pagina appena cancellata tramite identificativo
 
             page = svc.GetPage(page.Pageid);
 
+            PageDTO dad = svc.GetPage(page.Parentpageid);
+
             Assert.IsNotNull(page, "la pagina è stata cancellata fisicamente!");
-            Assert.AreEqual(99, page.State, "la pagina non è stata cancellata!");
+            Assert.AreEqual(99, dad.State, "la pagina non è stata cancellata!");
         }
     }
 }
