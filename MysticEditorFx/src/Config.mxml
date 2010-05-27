@@ -1,51 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Object xmlns:mx="http://www.adobe.com/2006/mxml"
 		   xmlns:Services="scripts.Services.*"
-		   xmlns:Model="scripts.Model.*"
-		   xmlns:mock="scripts.Services.mock.*">
+		   xmlns:Model="scripts.Model.*" xmlns:mock="scripts.Services.mock.*">
 
-	<mx:TraceTarget id="traceTarget"
+  <mx:TraceTarget id="traceTarget"
 					fieldSeparator="->"
 					includeLevel="true"
 					includeCategory="true"
 					includeTime="true"/>
 
-	<mx:RemoteObject id="pageRO"
+  <mx:RemoteObject id="pageRO"
 					 showBusyCursor="true"
 					 destination="GenericDestination"
 					 source="Editor.Services.PageServices"/>
-<<<<<<< HEAD
-					 
-	<Services:PageServices/>	
-	<!--<mock:MockPageServices/>-->
-	
-	<mx:HTTPService id="treeHS"
+
+  <Services:PageServices/>
+  <!--<mock:MockPageServices/>-->
+
+  <mx:HTTPService id="treeHS"
 		 showBusyCursor="true"
 		 resultFormat="e4x"
 		 useProxy="false"
 		 method="POST">
-		 </mx:HTTPService>
-		
-=======
+  </mx:HTTPService>
 
-	<!--<Services:PageServices/>-->
-	<mock:MockPageServices/>
->>>>>>> 5e8c9df5c033b07c79a29c3ced1daced00dd0a5f
-	<Services:TreeServices/>
+  <Services:TreeServices/>
 
- 
-	<mx:HTTPService id="treeHS"
-					url="XMLdata/mockContent.xml"
-					showBusyCursor="true"
-					resultFormat="e4x"
-					method="POST"/>
-	<!--<mx:HTTPService id="treeHS"
-					url="http://rializer.com/playground/opera21/mockContent.xml"
-					showBusyCursor="true"
-					resultFormat="e4x"
-					method="POST"/>-->
-
-
-	<Model:Model/>
+  <Model:Model/>
 
 </mx:Object>
