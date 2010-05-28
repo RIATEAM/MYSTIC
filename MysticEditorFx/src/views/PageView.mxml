@@ -8,6 +8,7 @@
 	</mx:Metadata>
 	<mx:Script>
 		<![CDATA[
+			import scripts.Model.Model;
 			import org.spicefactory.lib.logging.LogContext;
 			import mx.controls.Alert;
 			import org.spicefactory.lib.reflect.types.Void;
@@ -16,26 +17,33 @@
 			import scripts.Services.IPageServices;
 
 			[Inject]
+			[Bindable]
+			public var model:Model;
+
+			[Inject]
 			public var pageService:IPageServices;
 			
-			private var currenPage:PageDTO;
+			private var currentPage:PageDTO;
 			[MessageHandler(selector="getPage")]
 			public function pageChangeHandler(event:PageViewEvent):void
 			{
-				currenPage = event.page;
+				currentPage = event.page;
 				titolo.text=event.page.Title;
 				thumb.source=event.page.thumb;
 			}
 
 			private function doSave():void {
-				currenPage.Publictitle = titolo.text;
-				pageService.savePage(currenPage);
+				currentPage.Publictitle = titolo.text;
+				currentPage.Dirty = true;
+				pageService.savePage(currentPage);
 			}
 			
 			[MessageHandler(selector="savePage")]
 			public function saveItemSuccess(event:PageViewEvent):void {
 				LogContext.getLogger(this.className).debug("Response Save " + event.page.Publictitle);
 				if (event.page.IsPersisted) {
+					model.selectedNode.@Publictitle = event.page.Publictitle;
+				//	setNodeNameFromId(event.page.Publictitle, event.page.Pageid);
 					Alert.show("Salvataggio riuscito", "Attenzione");
 				} else {
 					Alert.show("Errore salvataggio", "Attenzione");

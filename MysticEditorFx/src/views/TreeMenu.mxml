@@ -64,6 +64,7 @@
 			public function getPage(selectedItem:Object):void {
 				var page:PageDTO=PageDTO.createPageFromXML(myTree.selectedItem as XML);
 				model.selectedPage=page;
+				model.selectedNode = myTree.selectedItem as XML;
 				pageService.getPage(page);
 			}
 
