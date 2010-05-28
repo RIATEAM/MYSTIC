@@ -15,7 +15,6 @@
 	<mx:Metadata>
 		[ManagedEvents("getPage")]
 		[ManagedEvents("deletePage")]
-		[ManagedEvents("savePage")]
 		[ManagedEvents("publishPage")]
 		[ManagedEvents("movePage")]  
 		[ManagedEvents("copyPage")]  
@@ -272,7 +271,7 @@
 					var pageid:int=int(myTree.selectedItem.@Pageid);
 					LogContext.getLogger(this.className).debug("Call Delete " + pageid);
 					var selectedPage:PageDTO=PageDTO.createPageFromXML(myTree.selectedItem as XML);
-					selectedPage.Dirty = true;
+					selectedPage.Deleted = true;
 					pageService.deletePage(selectedPage);
 				}
 

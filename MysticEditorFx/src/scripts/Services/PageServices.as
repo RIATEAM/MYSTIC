@@ -76,6 +76,19 @@ package scripts.Services
 				dispatchEvent(new PageViewEvent(PageViewEvent.DELETE, page));
 			}
 		}
+		/******************************** SAVE ****************************/
+		public function savePage(page:PageDTO):AsyncToken {
+			currentEvent = PageViewEvent.SAVE;
+			var token:AsyncToken=pageService.SavePage(page);
+			token.addResponder(new AsyncResponder(savePageResult, faultHandler, page));
+			return token;
+		}
+		private function savePageResult(event:ResultEvent, page:PageDTO):void {
+			if (event.result != null) {
+				page.IsPersisted=event.result;
+				dispatchEvent(new PageViewEvent(PageViewEvent.SAVE, page));
+			}
+		}
 		/******************************** MOVE ****************************/
 		public function movePage(page:PageDTO):AsyncToken {
 			currentEvent = PageViewEvent.MOVE;

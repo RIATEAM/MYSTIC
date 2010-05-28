@@ -3,17 +3,45 @@
 		 width="100%"
 		 xmlns:sf="http://www.spicefactory.org/parsley">
 	<sf:Configure/>
+	<mx:Metadata>
+		[ManagedEvents("savePage")]
+	</mx:Metadata>
 	<mx:Script>
 		<![CDATA[
+			import org.spicefactory.lib.logging.LogContext;
+			import mx.controls.Alert;
+			import org.spicefactory.lib.reflect.types.Void;
 			import scripts.Events.PageViewEvent;
+			import scripts.Classes.PageDTO;
+			import scripts.Services.IPageServices;
 
+			[Inject]
+			public var pageService:IPageServices;
+			
+			private var currenPage:PageDTO;
 			[MessageHandler(selector="getPage")]
 			public function pageChangeHandler(event:PageViewEvent):void
 			{
+				currenPage = event.page;
 				titolo.text=event.page.Title;
 				thumb.source=event.page.thumb;
 			}
 
+			private function doSave():void {
+				currenPage.Publictitle = titolo.text;
+				pageService.savePage(currenPage);
+			}
+			
+			[MessageHandler(selector="savePage")]
+			public function saveItemSuccess(event:PageViewEvent):void {
+				LogContext.getLogger(this.className).debug("Response Save " + event.page.Publictitle);
+				if (event.page.IsPersisted) {
+					Alert.show("Salvataggio riuscito", "Attenzione");
+				} else {
+					Alert.show("Errore salvataggio", "Attenzione");
+				}
+			}
+			
 			private function growUp():void
 			{
 				/* 	RedBox.height=Number(inputHeight.text); */
@@ -30,7 +58,9 @@
 
 	<mx:Resize id="RedBoxResizer"
 			   target="{RedBox}"/>
-	<mx:Button label="Salva"/>
+	<mx:Button label="Salva"
+			   click="doSave()"/>
+			   
 	<mx:HBox width="100%">
 		<mx:TextInput id="inputHeight"
 					  text="200"

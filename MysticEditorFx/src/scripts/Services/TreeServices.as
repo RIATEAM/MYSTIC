@@ -27,7 +27,7 @@ package scripts.Services
 		[Init]
 		public function getTree():void
 		{
-			treeHTTPService.url = "http://www.editor.welsy.org/FX/GetXml.ashx?contentID=" + 1;
+			treeHTTPService.url = "http://www.editor.welsy.org/FX/GetXml.ashx?contentID=" + 23;
 			treeHTTPService.addEventListener(ResultEvent.RESULT, result_handler);
 			treeHTTPService.addEventListener(FaultEvent.FAULT, fault_handler);
 			treeHTTPService.send();

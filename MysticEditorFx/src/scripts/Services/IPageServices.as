@@ -16,6 +16,7 @@ package scripts.Services
 		function getPage(page:PageDTO):AsyncToken;
 		function deletePage(page:PageDTO):AsyncToken;
 		function movePage(page:PageDTO):AsyncToken;
+		function savePage(page:PageDTO):AsyncToken;
 		function copyPage(page:PageDTO):AsyncToken;
 
 	}
