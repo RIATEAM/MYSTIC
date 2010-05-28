@@ -20,7 +20,8 @@ namespace Editor.BL {
             dt.Columns.Add("Target");
             dt.Columns.Remove("Content");
             dt.Columns.Remove("Skin");
-            dt.Columns.Remove("Pageelements");
+            dt.Columns.Remove("PageElements");
+            dt.Columns.Remove("PageelementsList");
             dt.Columns.Remove("Contentid");
             dt.Columns.Remove("Position");
             dt.Columns.Remove("Level");
@@ -39,13 +40,7 @@ namespace Editor.BL {
             dt.Columns["Target"].ColumnMapping = MappingType.Attribute;
             dt.Columns["State"].ColumnMapping = MappingType.Attribute;
 
-            foreach (DataRow dr in dt.Rows) {
-                if (Convert.ToInt32(dr["Pageid"]) == Convert.ToInt32(dr["Parentpageid"])) {
-                    dr["Parentpageid"] = 0;
-                }
-                dr["Href"] = dr["Pageid"] + "_" + dr["Title"] + ".html";
-                dr["Target"] = "mainframe";
-            }
+
             dt.Columns["Pageid"].ColumnName = "Id";
             dt.Columns["Publictitle"].ColumnName = "Titolo";
 
@@ -53,10 +48,34 @@ namespace Editor.BL {
             DataRelation relation = new DataRelation("ParentChild",
                             set.Tables["Item"].Columns["Id"],
                             set.Tables["Item"].Columns["Parentpageid"],
-                            false);
+                            true);
 
             relation.Nested = true;
             set.Relations.Add(relation);
+
+            DataRow Cestino = dt.Rows[0];
+            foreach (DataRow dr in dt.Rows) {
+                if (Convert.ToInt32(dr["State"]) == 99) {
+                    Cestino = dr;
+                }
+            }
+
+            if (Convert.ToInt32(Cestino["State"]) == 99) {
+                set.Tables["Item"].Rows.Remove(Cestino);
+            }
+
+            foreach (DataRow dr in dt.Rows) {
+                if (Convert.ToInt32(dr["Id"]) == Convert.ToInt32(dr["Parentpageid"])) {
+                    dr["Parentpageid"] = DBNull.Value;
+
+                    dr["Href"] = "index.html";
+
+                } else {
+                    dr["Href"] = dr["Id"] + "_" + dr["Title"] + ".html";
+                }
+                dr["Target"] = "mainframe";
+            }
+
 
             XmlDocument docXml = new XmlDocument();
             docXml.AppendChild(docXml.CreateXmlDeclaration("1.0", "utf-8", "yes"));
@@ -65,7 +84,7 @@ namespace Editor.BL {
             return docXml;
         }
 
-        public static DataTable ToDataTable<T>(List<T> items) {
+        public static DataTable ToDataTable<T>(IList<T> items) {
             var tb = new DataTable(typeof(T).Name);
 
             PropertyInfo[] props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
@@ -245,7 +264,7 @@ namespace Editor.BL {
 
 
 
-     
+
     }
 
 

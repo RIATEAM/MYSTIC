@@ -13,6 +13,7 @@ using Editor.BE.Model;
 using Iesi.Collections;
 using Iesi.Collections.Generic;
 using NHibernate;
+using Editor.BE.Model.Enumerators;
 
 namespace Editor.BL {
     public partial class EditorServices {
@@ -201,6 +202,21 @@ namespace Editor.BL {
             }
         }
 
+        private static Boolean IsDeleted(Page Child, ISet<Page> fam) {
+
+            if (Child.State == 99) {
+                return true;
+            } else if (Child.Pageid == Child.Parentpageid && Child.State == 1) {
+                return false;
+            } else {
+                var pg = (from p in fam
+                          where p.Pageid == Child.Parentpageid
+                          select p).FirstOrDefault<Page>();
+                return IsDeleted(pg, fam);
+            }
+        }
+
+
         public static List<T> GetContents<T>() {
             using (ISession session = HibernateHelper.GetSession().OpenSession()) {
 
@@ -219,6 +235,13 @@ namespace Editor.BL {
             Content cont = new Content();
             cont = HibernateHelper.SelectIstance<Content>(session, new string[] { "Contentid" }, new object[] { contentId }, new Operators[] { Operators.Eq });
             return cont;
+        }
+
+        public static RawHtml GetRawHtmlById(int RawId, ISession sessison) {
+
+            RawHtml raw = new RawHtml();
+            raw = HibernateHelper.SelectIstance<RawHtml>(sessison, new string[] { "Rawhtmlid" }, new object[] { RawId }, new Operators[] { Operators.Eq });
+            return raw;
         }
 
         public static List<Page> GetPageByParent(ISession session, int tmpCont, int tmpPage) {
@@ -279,7 +302,19 @@ namespace Editor.BL {
                 XmlNode nodo = docXml.CreateNode(XmlNodeType.Element, pel.Element.Description, null);
                 XmlNode nodoValue = docXml.CreateNode(XmlNodeType.CDATA, null, null);
 
-                nodoValue.Value = pel.Value;
+                if (pel.Element.Elementtypeid == (int)ElementTypeEnum.RawHtml) {
+                    RawHtml rw = new RawHtml();
+                    rw = GetRawHtmlById(pel.Rawhtmlid, session);
+                    nodoValue.Value = rw.Value;
+                } else
+                    if (pel.Element.Elementtypeid == (int)ElementTypeEnum.Img) {
+                        nodoValue.Value = 
+                           @"\Fileserver\"+pagina.Content.Contentid+"_"+pagina.Content.Title.Replace(" ","_")+
+                           
+                           "\\"+pel.Filename;
+                    } else {
+                        nodoValue.Value = pel.Value;
+                    }
 
                 nodo.AppendChild(nodoValue);
 
@@ -333,7 +368,7 @@ namespace Editor.BL {
             }
             // Path file Html
             string pagePath = Path.Combine(fileserver, pageName);
-            if (!File.Exists(pagePath)) {
+            if ( File.Exists(pagePath)) {
                 File.Delete(pagePath);
             }
 
@@ -374,15 +409,24 @@ namespace Editor.BL {
 
                         }
 
+                        //Prelevo dalla directory Img le img di default 
+                        string imgserver = ConfigurationSettings.AppSettings["Img"];
+                        Copy(imgserver, pathCont);
 
                         //Publico tutte le pagine del content
+
+                        List<Page> ListTempPage = new List<Page>();
+
                         foreach (Page pg in cont.Pages) {
-                            PublicPage(pg, pathCont, session);
+                            if (!IsDeleted(pg, cont.Pages)) {
+                                PublicPage(pg, pathCont, session);
+                                ListTempPage.Add(pg);
+                            }
                         }
 
                         //creo file xml con la stuttura del menu content 
 
-                        var pages = from f in cont.Pages
+                        var pages = from f in ListTempPage
                                     orderby f.Position, f.Pageid, f.Parentpageid
                                     select f;
 
@@ -480,6 +524,11 @@ namespace Editor.BL {
                 Skin skinPage = new Skin();
                 skinPage = HibernateHelper.SelectIstance<Skin>(new string[] { "Skinid" }, new object[] { 2 }, new Operators[] { Operators.Eq });
 
+                //SkinHome
+                Skin SkinHome = new Skin();
+                SkinHome = HibernateHelper.SelectIstance<Skin>(new string[] { "Skinid" }, new object[] { 4 }, new Operators[] { Operators.Eq });
+
+
                 //Element Titolo
                 Element Titolo = new Element();
                 Titolo = HibernateHelper.SelectIstance<Element>(new string[] { "Elementid" }, new object[] { 1 }, new Operators[] { Operators.Eq });
@@ -496,19 +545,9 @@ namespace Editor.BL {
                 Element TitoloMenu = new Element();
                 TitoloMenu = HibernateHelper.SelectIstance<Element>(new string[] { "Elementid" }, new object[] { 4 }, new Operators[] { Operators.Eq });
 
-                //Elemento Sottotitolo
-                Element Sottotitolo = new Element();
-                Sottotitolo = HibernateHelper.SelectIstance<Element>(new string[] { "Elementid" }, new object[] { 6 }, new Operators[] { Operators.Eq });
-
-                // Elemento Immagine
-                Element Immagine = new Element();
-                Immagine = HibernateHelper.SelectIstance<Element>(new string[] { "Elementid" }, new object[] { 5 }, new Operators[] { Operators.Eq });
-
-
-                //Elemento Link
-                Element Link = new Element();
-                Link = HibernateHelper.SelectIstance<Element>(new string[] { "Elementid" }, new object[] { 7 }, new Operators[] { Operators.Eq });
-
+                //Elemento ContenutoHome
+                Element ContenutoHome = new Element();
+                ContenutoHome = HibernateHelper.SelectIstance<Element>(new string[] { "Elementid" }, new object[] { 5 }, new Operators[] { Operators.Eq });
 
 
                 ISet<Page> setPage = new HashedSet<Page>();
@@ -535,11 +574,13 @@ namespace Editor.BL {
                         Page menu = new Page();
                         menu.Position = actualpos + Convert.ToInt32(pos);
                         menu.Level = Convert.ToInt32(lev);
-                        menu.Title = menu.Publictitle = "index";
+                        menu.Title = "index";
+                        string TitoloEL = menu.Publictitle;
+                        menu.Publictitle = "Home";
                         menu.State = 1;
 
-                        menu.Skin = skinPage;
-                        menu.Skinid = skinPage.Skinid;
+                        menu.Skin = SkinHome;
+                        menu.Skinid = SkinHome.Skinid;
                         menu.Content = contnt;
                         menu.Contentid = contnt.Contentid;
 
@@ -566,7 +607,7 @@ namespace Editor.BL {
                         PageElement MemutitleEl = new PageElement();
                         MemutitleEl.Element = TitoloMenu;
                         MemutitleEl.Elementid = TitoloMenu.Elementid;
-                        MemutitleEl.Value = menu.Publictitle;
+                        MemutitleEl.Value = titlemenu;
                         MemutitleEl.Pageid = menu.Pageid;
                         MemutitleEl.Page = menu;
                         MemutitleEl.IsNew = true;
@@ -574,42 +615,28 @@ namespace Editor.BL {
 
                         setMnEl.Add(MemutitleEl);
 
-                        //Add Immagine
-                        PageElement ImmagineEl = new PageElement();
-                        ImmagineEl.Element = Immagine;
-                        ImmagineEl.Elementid = Immagine.Elementid;
-                        ImmagineEl.Value = "Immagine";
-                        ImmagineEl.Filename = "Immagine.jpg";
-                        ImmagineEl.Pageid = menu.Pageid;
-                        ImmagineEl.Page = menu;
-                        ImmagineEl.IsNew = true;
-                        HibernateHelper.Persist(ImmagineEl, session);
+                        //Add RowHtml
 
-                        setMnEl.Add(ImmagineEl);
+                        PageElement MenuBody = new PageElement();
+                        MenuBody.Pageid = menu.Pageid;
+                        MenuBody.Page = menu;
+                        MenuBody.Element = ContenutoHome;
+                        MenuBody.Elementid = ContenutoHome.Elementid;
+                        MenuBody.IsNew = true;
 
-                        //Sottotitolo
-                        PageElement SottotitoloEl = new PageElement();
-                        SottotitoloEl.Element = Sottotitolo;
-                        SottotitoloEl.Elementid = Sottotitolo.Elementid;
-                        SottotitoloEl.Value = "Sottotitolo " + menu.Publictitle;
-                        SottotitoloEl.Pageid = menu.Pageid;
-                        SottotitoloEl.Page = menu;
-                        SottotitoloEl.IsNew = true;
-                        HibernateHelper.Persist(SottotitoloEl, session);
+                        RawHtml MenuRawHtml = new RawHtml();
+                        MenuRawHtml.IsNew = true;
+                        MenuRawHtml.Value = " ";
+                        HibernateHelper.Persist(MenuRawHtml, session);
 
-                        setMnEl.Add(SottotitoloEl);
+                        MenuBody.Filename = MenuRawHtml.Rawhtmlid + "_RawHtml.jpg";
+                        MenuBody.Value = "RawHtml";
+                        MenuBody.Rawhtmlid = MenuRawHtml.Rawhtmlid;
 
-                        //Link
-                        PageElement LinkEl = new PageElement();
-                        LinkEl.Element = Link;
-                        LinkEl.Elementid = Link.Elementid;
-                        LinkEl.Value = "Links ";
-                        LinkEl.Pageid = menu.Pageid;
-                        LinkEl.Page = menu;
-                        LinkEl.IsNew = true;
-                        HibernateHelper.Persist(LinkEl, session);
+                        HibernateHelper.Persist(MenuBody, session);
 
-                        setMnEl.Add(LinkEl);
+
+
 
                         menu.PageElements = setMnEl;
                         setMnEl = menu.PageElements;
@@ -675,8 +702,8 @@ namespace Editor.BL {
                         contEl.Element = Contenuto;
                         contEl.Elementid = Contenuto.Elementid;
 
-                        contEl.Value = "Rawhtml";
-                        contEl.Filename = "";
+                        contEl.Value = "RawHtml";
+
 
                         contEl.Pageid = page.Pageid;
                         contEl.Page = page;
@@ -687,6 +714,7 @@ namespace Editor.BL {
                         contraw.Value = body.Substring(body.IndexOf("</h") + 5);
                         HibernateHelper.Persist(contraw, session);
 
+                        contEl.Filename = contraw.Rawhtmlid + "_RawHtml.jpg";
                         contEl.Rawhtmlid = contraw.Rawhtmlid;
                         HibernateHelper.Persist(contEl, session);
                         setPgEl.Add(contEl);
@@ -701,6 +729,19 @@ namespace Editor.BL {
                     }
 
                 }
+                Page Cestino = new Page();
+                Cestino.Title = Cestino.Publictitle = "Cestino";
+                Cestino.Structureid = 3;
+                Cestino.Skin = null;
+                Cestino.State = 99;
+                Cestino.Position = 1;
+                Cestino.IsNew = true;
+                Cestino.Contentid = contnt.Contentid;
+                HibernateHelper.Persist(Cestino, session);
+                Cestino.Parentpageid = Cestino.Pageid;
+                Cestino.Dirty = true;
+                HibernateHelper.Persist(Cestino, session);
+
                 SetParentPage(setPage);
 
                 contnt.Pages = setPage;

@@ -19,16 +19,16 @@ namespace Editor.TestServices {
         private TestContext testContextInstance;
 
         private static PageDTO page1 = new PageDTO();          // pos1
-        private static PageDTO page2 = new PageDTO();          // pos1
-        private static PageDTO page3 = new PageDTO();          // pos2
-        private static PageDTO page4 = new PageDTO();          // pos3
-        private static PageDTO page5 = new PageDTO();          // pos4
-        private static PageDTO page6 = new PageDTO();          //pos1
-        private static PageDTO page7 = new PageDTO();          //pos2
-        private static PageDTO page8 = new PageDTO();          // pos5
-        private static PageDTO page9 = new PageDTO();          //pos1
-        private static PageDTO page10 = new PageDTO();         //pos2
-        private static PageDTO page11 = new PageDTO();         //pos3
+            private static PageDTO page2 = new PageDTO();          // pos1
+            private static PageDTO page3 = new PageDTO();          // pos2
+            private static PageDTO page4 = new PageDTO();          // pos3
+            private static PageDTO page5 = new PageDTO();          // pos4
+                private static PageDTO page6 = new PageDTO();          //pos1
+                private static PageDTO page7 = new PageDTO();          //pos2
+            private static PageDTO page8 = new PageDTO();          // pos5
+                private static PageDTO page9 = new PageDTO();          //pos1
+                private static PageDTO page10 = new PageDTO();         //pos2
+                private static PageDTO page11 = new PageDTO();         //pos3
 
         public PageMoveWorkflowTests() {
             //
@@ -38,9 +38,18 @@ namespace Editor.TestServices {
             csvc = new ContentServices();
         }
 
-
-
         [TestMethod]
+        public void PageMoveWorkflowComlpeto() {
+
+            A_CreateContent();
+            B_CreateBasket();
+            C_CreateStructurePage();
+            D_Move_Page9_to_Page2();
+            E_Move_Page10_to_Page1();
+            F_Move_Page8_to_Page5();
+            G_Move_Page3_to_Page7();
+        }
+
         public void A_CreateContent() {
 
             content = new ContentDTO();
@@ -55,10 +64,29 @@ namespace Editor.TestServices {
 
         }
         
-        [TestMethod]
-        public void B_CreateStructurePage() {
+        public void B_CreateBasket() {
 
-                        
+            PageDTO basket = new PageDTO();
+
+            basket.Title = basket.Publictitle = "Cestino";
+            basket.Contentid = content.Contentid;
+            basket.State = 99;
+            basket.Structureid = 1;
+            basket.Position = 1;
+            basket.IsNew = true;
+
+            basket = svc.SavePage(basket);
+
+            Assert.IsTrue(basket.IsPersisted, "la pagina Cestino non risulta salvata: isPersisted is False!");
+            Assert.IsTrue(basket.Pageid > 0, "la pagina Cestino non ha un identificativo proprio!");
+            Assert.IsNotNull(basket.PageelementsList, "il sistema non ha creato gli elementi previsti dalla struttura Cestino");
+
+
+        }
+        
+        public void C_CreateStructurePage() {
+
+
             //Creo le pagine sul db
             page1.Title = page1.Publictitle = "Page1";
             page1.Contentid = content.Contentid;
@@ -217,8 +245,7 @@ namespace Editor.TestServices {
 
         }
 
-        [TestMethod]
-        public void C_Move_Page9_to_Page2() {
+        public void D_Move_Page9_to_Page2() {
 
             page9.Parentpageid = page2.Pageid;
             page9.Position = 1;
@@ -244,8 +271,7 @@ namespace Editor.TestServices {
             page9 = page9DB;
         }
 
-        [TestMethod]
-        public void D_Move_Page10_to_Page1() {
+        public void E_Move_Page10_to_Page1() {
 
             page10.Parentpageid = page1.Pageid;
             page10.Position = 1;
@@ -267,7 +293,7 @@ namespace Editor.TestServices {
             }
             Assert.IsTrue(page10DB.Parentpageid == page1.Pageid, "Sul DB La Page10 non risulta figlia della Page1");
             Assert.IsTrue(page10DB.Position == 1, "Sul DB La Page10 non ha position = 1");
-            
+
             page10 = page10DB;
 
 
@@ -292,8 +318,8 @@ namespace Editor.TestServices {
                     Assert.Fail("Sul DB la Page3 non ha posizione " + (page3.Position + 1));
                 }
 
-            page3 = page3DB; 
-            
+            page3 = page3DB;
+
             PageDTO page4DB = new PageDTO();
             page4DB = svc.GetPage(page4.Pageid);
             if (page4DB.Position == page4.Position) {
@@ -329,8 +355,7 @@ namespace Editor.TestServices {
 
         }
 
-        [TestMethod]
-        public void E_Move_Page8_to_Page5() {
+        public void F_Move_Page8_to_Page5() {
 
             //In Coda
             page8.Parentpageid = page5.Pageid;
@@ -362,8 +387,8 @@ namespace Editor.TestServices {
             PageDTO page6DB = new PageDTO();
             page6DB = svc.GetPage(page6.Pageid);
             if (page6DB.Position != page6.Position) {
-                Assert.Fail("Sul DB la Page6 non ha posizione " + page6.Position ) ;
-            } 
+                Assert.Fail("Sul DB la Page6 non ha posizione " + page6.Position);
+            }
 
             page6 = page6DB;
 
@@ -373,12 +398,11 @@ namespace Editor.TestServices {
                 Assert.Fail("Sul DB la Page7 non ha posizione " + page7.Position);
             }
 
-            page7 = page7DB; 
+            page7 = page7DB;
 
         }
 
-        [TestMethod]
-        public void F_Move_Page3_to_Page7() {
+        public void G_Move_Page3_to_Page7() {
 
             page3.Parentpageid = page7.Pageid;
             page3.Position = 1;

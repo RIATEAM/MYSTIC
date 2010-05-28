@@ -39,17 +39,18 @@ namespace Editor.Services {
             }
         }
 
-        public List<PageDTO> GetPagesByContentId(int contentId) {
+        public IList<PageDTO> GetPagesByContentId(int contentId) {
 
             using (ISession session = HibernateHelper.GetSession().OpenSession()) {
                 using (ITransaction transaction = session.BeginTransaction()) {
                     try {
-                        List<Page> pages = new List<Page>();
+                        IList<Page> pages = new List<Page>();
                         pages = EditorServices.GetPageByContent(session, contentId) as List<Page>;
 
                         Mapper.CreateMap<Page, PageDTO>();
+                        Mapper.CreateMap<PageElement, PageElementDTO>();
 
-                        return Mapper.Map<List<Page>, List<PageDTO>>(pages);
+                        return Mapper.Map<IList<Page>, IList<PageDTO>>(pages);
 
                     } catch (Exception ex) {
                         throw ex;
@@ -96,70 +97,72 @@ namespace Editor.Services {
                         //Mappo la PageDTO in Page
                         page = Mapper.Map<PageDTO, Page>(pagedto);
 
-                        if (page.IsNew) {
-                            // Salvo la Nuova pagina 
-                            HibernateHelper.Persist(page, session);
-
-                            if (page.PageelementsList.Count == 0) {
-                                //Creo Le Page Elements in base alla struttura
-                                //Ricavo la lista degli elementi della struttura per generare i PageElement
-                                List<Element> structList = new List<Element>();
-                                structList = HibernateHelper.SelectCommand<Element>(session, " STRUCTUREID =" + page.Structureid);
-
-                                ISet<PageElement> PaElements = new HashedSet<PageElement>();
-                                foreach (Element el in structList) {
-
-                                    PageElement PaElement = new PageElement();
-                                    PaElement.Element = el;
-                                    PaElement.Elementid = el.Elementid;
-                                    PaElement.Page = page;
-                                    PaElement.Pageid = page.Pageid;
-                                    PaElement.Value = el.Description;
-                                    PaElement.IsNew = true;
-
-                                    if (el.Elementtypeid == (int)ElementTypeEnum.RawHtml) {
-                                        //solo RawHtml 
-                                        RawHtml raw = new RawHtml();
-                                        raw.Value = el.Description;
-                                        raw.IsNew = true;
-                                        HibernateHelper.Persist(raw, session);
-                                        PaElement.Rawhtmlid = raw.Rawhtmlid;
-                                    }
-                                    HibernateHelper.Persist(PaElement, session);
-                                    PaElements.Add(PaElement);
-                                }
-                                page.PageElements = PaElements;
-                                PaElements = page.PageElements;
-                            }
-
-                            // Setto il padre  al pageid se è zero
-                            if (page.Parentpageid == 0) {
-                                page.Parentpageid = page.Pageid;
-                            } else {
-                                page.Parentpageid = page.Parentpageid;
-                            }
-                            // Setto skinID a null se è zero
-                            if (page.Skinid == 0) {
-                                page.Skinid = null;
-                            }
-                            page.Dirty = true;
-                            HibernateHelper.Persist(page, session);
-                        } else
-                            if (page.Dirty) {
-                                //Update della Pagina Esistente
+                        if (page.Publictitle != null && page.Contentid > 0 && page.Position > 0) {
+                            if (page.IsNew) {
+                                // Salvo la Nuova pagina 
                                 HibernateHelper.Persist(page, session);
 
-                                //Foreach delle pageelements
-                                foreach (PageElement el in page.PageelementsList) {
-                                    el.Pageid = page.Pageid;
-                                    if (el.Deleted) {
-                                        HibernateHelper.Persist(el, session);
-                                        page.PageelementsList.Remove(el);
-                                    } else {
-                                        HibernateHelper.Persist(el, session);
+                                if (page.PageelementsList.Count == 0) {
+                                    //Creo Le Page Elements in base alla struttura
+                                    //Ricavo la lista degli elementi della struttura per generare i PageElement
+                                    List<Element> structList = new List<Element>();
+                                    structList = HibernateHelper.SelectCommand<Element>(session, " STRUCTUREID =" + page.Structureid);
+
+                                    ISet<PageElement> PaElements = new HashedSet<PageElement>();
+                                    foreach (Element el in structList) {
+
+                                        PageElement PaElement = new PageElement();
+                                        PaElement.Element = el;
+                                        PaElement.Elementid = el.Elementid;
+                                        PaElement.Page = page;
+                                        PaElement.Pageid = page.Pageid;
+                                        PaElement.Value = el.Description;
+                                        PaElement.IsNew = true;
+
+                                        if (el.Elementtypeid == (int)ElementTypeEnum.RawHtml) {
+                                            //solo RawHtml 
+                                            RawHtml raw = new RawHtml();
+                                            raw.Value = el.Description;
+                                            raw.IsNew = true;
+                                            HibernateHelper.Persist(raw, session);
+                                            PaElement.Rawhtmlid = raw.Rawhtmlid;
+                                        }
+                                        HibernateHelper.Persist(PaElement, session);
+                                        PaElements.Add(PaElement);
+                                    }
+                                    page.PageElements = PaElements;
+                                    PaElements = page.PageElements;
+                                }
+
+                                // Setto il padre  al pageid se è zero
+                                if (page.Parentpageid == 0) {
+                                    page.Parentpageid = page.Pageid;
+                                } else {
+                                    page.Parentpageid = page.Parentpageid;
+                                }
+                                // Setto skinID a null se è zero
+                                if (page.Skinid == 0) {
+                                    page.Skinid = null;
+                                }
+                                page.Dirty = true;
+                                HibernateHelper.Persist(page, session);
+                            } else
+                                if (page.Dirty) {
+                                    //Update della Pagina Esistente
+                                    HibernateHelper.Persist(page, session);
+
+                                    //Foreach delle pageelements
+                                    foreach (PageElement el in page.PageelementsList) {
+                                        el.Pageid = page.Pageid;
+                                        if (el.Deleted) {
+                                            HibernateHelper.Persist(el, session);
+                                            page.PageelementsList.Remove(el);
+                                        } else {
+                                            HibernateHelper.Persist(el, session);
+                                        }
                                     }
                                 }
-                            }
+                        }
                         //Rimappo l'oggetto da restituire
                         Mapper.CreateMap<Page, PageDTO>();
                         Mapper.CreateMap<PageElement, PageElementDTO>();
@@ -192,13 +195,31 @@ namespace Editor.Services {
 
                         bool update = false;
 
-                        //Incremento la posizione dei figli successivi al DTO
+                        //Aggiorno la posizione dei figli successivi al DTO
+
+                        //Controllo se esiste un figlio in posizione 1
+
+                        var uone = (from u in Figli
+                                    where u.Position == 1
+                                    select u).FirstOrDefault<Page>();
+
                         foreach (Page pg in Figli) {
-                            if (pg.Position >= pagedto.Position) {
+                            if (pagedto.Position == 1 && pg.Pageid != pagedto.Pageid) {
                                 pg.Position = pg.Position + 1;
                                 pg.Dirty = true;
                                 HibernateHelper.Persist(pg, session);
-                            }
+                            } else
+                                if (pg.Position >= pagedto.Position) {
+                                    pg.Position = pg.Position + 1;
+                                    pg.Dirty = true;
+                                    HibernateHelper.Persist(pg, session);
+                                } else
+                                    if (uone.Position > 1 && pg.Position < pagedto.Position) {
+                                        pg.Position = pg.Position - 1;
+                                        pg.Dirty = true;
+                                        HibernateHelper.Persist(pg, session);
+                                    }
+
                             // Se il padre è lo stesso potrebbe verificarsi il clona dell oggetto page
                             if (pagedto.Pageid == pg.Pageid) {
                                 pg.Position = pagedto.Position;
@@ -299,17 +320,17 @@ namespace Editor.Services {
                         page.Dirty = true;
                         HibernateHelper.Persist(page, session);
 
-                        
+
                         //Rimappo l'oggetto da restituire
                         Mapper.CreateMap<Page, PageDTO>();
                         Mapper.CreateMap<PageElement, PageElementDTO>();
                         //Mappo la PageDTO in Page
                         pagedto = Mapper.Map<Page, PageDTO>(page);
-                        
-                        
+
+
                         transaction.Commit();
-                    
-                    
+
+
                     } catch (Exception ex) {
                         transaction.Rollback();
                         throw ex;
@@ -486,7 +507,7 @@ namespace Editor.Services {
 
 
 
-        private  PageDTO Savenew() {
+        private PageDTO Savenew() {
 
             PageDTO page = new PageDTO();
 

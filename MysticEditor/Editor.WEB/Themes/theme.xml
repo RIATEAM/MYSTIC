@@ -10,5 +10,6 @@
     <skin ID="1" Descriozione="menu" Path="\Skin1" />
     <skin ID="2" Descriozione="pages" Path="\Skin2" />
     <skin ID="3" Descriozione="widget" Path="\Skin3" />
+    <skin ID="4" Descriozione="home" Path="\Skin4" />
   </skins>
 </theme>

@@ -16,6 +16,7 @@ namespace Editor.DTO {
         public int? Skinid { get; set; }
         public int State { get; set; }
 
+
         public List<PageElementDTO> PageelementsList { get; set; }
 
     

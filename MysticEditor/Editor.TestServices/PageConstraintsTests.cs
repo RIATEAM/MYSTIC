@@ -66,6 +66,11 @@ namespace Editor.TestServices
         #endregion
 
         [TestMethod]
+        public void PageConstraintsCompleto() {
+            A_CreateInvalidPage();
+            B_GetInvalidPage();
+        }
+        
         public void A_CreateInvalidPage()
         {
             // verifico che una pagina senza valori non può essere salvata
@@ -81,7 +86,7 @@ namespace Editor.TestServices
             Assert.AreEqual(0, invalidPage.Pageid, "la pagina ha un identificativo!");
         }
 
-        [TestMethod]
+
         public void B_GetInvalidPage()
         {
             // verifico il recupero di una pagina tramite identificativo

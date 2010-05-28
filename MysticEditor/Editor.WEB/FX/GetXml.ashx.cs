@@ -24,7 +24,7 @@ namespace Editor.Web.FX {
             PageServices srvc = new PageServices();
 
             DataSet ds = new DataSet();
-            List<PageDTO> pages = new List<PageDTO>();
+            IList<PageDTO> pages = new List<PageDTO>();
             pages = srvc.GetPagesByContentId(Convert.ToInt32(contID));
 
             ds = ConvertToDataSet(pages);
@@ -39,7 +39,7 @@ namespace Editor.Web.FX {
             context.Response.Output.Write(docXml.InnerXml);
         }
 
-        private DataSet ConvertToDataSet(List<PageDTO> pages) {
+        private DataSet ConvertToDataSet(IList<PageDTO> pages) {
             DataSet ds = new DataSet("PAGES");
             DataTable dt = new DataTable("PAGE");
             dt = EditorServices.ToDataTable<PageDTO>(pages);

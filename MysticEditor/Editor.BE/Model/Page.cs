@@ -24,9 +24,9 @@ namespace Editor.BE.Model {
         public virtual Skin Skin { get; set; }
         public virtual ISet<PageElement> PageElements { get; set; }
 
-        private IList<PageElement> _PageElementsList;
+        private List<PageElement> _PageElementsList;
 
-        public virtual IList<PageElement> PageelementsList {
+        public virtual List<PageElement> PageelementsList {
             get {
                 if (PageElements != null) {
                     _PageElementsList= PageElements.ToList<PageElement>();
