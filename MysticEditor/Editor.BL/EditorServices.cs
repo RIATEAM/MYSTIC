@@ -512,7 +512,7 @@ namespace Editor.BL {
             }
         }
 
-        public static Content SavePages(List<String> Files, Content contnt, ISession session) {
+        public static Content SavePages(List<String> Files, Content contnt, ISession session, string FolderToSave) {
             ITransaction transaction = session.BeginTransaction();
             try {
 
@@ -600,6 +600,11 @@ namespace Editor.BL {
                         LogoEl.Page = menu;
                         LogoEl.IsNew = true;
                         HibernateHelper.Persist(LogoEl, session);
+                        
+                        ///TODO:Copiare Logo.jpg in FolderToSave
+                        ///
+                        string originimg = Path.Combine(ConfigurationSettings.AppSettings["Img"], "Logo.jpg");
+                        File.Copy(originimg,Path.Combine(FolderToSave,"Logo.jpg"));
 
                         setMnEl.Add(LogoEl);
 
@@ -632,7 +637,8 @@ namespace Editor.BL {
                         MenuBody.Filename = MenuRawHtml.Rawhtmlid + "_RawHtml.jpg";
                         MenuBody.Value = "RawHtml";
                         MenuBody.Rawhtmlid = MenuRawHtml.Rawhtmlid;
-
+                        ///TODO:Generare JPG e salvarla in FolderToSave
+                        ///
                         HibernateHelper.Persist(MenuBody, session);
 
 
@@ -719,6 +725,9 @@ namespace Editor.BL {
                         HibernateHelper.Persist(contEl, session);
                         setPgEl.Add(contEl);
 
+                        ///TODO:Generare JPG e salvarla in FolderToSave
+                        ///
+
                         page.PageElements = setPgEl;
                         setPgEl = page.PageElements;
                         page.Parentpageid = page.Pageid;
@@ -759,5 +768,8 @@ namespace Editor.BL {
             }
         }
 
+        public static Content SavePages(List<String> Files, Content contnt, ISession session) {
+            return SavePages(Files, contnt, session, "");
+        }
     }
 }
