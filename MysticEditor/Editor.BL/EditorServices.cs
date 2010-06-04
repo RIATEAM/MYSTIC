@@ -14,6 +14,7 @@ using Iesi.Collections;
 using Iesi.Collections.Generic;
 using NHibernate;
 using Editor.BE.Model.Enumerators;
+using System.Text;
 
 namespace Editor.BL {
     public partial class EditorServices {
@@ -24,7 +25,7 @@ namespace Editor.BL {
         /// <param name="file"></param>
         /// <param name="extractLocation"></param>
         /// <returns></returns>
-        public static List<string> Export(string file, string extractLocation) {
+        public static List<string> Export(string file, string extractLocation, string Title) {
 
             List<string> Files = new List<string>();
             Regex REGEXLIVELLO = new Regex("[<][h][0-9]");
@@ -54,6 +55,7 @@ namespace Editor.BL {
                         while (EndTitolo.Match(line).Length == 0 && (line = sr.ReadLine()) != null) {
                             testo += " " + line + System.Environment.NewLine;
                         }
+                        testo = "<title>"+Title+"</title>";
                         //POS                     LIVELLO                
                         outputText = count.ToString() + "|" + 0 + "|" + testo;
                         Files.Add(outputText);
@@ -121,6 +123,10 @@ namespace Editor.BL {
             } finally {
                 sr.Close();
             }
+        }
+
+        public static List<string> Export(string file, string extractLocation) {
+            return Export(file, extractLocation, "Nuvo Documento");        
         }
 
         /// <summary>
@@ -216,7 +222,6 @@ namespace Editor.BL {
             }
         }
 
-
         public static List<T> GetContents<T>() {
             using (ISession session = HibernateHelper.GetSession().OpenSession()) {
 
@@ -283,11 +288,11 @@ namespace Editor.BL {
         /// Publica una pagina in formato html sul fileserver
         /// </summary>
         /// <param name="pageid"></param>
-        public static void PublicPage(Page pagina, string fileserver, ISession session) {
+        public static string PublicPage(Page pagina, string fileserver,string pathIdItem,string Title, ISession session) {
 
             //crea file xml con la struttura della pagina
             string pathxml = Path.Combine(fileserver, pagina.Pageid + "_" + pagina.Title.Trim().Replace(" ", "_") + ".xml");
-            if (!File.Exists(pathxml)) {
+            if (File.Exists(pathxml)) {
                 File.Delete(pathxml);
             }
 
@@ -297,6 +302,13 @@ namespace Editor.BL {
             docXml.AppendChild(docXml.CreateXmlDeclaration("1.0", "utf-8", "yes"));
 
             XmlNode page = docXml.CreateNode(XmlNodeType.Element, "Page", null);
+            
+            //Nodo TitoloContent
+            XmlNode   TitoloContent = docXml.CreateNode(XmlNodeType.Element, "TitoloContent", null);
+            XmlNode TitoloContentValue = docXml.CreateNode(XmlNodeType.CDATA, null, null);
+            TitoloContentValue.Value = Title;
+            TitoloContent.AppendChild(TitoloContentValue);
+            page.AppendChild(TitoloContent);
 
             foreach (PageElement pel in pagina.PageElements) {
                 XmlNode nodo = docXml.CreateNode(XmlNodeType.Element, pel.Element.Description, null);
@@ -308,10 +320,8 @@ namespace Editor.BL {
                     nodoValue.Value = rw.Value;
                 } else
                     if (pel.Element.Elementtypeid == (int)ElementTypeEnum.Img) {
-                        nodoValue.Value = 
-                           @"\Fileserver\"+pagina.Content.Contentid+"_"+pagina.Content.Title.Replace(" ","_")+
+                        nodoValue.Value =  pel.Filename;
                            
-                           "\\"+pel.Filename;
                     } else {
                         nodoValue.Value = pel.Value;
                     }
@@ -324,6 +334,14 @@ namespace Editor.BL {
 
                 page.AppendChild(nodo);
             }
+
+            //Nodo Theme
+            XmlNode pathTema = docXml.CreateNode(XmlNodeType.Element, "Theme", null);
+            XmlAttribute attr = docXml.CreateAttribute("Path");
+            attr.Value = @"..\..\Themes\" + pagina.Skin.Path;
+            pathTema.Attributes.Append(attr);
+            page.AppendChild(pathTema);
+
 
             docXml.AppendChild(page);
             docXml.WriteTo(writer);
@@ -364,11 +382,11 @@ namespace Editor.BL {
             if (elOut.Value.StartsWith("#")) {
                 pageName = pagina.Pageid + "_" + pagina.Title + "." + elExt.Value;
             } else {
-                pageName = elOut.Value + "." + elExt.Value;
+                pageName = elOut.Value ;
             }
             // Path file Html
             string pagePath = Path.Combine(fileserver, pageName);
-            if ( File.Exists(pagePath)) {
+            if (File.Exists(pagePath)) {
                 File.Delete(pagePath);
             }
 
@@ -382,9 +400,10 @@ namespace Editor.BL {
             readXslt.Close();
             mywriter.Close();
 
+            return pageName;
         }
 
-        public static string PublicContent(int contId) {
+        public static string PublicContent(int contId, string pathIdItem, string Title) {
             using (ISession session = HibernateHelper.GetSession().OpenSession()) {
                 using (ITransaction transaction = session.BeginTransaction()) {
                     try {
@@ -395,19 +414,20 @@ namespace Editor.BL {
                         string fileserver = ConfigurationSettings.AppSettings["FileServer"];
 
                         //creo una cartella sul fileserver
-                        string pathCont = Path.Combine(fileserver, cont.Contentid.ToString() + "_" + cont.Title.Trim().Replace(" ", "_"));
+                        //string pathCont = Path.Combine(fileserver, cont.Contentid.ToString() + "_" + cont.Title.Trim().Replace(" ", "_"));
+                        string pathCont = Path.Combine(fileserver, pathIdItem);
                         if (!Directory.Exists(pathCont)) {
                             Directory.CreateDirectory(pathCont);
                         }
 
                         //Prelevo dallo stage tutti i file e sotto cartelle
-                        string stageserver = ConfigurationSettings.AppSettings["FileStage"];
-                        string pathstage = Path.Combine(stageserver, cont.Contentid.ToString() + "_" + cont.Title.Trim().Replace(" ", "_"));
-                        if (Directory.Exists(pathstage)) {
+                        //string stageserver = ConfigurationSettings.AppSettings["FileStage"];
+                        //string pathstage = Path.Combine(stageserver, cont.Contentid.ToString() + "_" + cont.Title.Trim().Replace(" ", "_"));
+                        //if (Directory.Exists(pathstage)) {
 
-                            Copy(pathstage, pathCont);
+                        //    Copy(pathstage, pathCont);
 
-                        }
+                        //}
 
                         //Prelevo dalla directory Img le img di default 
                         string imgserver = ConfigurationSettings.AppSettings["Img"];
@@ -415,11 +435,12 @@ namespace Editor.BL {
 
                         //Publico tutte le pagine del content
 
-                        List<Page> ListTempPage = new List<Page>();
-
+                        List<Page> ListTempPage = new List<Page>();                      
+                       
                         foreach (Page pg in cont.Pages) {
-                            if (!IsDeleted(pg, cont.Pages)) {
-                                PublicPage(pg, pathCont, session);
+
+                            if (!IsDeleted(pg, cont.Pages)  ) {
+                                PublicPage(pg, pathCont, pathIdItem, Title, session);
                                 ListTempPage.Add(pg);
                             }
                         }
@@ -441,7 +462,7 @@ namespace Editor.BL {
                             docXml = CreateXmlToDataSet(dt);
                             XmlNode pathTema = docXml.CreateNode(XmlNodeType.Element, "Theme", null);
                             XmlAttribute attr = docXml.CreateAttribute("Path");
-                            attr.Value = @"\Themes\" + cont.Skin.Path;
+                            attr.Value = @"..\..\Themes\" + cont.Skin.Path;
                             pathTema.Attributes.Append(attr);
 
                             docXml.GetElementsByTagName("Menu")[0].AppendChild(pathTema);
@@ -499,7 +520,7 @@ namespace Editor.BL {
 
                         File.Copy(def, Path.Combine(pathCont, "default.html"));
 
-                        return Path.Combine(cont.Contentid.ToString() + "_" + cont.Title.Trim().Replace(" ", "_"), "default.html");
+                        return pathIdItem + "/default.html";
 
 
                     } catch (Exception ex) {
@@ -512,6 +533,38 @@ namespace Editor.BL {
             }
         }
 
+        public static string PublicContent(int contId) { 
+                return PublicContent( contId, " ", " ");
+        }
+
+        public static string PublicPage(int idpage, string pathIdItem, string Title) { 
+        
+        using (ISession session = HibernateHelper.GetSession().OpenSession()) {
+                using (ITransaction transaction = session.BeginTransaction()) {
+                    try {
+
+                        Page pg = new Page();
+                        pg = HibernateHelper.SelectIstance<Page>(session, new string[] { "Pageid" }, new object[] { idpage }, new Operators[] { Operators.Eq });
+
+                        string fileserver = ConfigurationSettings.AppSettings["FileServer"];
+                        string pathCont = Path.Combine(fileserver, pathIdItem);                        
+
+                     string ret=   PublicPage(pg, pathCont, pathIdItem, Title, session);
+
+                     return pathIdItem + @"\" + ret;
+
+                    } catch (Exception ex) {
+                        throw ex;
+                    } finally {
+                        session.Flush();
+                        session.Close();
+                    }
+                }
+        }
+        
+        }
+        
+        
         public static Content SavePages(List<String> Files, Content contnt, ISession session, string FolderToSave) {
             ITransaction transaction = session.BeginTransaction();
             try {
@@ -537,17 +590,18 @@ namespace Editor.BL {
                 Element Contenuto = new Element();
                 Contenuto = HibernateHelper.SelectIstance<Element>(new string[] { "Elementid" }, new object[] { 2 }, new Operators[] { Operators.Eq });
 
-                //Elemento Logo
-                Element Logo = new Element();
-                Logo = HibernateHelper.SelectIstance<Element>(new string[] { "Elementid" }, new object[] { 3 }, new Operators[] { Operators.Eq });
-
                 //Elemento Titolo
                 Element TitoloMenu = new Element();
-                TitoloMenu = HibernateHelper.SelectIstance<Element>(new string[] { "Elementid" }, new object[] { 4 }, new Operators[] { Operators.Eq });
+                TitoloMenu = HibernateHelper.SelectIstance<Element>(new string[] { "Elementid" }, new object[] { 3 }, new Operators[] { Operators.Eq });
 
-                //Elemento ContenutoHome
-                Element ContenutoHome = new Element();
-                ContenutoHome = HibernateHelper.SelectIstance<Element>(new string[] { "Elementid" }, new object[] { 5 }, new Operators[] { Operators.Eq });
+                //Elemento DataCreazione
+                Element DataCreazione = new Element();
+                DataCreazione = HibernateHelper.SelectIstance<Element>(new string[] { "Elementid" }, new object[] { 4 }, new Operators[] { Operators.Eq });
+
+
+                //Elemento DataCreazione
+                Element DataModifica = new Element();
+                DataModifica = HibernateHelper.SelectIstance<Element>(new string[] { "Elementid" }, new object[] { 5 }, new Operators[] { Operators.Eq });
 
 
                 ISet<Page> setPage = new HashedSet<Page>();
@@ -574,9 +628,9 @@ namespace Editor.BL {
                         Page menu = new Page();
                         menu.Position = actualpos + Convert.ToInt32(pos);
                         menu.Level = Convert.ToInt32(lev);
-                        menu.Title = "index";
+                        menu.Title = "home";
                         string TitoloEL = menu.Publictitle;
-                        menu.Publictitle = "Home";
+                        menu.Publictitle = "HOME";
                         menu.State = 1;
 
                         menu.Skin = SkinHome;
@@ -590,23 +644,25 @@ namespace Editor.BL {
                         //PageElement
                         ISet<PageElement> setMnEl = new HashedSet<PageElement>();
 
-                        //Add Logo 
-                        PageElement LogoEl = new PageElement();
-                        LogoEl.Element = Logo;
-                        LogoEl.Elementid = Logo.Elementid;
-                        LogoEl.Value = "Logo";
-                        LogoEl.Filename = "Logo.jpg";
-                        LogoEl.Pageid = menu.Pageid;
-                        LogoEl.Page = menu;
-                        LogoEl.IsNew = true;
-                        HibernateHelper.Persist(LogoEl, session);
+                        ////Add Logo 
+                        //PageElement LogoEl = new PageElement();
+                        //LogoEl.Element = Logo;
+                        //LogoEl.Elementid = Logo.Elementid;
+                        //LogoEl.Value = "Logo";
+                        //LogoEl.Filename = "Logo.jpg";
+                        //LogoEl.Pageid = menu.Pageid;
+                        //LogoEl.Page = menu;
+                        //LogoEl.IsNew = true;
+                        //HibernateHelper.Persist(LogoEl, session);
                         
-                        ///TODO:Copiare Logo.jpg in FolderToSave
-                        ///
-                        string originimg = Path.Combine(ConfigurationSettings.AppSettings["Img"], "Logo.jpg");
-                        File.Copy(originimg,Path.Combine(FolderToSave,"Logo.jpg"));
 
-                        setMnEl.Add(LogoEl);
+                        //string originimg = Path.Combine(ConfigurationSettings.AppSettings["Img"], "Logo.jpg");
+                        //if (File.Exists(Path.Combine(FolderToSave, "Logo.jpg"))) {
+                        //    File.Delete(Path.Combine(FolderToSave, "Logo.jpg"));
+                        //}
+                        //File.Copy(originimg, Path.Combine(FolderToSave, "Logo.jpg"));
+
+                        //setMnEl.Add(LogoEl);
 
                         //Add Titolo
                         PageElement MemutitleEl = new PageElement();
@@ -620,29 +676,62 @@ namespace Editor.BL {
 
                         setMnEl.Add(MemutitleEl);
 
-                        //Add RowHtml
+                        //Add DataCreazione
+                        PageElement DataCreazioneEl = new PageElement();
+                        DataCreazioneEl.Element = DataCreazione;
+                        DataCreazioneEl.Elementid = DataCreazione.Elementid;
+                        DataCreazioneEl.Value = DateTime.Now.ToShortDateString();
+                        DataCreazioneEl.Pageid = menu.Pageid;
+                        DataCreazioneEl.Page = menu;
+                        DataCreazioneEl.IsNew = true;
+                        HibernateHelper.Persist(DataCreazioneEl, session);
 
-                        PageElement MenuBody = new PageElement();
-                        MenuBody.Pageid = menu.Pageid;
-                        MenuBody.Page = menu;
-                        MenuBody.Element = ContenutoHome;
-                        MenuBody.Elementid = ContenutoHome.Elementid;
-                        MenuBody.IsNew = true;
+                        setMnEl.Add(DataCreazioneEl);
+                        //Add DataModifica
+                        PageElement DataModificaEL = new PageElement();
+                        DataModificaEL.Element = DataModifica;
+                        DataModificaEL.Elementid = DataModifica.Elementid;
+                        DataModificaEL.Value = DateTime.Now.ToShortDateString(); 
+                        DataModificaEL.Pageid = menu.Pageid;
+                        DataModificaEL.Page = menu;
+                        DataModificaEL.IsNew = true;
+                        HibernateHelper.Persist(DataModificaEL, session);
 
-                        RawHtml MenuRawHtml = new RawHtml();
-                        MenuRawHtml.IsNew = true;
-                        MenuRawHtml.Value = " ";
-                        HibernateHelper.Persist(MenuRawHtml, session);
-
-                        MenuBody.Filename = MenuRawHtml.Rawhtmlid + "_RawHtml.jpg";
-                        MenuBody.Value = "RawHtml";
-                        MenuBody.Rawhtmlid = MenuRawHtml.Rawhtmlid;
-                        ///TODO:Generare JPG e salvarla in FolderToSave
-                        ///
-                        HibernateHelper.Persist(MenuBody, session);
+                        setMnEl.Add(DataModificaEL);
 
 
+                        ////Add RowHtml
 
+                        //PageElement MenuBody = new PageElement();
+                        //MenuBody.Pageid = menu.Pageid;
+                        //MenuBody.Page = menu;
+                        //MenuBody.Element = ContenutoHome;
+                        //MenuBody.Elementid = ContenutoHome.Elementid;
+                        //MenuBody.IsNew = true;
+
+                        //RawHtml MenuRawHtml = new RawHtml();
+                        //MenuRawHtml.IsNew = true;
+                        //MenuRawHtml.Value = " ";
+                        //HibernateHelper.Persist(MenuRawHtml, session);
+
+                        //MenuBody.Filename = MenuRawHtml.Rawhtmlid + "_RawHtml.jpg";
+                        //MenuBody.Value = "RawHtml";
+                        //MenuBody.Rawhtmlid = MenuRawHtml.Rawhtmlid;
+                        //HibernateHelper.Persist(MenuBody, session);
+                        /////Generare JPG e salvarla in FolderToSave
+                        /////  Add immagine blank
+
+                        //string emptyfile = Path.Combine(FolderToSave, MenuRawHtml.Rawhtmlid + "_RawHtml.htm");
+
+                        //string htmlDocument = "<html><body></body></html>";
+                        //FileStream fs = File.OpenWrite(emptyfile);
+                        //StreamWriter writer = new StreamWriter(fs, Encoding.UTF8);
+                        //writer.Write(htmlDocument);
+                        //writer.Close();
+                        //Editor.Helper.WebSiteThumbnail.SaveImage(emptyfile, FolderToSave);
+
+                        ////cancello il file temporaneo html
+                        //File.Delete(emptyfile);
 
                         menu.PageElements = setMnEl;
                         setMnEl = menu.PageElements;
@@ -727,6 +816,16 @@ namespace Editor.BL {
 
                         ///TODO:Generare JPG e salvarla in FolderToSave
                         ///
+                        string contrawfile = Path.Combine(FolderToSave, contraw.Rawhtmlid + "_RawHtml.htm");
+
+                        string htmlDocument = contraw.Value;
+                        FileStream fs = File.OpenWrite(contrawfile);
+                        StreamWriter writer = new StreamWriter(fs, Encoding.UTF8);
+                        writer.Write(htmlDocument);
+                        writer.Close();
+                        Editor.Helper.WebSiteThumbnail.SaveImage(contrawfile, FolderToSave);
+                        //cancello il file temporaneo html
+                        File.Delete(contrawfile);
 
                         page.PageElements = setPgEl;
                         setPgEl = page.PageElements;
@@ -769,7 +868,7 @@ namespace Editor.BL {
         }
 
         public static Content SavePages(List<String> Files, Content contnt, ISession session) {
-            return SavePages(Files, contnt, session, "");
+            return SavePages(Files, contnt, session, @"D:\GIT_SRC\MYSTIC\MysticEditor\Editor.WEB\Fileserver\999999");
         }
     }
 }

@@ -11,7 +11,8 @@ namespace Editor.DTO {
         public  int Pageid { get; set; }
         public  String Value { get; set; }
         public  String Filename { get; set; }
-
+        public  ElementDTO Element { get; set; }   
+ 
         public override bool IsPersisted {
             get {
                 return PageElementid > 0;

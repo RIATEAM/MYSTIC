@@ -68,7 +68,7 @@ namespace Editor.BL {
                 if (Convert.ToInt32(dr["Id"]) == Convert.ToInt32(dr["Parentpageid"])) {
                     dr["Parentpageid"] = DBNull.Value;
 
-                    dr["Href"] = "index.html";
+                    dr["Href"] = dr["Title"] + ".html";
 
                 } else {
                     dr["Href"] = dr["Id"] + "_" + dr["Title"] + ".html";

@@ -25,6 +25,7 @@ namespace Editor.Services {
 
                         Mapper.CreateMap<Page, PageDTO>();
                         Mapper.CreateMap<PageElement, PageElementDTO>();
+                        Mapper.CreateMap<Element, ElementDTO>();
 
                         return Mapper.Map<Page, PageDTO>(page);
 
@@ -49,6 +50,7 @@ namespace Editor.Services {
 
                         Mapper.CreateMap<Page, PageDTO>();
                         Mapper.CreateMap<PageElement, PageElementDTO>();
+                        Mapper.CreateMap<Element, ElementDTO>();
 
                         return Mapper.Map<IList<Page>, IList<PageDTO>>(pages);
 
@@ -59,7 +61,6 @@ namespace Editor.Services {
                         session.Close();
                     }
                 }
-
             }
         }
 
@@ -71,6 +72,7 @@ namespace Editor.Services {
                         pages = EditorServices.GetPageelementByPage(session, pageid) as List<PageElement>;
 
                         Mapper.CreateMap<PageElement, PageElementDTO>();
+                        Mapper.CreateMap<Element, ElementDTO>();
 
                         return Mapper.Map<IList<PageElement>, IList<PageElementDTO>>(pages);
 
@@ -94,6 +96,7 @@ namespace Editor.Services {
 
                         Mapper.CreateMap<PageDTO, Page>();
                         Mapper.CreateMap<PageElementDTO, PageElement>();
+                        Mapper.CreateMap<ElementDTO,Element >();
                         //Mappo la PageDTO in Page
                         page = Mapper.Map<PageDTO, Page>(pagedto);
 
@@ -166,6 +169,7 @@ namespace Editor.Services {
                         //Rimappo l'oggetto da restituire
                         Mapper.CreateMap<Page, PageDTO>();
                         Mapper.CreateMap<PageElement, PageElementDTO>();
+                        Mapper.CreateMap< Element,  ElementDTO>();
                         //Mappo la PageDTO in Page
                         pagedto = Mapper.Map<Page, PageDTO>(page);
 
@@ -234,6 +238,7 @@ namespace Editor.Services {
                             Page page = new Page();
                             Mapper.CreateMap<PageDTO, Page>();
                             Mapper.CreateMap<PageElementDTO, PageElement>();
+                            Mapper.CreateMap<ElementDTO, Element>();
                             //Mappo la PageDTO in Page
                             page = Mapper.Map<PageDTO, Page>(pagedto);
 
@@ -324,6 +329,7 @@ namespace Editor.Services {
                         //Rimappo l'oggetto da restituire
                         Mapper.CreateMap<Page, PageDTO>();
                         Mapper.CreateMap<PageElement, PageElementDTO>();
+                        Mapper.CreateMap<Element, ElementDTO>();
                         //Mappo la PageDTO in Page
                         pagedto = Mapper.Map<Page, PageDTO>(page);
 
@@ -403,7 +409,7 @@ namespace Editor.Services {
             return status;
         }
 
-        public Boolean PublishPage(int pageID) {
+        public Boolean PublishPage(int pageID, string pathIdItem) {
             Boolean status = false;
             using (ISession session = HibernateHelper.GetSession().OpenSession()) {
                 using (ITransaction transaction = session.BeginTransaction()) {
@@ -418,7 +424,7 @@ namespace Editor.Services {
                             Directory.CreateDirectory(pathCont);
                         }
 
-                        EditorServices.PublicPage(pg, pathCont, session);
+                        EditorServices.PublicPage(pg, pathCont, pathIdItem," ", session);
 
                     } catch (Exception ex) {
                         transaction.Rollback();
@@ -503,50 +509,6 @@ namespace Editor.Services {
 
         }
 
-
-
-
-
-        private PageDTO Savenew() {
-
-            PageDTO page = new PageDTO();
-
-            page = GetPage(6);
-
-
-            DeletePage(page);
-
-
-            //page.Title = " nuova pagina".Trim().Replace(" ", "_");
-            //page.Publictitle = "Nuova Pagina";
-
-            ////page.Skinid = 2;
-            //page.Structureid = 1;
-            //page.Contentid = 1;
-            //page.IsNew = true;
-            //page.Level = 1;
-            //page.Position = 1;
-            //page.State = 1;
-            //page.PageelementsList = new List<PageelementDTO>();
-
-            //page = SavePage(page);
-
-
-            //page.Publictitle = "Nuova Pagina Modificata";
-            //page.PageelementsList[0].Value = page.PageelementsList[0].Value + " Modificato";
-            //page.PageelementsList[0].Dirty = true;
-            //page.PageelementsList[1].Deleted = true;
-            //page.Dirty = true;
-            //page = SavePage(page);
-
-
-
-
-
-
-
-            return page;
-        }
 
     }
 
