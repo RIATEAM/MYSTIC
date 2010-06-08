@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Text;
 using AutoMapper;
 using Editor.BE;
 using Editor.BE.Model;
 using Editor.BE.Model.Enumerators;
 using Editor.BL;
 using Editor.DTO;
+using Editor.Helper;
 using Iesi.Collections.Generic;
 using NHibernate;
 
@@ -87,6 +89,95 @@ namespace Editor.Services {
             }
         }
 
+        public PageElementDTO GetPageelementByPageelementID(int PageelementID) {
+
+            using (ISession session = HibernateHelper.GetSession().OpenSession()) {
+                using (ITransaction transaction = session.BeginTransaction()) {
+                    try {
+                        PageElement pel = new PageElement();
+                        pel = HibernateHelper.SelectIstance<PageElement>(session, new string[] { "PageElementid" }, new object[] { PageelementID }, new Operators[] { Operators.Eq });
+
+
+                        Mapper.CreateMap<PageElement, PageElementDTO>();
+                        Mapper.CreateMap<Element, ElementDTO>();
+
+                        return Mapper.Map<PageElement, PageElementDTO>(pel);
+
+                    } catch (Exception ex) {
+                        throw ex;
+                    } finally {
+                        session.Flush();
+                        session.Close();
+                    }
+                }
+
+            }
+
+
+        }
+
+        public RawHtml GetRawHtmlById(int Rawhtmlid) {
+
+            using (ISession session = HibernateHelper.GetSession().OpenSession()) {
+                using (ITransaction transaction = session.BeginTransaction()) {
+                    try {
+                        RawHtml pel = new RawHtml();
+                        pel = HibernateHelper.SelectIstance<RawHtml>(session, new string[] { "Rawhtmlid" }, new object[] { Rawhtmlid }, new Operators[] { Operators.Eq });
+
+                        return pel;
+
+                    } catch (Exception ex) {
+                        throw ex;
+                    } finally {
+                        session.Flush();
+                        session.Close();
+                    }
+                }
+
+            }
+
+
+        }
+
+        public void SaveRawHtml(RawHtml Row, int iditemamm) {
+            using (ISession session = HibernateHelper.GetSession().OpenSession()) {
+                using (ITransaction transaction = session.BeginTransaction()) {
+                    try {
+
+                        HibernateHelper.Persist(Row, session);
+
+                        transaction.Commit();
+
+                        string FolderToSave = ConfigurationSettings.AppSettings["FileServer"];
+
+                        FolderToSave = Path.Combine(FolderToSave, "contenutiAdm");
+                        FolderToSave = Path.Combine(FolderToSave, iditemamm.ToString());
+
+                        string contrawfile = Path.Combine(FolderToSave, Row.Rawhtmlid + "_RawHtml.htm");
+
+                        string htmlDocument = Row.Value;
+                        FileStream fs = File.OpenWrite(contrawfile);
+                        StreamWriter writer = new StreamWriter(fs, Encoding.UTF8);
+                        writer.Write(htmlDocument);
+                        writer.Close();
+                        WebSiteThumbnail.SaveImage(contrawfile, FolderToSave);
+                        //cancello il file temporaneo html
+                        File.Delete(contrawfile);
+                        
+                        
+
+                    } catch (Exception ex) {
+                        transaction.Rollback();
+                        throw ex;
+                    } finally {
+                        session.Flush();
+                        session.Close();
+                    }
+                }
+            }
+
+        }
+
         public PageDTO SavePage(PageDTO pagedto) {
 
             using (ISession session = HibernateHelper.GetSession().OpenSession()) {
@@ -96,7 +187,7 @@ namespace Editor.Services {
 
                         Mapper.CreateMap<PageDTO, Page>();
                         Mapper.CreateMap<PageElementDTO, PageElement>();
-                        Mapper.CreateMap<ElementDTO,Element >();
+                        Mapper.CreateMap<ElementDTO, Element>();
                         //Mappo la PageDTO in Page
                         page = Mapper.Map<PageDTO, Page>(pagedto);
 
@@ -119,7 +210,7 @@ namespace Editor.Services {
                                         PaElement.Elementid = el.Elementid;
                                         PaElement.Page = page;
                                         PaElement.Pageid = page.Pageid;
-                                        PaElement.Value = el.Description;
+                                        PaElement.Valore = el.Description;
                                         PaElement.IsNew = true;
 
                                         if (el.Elementtypeid == (int)ElementTypeEnum.RawHtml) {
@@ -169,7 +260,7 @@ namespace Editor.Services {
                         //Rimappo l'oggetto da restituire
                         Mapper.CreateMap<Page, PageDTO>();
                         Mapper.CreateMap<PageElement, PageElementDTO>();
-                        Mapper.CreateMap< Element,  ElementDTO>();
+                        Mapper.CreateMap<Element, ElementDTO>();
                         //Mappo la PageDTO in Page
                         pagedto = Mapper.Map<Page, PageDTO>(page);
 
@@ -259,7 +350,7 @@ namespace Editor.Services {
             return pagedto;
         }
 
-        public PageDTO ClonePage(PageDTO pagedto) {
+        public PageDTO ClonePage(PageDTO pagedto, int idItemAmm) {
             using (ISession session = HibernateHelper.GetSession().OpenSession()) {
                 using (ITransaction transaction = session.BeginTransaction()) {
                     try {
@@ -288,7 +379,7 @@ namespace Editor.Services {
                             child.IsNew = true;
                             child.Page = page;
                             child.Pageid = page.Pageid;
-                            child.Value = el.Value;
+                            child.Valore = el.Valore;
                             child.Filename = el.Filename;
                             child.Element = el.Element;
                             child.Elementid = el.Elementid;
@@ -301,8 +392,10 @@ namespace Editor.Services {
                                 RawHtml childraw = new RawHtml();
                                 childraw.IsNew = true;
                                 childraw.Value = cloneraw.Value;
-                                HibernateHelper.Persist(childraw, session);
+                                SaveRawHtml(childraw, idItemAmm);                                
                                 child.Rawhtmlid = childraw.Rawhtmlid;
+                                
+                                
                             }
 
                             HibernateHelper.Persist(child, session);
@@ -350,6 +443,11 @@ namespace Editor.Services {
 
         }
 
+        public PageDTO ClonePage(PageDTO pagedto) {
+
+            return ClonePage(pagedto, 0);
+        } 
+        
         public Boolean DeletePage(PageDTO pagedto) {
             Boolean status = false;
             using (ISession session = HibernateHelper.GetSession().OpenSession()) {
@@ -408,7 +506,7 @@ namespace Editor.Services {
             }
             return status;
         }
-
+        
         public Boolean PublishPage(int pageID, string pathIdItem) {
             Boolean status = false;
             using (ISession session = HibernateHelper.GetSession().OpenSession()) {
@@ -424,7 +522,7 @@ namespace Editor.Services {
                             Directory.CreateDirectory(pathCont);
                         }
 
-                        EditorServices.PublicPage(pg, pathCont, pathIdItem," ", session);
+                        EditorServices.PublicPage(pg, pathCont, pathIdItem, " ", session);
 
                     } catch (Exception ex) {
                         transaction.Rollback();

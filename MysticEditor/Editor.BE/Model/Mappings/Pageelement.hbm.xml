@@ -8,7 +8,7 @@
 		</id>
 		<property name="Elementid" column="`ELEMENTID`" length="22" />
 		<property name="Pageid" column="`PAGEID`" length="22" />
-		<property name="Value" column="`VALUE`" type="AnsiString"/>
+		<property name="Valore" column="`VALORE`" type="AnsiString"/>
     <property name="Filename" column="`FILENAME`" type="AnsiString"/>
     <property name="Rawhtmlid" column="`RAWHTMLID`" length="22" />
 		

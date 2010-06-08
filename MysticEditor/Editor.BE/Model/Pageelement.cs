@@ -10,7 +10,7 @@ namespace Editor.BE.Model
 		public virtual int Elementid { get; set; }
 		public virtual int PageElementid { get; set; }
 		public virtual int Pageid { get; set; }
-		public virtual String Value { get; set; }
+		public virtual String Valore { get; set; }
         public virtual String Filename { get; set; }
         public virtual int Rawhtmlid { get; set; }
 
@@ -38,7 +38,7 @@ namespace Editor.BE.Model
 			if (Equals(Elementid, obj.Elementid) == false)
 				return false;
 
-			if (Equals(Value, obj.Value) == false)
+			if (Equals(Valore, obj.Valore) == false)
 				return false;
 
 			return true;
@@ -51,7 +51,7 @@ namespace Editor.BE.Model
 			result = (result * 397) ^ (PageElementid != null ? PageElementid.GetHashCode() : 0);
 			result = (result * 397) ^ (Pageid != null ? Pageid.GetHashCode() : 0);
 			result = (result * 397) ^ (Elementid != null ? Elementid.GetHashCode() : 0);
-			result = (result * 397) ^ (Value != null ? Value.GetHashCode() : 0);			
+			result = (result * 397) ^ (Valore != null ? Valore.GetHashCode() : 0);			
 			return result;
 		}
 

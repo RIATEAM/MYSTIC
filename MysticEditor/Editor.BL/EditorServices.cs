@@ -4,17 +4,17 @@ using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Xsl;
 using Editor.BE;
 using Editor.BE.Model;
+using Editor.BE.Model.Enumerators;
 using Iesi.Collections;
 using Iesi.Collections.Generic;
 using NHibernate;
-using Editor.BE.Model.Enumerators;
-using System.Text;
 
 namespace Editor.BL {
     public partial class EditorServices {
@@ -55,7 +55,7 @@ namespace Editor.BL {
                         while (EndTitolo.Match(line).Length == 0 && (line = sr.ReadLine()) != null) {
                             testo += " " + line + System.Environment.NewLine;
                         }
-                        testo = "<title>"+Title+"</title>";
+                        testo = "<title>" + Title + "</title>";
                         //POS                     LIVELLO                
                         outputText = count.ToString() + "|" + 0 + "|" + testo;
                         Files.Add(outputText);
@@ -126,7 +126,7 @@ namespace Editor.BL {
         }
 
         public static List<string> Export(string file, string extractLocation) {
-            return Export(file, extractLocation, "Nuvo Documento");        
+            return Export(file, extractLocation, "Nuvo Documento");
         }
 
         /// <summary>
@@ -288,7 +288,7 @@ namespace Editor.BL {
         /// Publica una pagina in formato html sul fileserver
         /// </summary>
         /// <param name="pageid"></param>
-        public static string PublicPage(Page pagina, string fileserver,string pathIdItem,string Title, ISession session) {
+        public static string PublicPage(Page pagina, string fileserver, string pathIdItem, string Title, ISession session) {
 
             //crea file xml con la struttura della pagina
             string pathxml = Path.Combine(fileserver, pagina.Pageid + "_" + pagina.Title.Trim().Replace(" ", "_") + ".xml");
@@ -302,9 +302,9 @@ namespace Editor.BL {
             docXml.AppendChild(docXml.CreateXmlDeclaration("1.0", "utf-8", "yes"));
 
             XmlNode page = docXml.CreateNode(XmlNodeType.Element, "Page", null);
-            
+
             //Nodo TitoloContent
-            XmlNode   TitoloContent = docXml.CreateNode(XmlNodeType.Element, "TitoloContent", null);
+            XmlNode TitoloContent = docXml.CreateNode(XmlNodeType.Element, "TitoloContent", null);
             XmlNode TitoloContentValue = docXml.CreateNode(XmlNodeType.CDATA, null, null);
             TitoloContentValue.Value = Title;
             TitoloContent.AppendChild(TitoloContentValue);
@@ -320,10 +320,10 @@ namespace Editor.BL {
                     nodoValue.Value = rw.Value;
                 } else
                     if (pel.Element.Elementtypeid == (int)ElementTypeEnum.Img) {
-                        nodoValue.Value =  pel.Filename;
-                           
+                        nodoValue.Value = pel.Filename;
+
                     } else {
-                        nodoValue.Value = pel.Value;
+                        nodoValue.Value = pel.Valore;
                     }
 
                 nodo.AppendChild(nodoValue);
@@ -382,7 +382,7 @@ namespace Editor.BL {
             if (elOut.Value.StartsWith("#")) {
                 pageName = pagina.Pageid + "_" + pagina.Title + "." + elExt.Value;
             } else {
-                pageName = elOut.Value ;
+                pageName = elOut.Value;
             }
             // Path file Html
             string pagePath = Path.Combine(fileserver, pageName);
@@ -435,11 +435,11 @@ namespace Editor.BL {
 
                         //Publico tutte le pagine del content
 
-                        List<Page> ListTempPage = new List<Page>();                      
-                       
+                        List<Page> ListTempPage = new List<Page>();
+
                         foreach (Page pg in cont.Pages) {
 
-                            if (!IsDeleted(pg, cont.Pages)  ) {
+                            if (!IsDeleted(pg, cont.Pages)) {
                                 PublicPage(pg, pathCont, pathIdItem, Title, session);
                                 ListTempPage.Add(pg);
                             }
@@ -533,13 +533,13 @@ namespace Editor.BL {
             }
         }
 
-        public static string PublicContent(int contId) { 
-                return PublicContent( contId, " ", " ");
+        public static string PublicContent(int contId) {
+            return PublicContent(contId, " ", " ");
         }
 
-        public static string PublicPage(int idpage, string pathIdItem, string Title) { 
-        
-        using (ISession session = HibernateHelper.GetSession().OpenSession()) {
+        public static string PublicPage(int idpage, string pathIdItem, string Title) {
+
+            using (ISession session = HibernateHelper.GetSession().OpenSession()) {
                 using (ITransaction transaction = session.BeginTransaction()) {
                     try {
 
@@ -547,11 +547,11 @@ namespace Editor.BL {
                         pg = HibernateHelper.SelectIstance<Page>(session, new string[] { "Pageid" }, new object[] { idpage }, new Operators[] { Operators.Eq });
 
                         string fileserver = ConfigurationSettings.AppSettings["FileServer"];
-                        string pathCont = Path.Combine(fileserver, pathIdItem);                        
+                        string pathCont = Path.Combine(fileserver, pathIdItem);
 
-                     string ret=   PublicPage(pg, pathCont, pathIdItem, Title, session);
+                        string ret = PublicPage(pg, pathCont, pathIdItem, Title, session);
 
-                     return pathIdItem + @"\" + ret;
+                        return pathIdItem + @"\" + ret;
 
                     } catch (Exception ex) {
                         throw ex;
@@ -560,11 +560,11 @@ namespace Editor.BL {
                         session.Close();
                     }
                 }
+            }
+
         }
-        
-        }
-        
-        
+
+
         public static Content SavePages(List<String> Files, Content contnt, ISession session, string FolderToSave) {
             ITransaction transaction = session.BeginTransaction();
             try {
@@ -654,7 +654,7 @@ namespace Editor.BL {
                         //LogoEl.Page = menu;
                         //LogoEl.IsNew = true;
                         //HibernateHelper.Persist(LogoEl, session);
-                        
+
 
                         //string originimg = Path.Combine(ConfigurationSettings.AppSettings["Img"], "Logo.jpg");
                         //if (File.Exists(Path.Combine(FolderToSave, "Logo.jpg"))) {
@@ -668,7 +668,7 @@ namespace Editor.BL {
                         PageElement MemutitleEl = new PageElement();
                         MemutitleEl.Element = TitoloMenu;
                         MemutitleEl.Elementid = TitoloMenu.Elementid;
-                        MemutitleEl.Value = titlemenu;
+                        MemutitleEl.Valore = titlemenu;
                         MemutitleEl.Pageid = menu.Pageid;
                         MemutitleEl.Page = menu;
                         MemutitleEl.IsNew = true;
@@ -680,7 +680,7 @@ namespace Editor.BL {
                         PageElement DataCreazioneEl = new PageElement();
                         DataCreazioneEl.Element = DataCreazione;
                         DataCreazioneEl.Elementid = DataCreazione.Elementid;
-                        DataCreazioneEl.Value = DateTime.Now.ToShortDateString();
+                        DataCreazioneEl.Valore = DateTime.Now.ToShortDateString();
                         DataCreazioneEl.Pageid = menu.Pageid;
                         DataCreazioneEl.Page = menu;
                         DataCreazioneEl.IsNew = true;
@@ -691,7 +691,7 @@ namespace Editor.BL {
                         PageElement DataModificaEL = new PageElement();
                         DataModificaEL.Element = DataModifica;
                         DataModificaEL.Elementid = DataModifica.Elementid;
-                        DataModificaEL.Value = DateTime.Now.ToShortDateString(); 
+                        DataModificaEL.Valore = DateTime.Now.ToShortDateString();
                         DataModificaEL.Pageid = menu.Pageid;
                         DataModificaEL.Page = menu;
                         DataModificaEL.IsNew = true;
@@ -758,8 +758,8 @@ namespace Editor.BL {
                         string temp = rgx.Replace(title, "");
                         temp = punt.Replace(temp, " ");
 
-                        page.Publictitle = num.Replace(temp, " ").Trim();
-                        page.Title = punt.Replace(rgx.Replace(title, "").Trim().Replace(" ", "_"), "_");
+                        page.Publictitle = num.Replace(temp, " ").Replace("&nbsp;", "").Trim();
+                        page.Title = punt.Replace(rgx.Replace(title, "").Replace("&nbsp;", "").Trim().Replace(" ", "_"), "_");
                         page.State = 1;
 
 
@@ -767,6 +767,9 @@ namespace Editor.BL {
                         elbody = num.Replace(elbody, "");
                         elbody = punt.Replace(elbody, " ");
                         elbody = elbody.Trim().Replace(" ", "").ToLower();
+
+                        elbody = elbody.Replace("&nbsp;", "");
+                        elbody = elbody.Replace("'", "");
 
                         if (elbody.StartsWith("nonapplicabile")) {
                             page.State = 2;
@@ -785,7 +788,7 @@ namespace Editor.BL {
                         PageElement titleEl = new PageElement();
                         titleEl.Element = Titolo;
                         titleEl.Elementid = Titolo.Elementid;
-                        titleEl.Value = page.Publictitle;
+                        titleEl.Valore = page.Publictitle;
                         titleEl.Pageid = page.Pageid;
                         titleEl.Page = page;
                         titleEl.IsNew = true;
@@ -797,7 +800,7 @@ namespace Editor.BL {
                         contEl.Element = Contenuto;
                         contEl.Elementid = Contenuto.Elementid;
 
-                        contEl.Value = "RawHtml";
+                        contEl.Valore = "RawHtml";
 
 
                         contEl.Pageid = page.Pageid;
