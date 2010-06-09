@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Editor.DTO {
     public class PageElementDTO :PersistenteDTO{
@@ -14,7 +11,7 @@ namespace Editor.DTO {
         public  ElementDTO Element { get; set; }
         public  int Rawhtmlid { get; set; }
  
-        public override bool IsPersisted {
+        public   bool IsPersisted {
             get {
                 return PageElementid > 0;
             }

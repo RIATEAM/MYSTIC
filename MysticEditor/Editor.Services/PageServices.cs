@@ -146,9 +146,8 @@ namespace Editor.Services {
 
                         HibernateHelper.Persist(Row, session);
 
-                        transaction.Commit();
 
-                        string FolderToSave = ConfigurationSettings.AppSettings["FileServer"];
+                        string FolderToSave = ConfigurationSettings.AppSettings["ServerPath"];
 
                         FolderToSave = Path.Combine(FolderToSave, "contenutiAdm");
                         FolderToSave = Path.Combine(FolderToSave, iditemamm.ToString());
@@ -164,7 +163,7 @@ namespace Editor.Services {
                         //cancello il file temporaneo html
                         File.Delete(contrawfile);
                         
-                        
+                        transaction.Commit();
 
                     } catch (Exception ex) {
                         transaction.Rollback();

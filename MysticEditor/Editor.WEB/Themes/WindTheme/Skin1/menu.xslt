@@ -11,7 +11,6 @@
         <title>Menu</title>
 
         <link rel="stylesheet" href="{Menu/Theme/@Path|text()}\js\jquery.treeview.css" />
-        <link rel="stylesheet" href="{Menu/Theme/@Path|text()}\js\red-treeview.css" />
         <link rel="stylesheet" href="{Menu/Theme/@Path|text()}\styles\screen.css" />
 
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js">
@@ -23,25 +22,33 @@
         <script src="{Menu/Theme/@Path|text()}\js\jquery.treeview.js" type="text/javascript">
           // commento
         </script>
+        
+        <script src="{Menu/Theme/@Path|text()}\js\custom.js" type="text/javascript">
+          // commento
+        </script>
 
         <script type="text/javascript">
           $(document).ready(function(){
-          $("#browser").treeview({
-          control:"#sidetreecontrol"
-          });
-          });
+            $("#browser").treeview({
+              control:"#sidetreecontrol"
+              });
+            });
+          }
         </script>
       </head>
       <body>
 
         <div id="sidetreecontrol">
-          <a href="?#">Collapse All</a> | <a href="?#">Expand All</a>
+          <a href="?#"></a>
+          <a onmouseover="expOnMouseOver(this)"  onmouseout="expOnMouseOut(this)" href="?#">Espandi Tutto</a>
         </div>
         <div id="main">
 
           <ul id="browser" class="filetree treeview-famfamfam">
             <li>
-              <span class="folder">Home</span>
+              <a onmousedown="onMouseDown(this)"  onmouseover="onMouseOver(this)" onmouseout="onMouseOut(this)" class="arancione" href="home.html">
+                HOME
+              </a>
               <ul>
                 <xsl:apply-templates select="Menu/Item" mode ="items" />
               </ul>
@@ -60,16 +67,37 @@
       <xsl:choose>
         <xsl:when test="@State|text() = '1'">
           <span class="file">
-            <a href="{@Href|text()}" target="{@Target|text()}">
-              <xsl:value-of select="@Titolo|text()" disable-output-escaping="yes" />
-            </a>
+
+            <xsl:choose>
+              <xsl:when test="name(parent::node()) = 'Menu'">
+                <a onmousedown="onMouseDown(this)"  onmouseover="onMouseOver(this)" onmouseout="onMouseOut(this)" class="arancione" href="{@Href|text()}" target="{@Target|text()}">
+                  <xsl:value-of select="@Titolo|text()" disable-output-escaping="yes" />
+                </a>
+              </xsl:when>
+              <xsl:otherwise>
+                <a onmousedown="onMouseDown(this)"  onmouseover="onMouseOver(this)" onmouseout="onMouseOut(this)" href="{@Href|text()}" target="{@Target|text()}">
+                  <xsl:value-of select="@Titolo|text()" disable-output-escaping="yes" />
+                </a>
+              </xsl:otherwise>
+            </xsl:choose>
+
           </span>
         </xsl:when>
         <xsl:otherwise>
           <span class="fileno">
-            <a class="stroke" href="{@Href|text()}" target="{@Target|text()}">
-              <xsl:value-of select="@Titolo|text()" disable-output-escaping="yes" />
-            </a>
+            <xsl:choose>
+              <xsl:when test="name(parent::node()) = 'Menu'">
+                <a onmousedown="onMouseDown(this)"  onmouseover="onMouseOver(this)" onmouseout="onMouseOut(this)" class="stroke arancione" href="{@Href|text()}" target="{@Target|text()}">
+                  <xsl:value-of select="@Titolo|text()" disable-output-escaping="yes" />
+                </a>
+              </xsl:when>
+              <xsl:otherwise>
+                <a onmousedown="onMouseDown(this)"  onmouseover="onMouseOver(this)" onmouseout="onMouseOut(this)" class="stroke" href="{@Href|text()}" target="{@Target|text()}">
+                  <xsl:value-of select="@Titolo|text()" disable-output-escaping="yes" />
+                </a>
+              </xsl:otherwise>
+            </xsl:choose>
+
           </span>
         </xsl:otherwise>
       </xsl:choose>

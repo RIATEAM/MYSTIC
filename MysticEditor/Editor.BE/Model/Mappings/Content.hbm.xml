@@ -4,7 +4,7 @@
 	<class name="Content" lazy="true" table="`CONTENT`">
 		<id name="Contentid" access="property" column="`CONTENTID`" length="22">
       <generator class="sequence">
-        <param name="sequence">CONTENT_SEQ</param>
+        <param name="sequence">EDITOR_CONTENT_SEQ</param>
       </generator>
 		</id>
 		<property name="Parentcontentid" column="`PARENTCONTENTID`" length="22" />

@@ -5,26 +5,21 @@
 	font-size: 50px;
 	font-weight: bold;
 	font-family: Arial;
-	padding-left: 50;
+	text-align: center;
+	position: relative;
+	top: 40%;
 }
 .node
 {
 	width: 100%;
-	color: #FF6600;
-	font-size: 25px;
+	color: #66645A;
+	font-size: 15px;
 	font-weight: bold;
 	font-family: Arial;
 	background-color: #E0DCC7;
-	padding-left: 50;
-}
-.text
-{
-	width: 100%;
-	font-size: 25px;
-	font-weight: bold;
-	font-family: Arial;
-	padding-left: 50;
-	padding-right: 50;
+	text-align: center;
+	position: relative;
+	top: 40%;
 }
 body
 {

@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using Iesi.Collections.Generic;
 
 namespace Editor.DTO {
     public class ElementDTO : PersistenteDTO {
@@ -10,7 +8,7 @@ namespace Editor.DTO {
         public int Structureid { get; set; }
 
 
-        public override bool IsPersisted {
+        public   bool IsPersisted {
             get {
                 return Elementid > 0;
             }

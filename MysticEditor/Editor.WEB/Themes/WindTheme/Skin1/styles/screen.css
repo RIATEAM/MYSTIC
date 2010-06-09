@@ -8,8 +8,7 @@ body
         }
         a, a #hover
         { text-decoration:none;
-          color:#333;
-             
+          color:#E6E2CC;
         }
         .stroke
         {
@@ -27,7 +26,7 @@ body {
 	color: #333;
 }
 
-h1, h2 { font-family: 'trebuchet ms', verdana, arial; padding: 10px; margin: 0 }
+h1, h2 { font-family: 'trebuchet ms', verdana, arial; padding: 10px; margin: 0; color: #FF6600 }
 h1 { font-size: large }
 
 #banner { padding: 15px; background-color: #06b; color: white; font-size: large; border-bottom: 1px solid #ccc;
@@ -37,3 +36,13 @@ h1 { font-size: large }
 #main { padding: 1em; }
 
 a img { border: none; }
+
+.arancione { color: #FF6600;
+             font-weight: bold;
+              }
+              
+              .home {color: #FF5500;
+             font-weight: bold;
+             font-size:13px;
+              }
+                     

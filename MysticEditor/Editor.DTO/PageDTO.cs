@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using Iesi.Collections.Generic;
 
 namespace Editor.DTO {
     public class PageDTO : PersistenteDTO {
@@ -16,13 +14,12 @@ namespace Editor.DTO {
         public int? Skinid { get; set; }
         public int State { get; set; }
 
+        public PageElementDTO[] PageelementsList { get; set; }
 
-        public List<PageElementDTO> PageelementsList { get; set; }
 
-    
-        public override bool IsPersisted {
+        public   bool IsPersisted {
             get {
-                return Pageid > 0;
+                return Contentid > 0;
             }
         }
 

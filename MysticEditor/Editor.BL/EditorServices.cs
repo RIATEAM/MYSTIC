@@ -344,7 +344,7 @@ namespace Editor.BL {
 
 
             docXml.AppendChild(page);
-            docXml.WriteTo(writer);
+            docXml.WriteTo(writer);            
 
             writer.Close();
 
@@ -400,6 +400,8 @@ namespace Editor.BL {
             readXslt.Close();
             mywriter.Close();
 
+            //cancello il file XML
+            File.Delete(pathxml);
             return pageName;
         }
 
@@ -511,6 +513,8 @@ namespace Editor.BL {
                         readXslt.Close();
                         mywriter.Close();
 
+                        //Cancello il file XML
+                        File.Delete(xmlpath);
 
                         string def = Path.Combine(Path.Combine(FileThemes, cont.Skin.Theme.Path), "default.html");
                         // Path file Html
@@ -769,6 +773,8 @@ namespace Editor.BL {
                         elbody = elbody.Trim().Replace(" ", "").ToLower();
 
                         elbody = elbody.Replace("&nbsp;", "");
+                        elbody = elbody.Replace("‘", "");
+                        elbody = elbody.Replace("’", "");
                         elbody = elbody.Replace("'", "");
 
                         if (elbody.StartsWith("nonapplicabile")) {

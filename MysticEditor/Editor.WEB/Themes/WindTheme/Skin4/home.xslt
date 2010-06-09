@@ -8,27 +8,29 @@
   <xsl:template match="/">
     <html>
       <head>
-
         <link rel="stylesheet" href="{Page/Theme/@Path|text()}\styles\style.css" />
         <title>
-          <xsl:value-of select="Page/Titolo/text()" disable-output-escaping="yes"/>
+          Home
         </title>
         <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
       </head>
       <body>
-
         <div class="title">
-          <xsl:value-of select="Page/TitoloContent/text()" disable-output-escaping="yes"/>
-        </div>
-        <div class="node">
           <xsl:value-of select="Page/Titolo/text()" disable-output-escaping="yes"/>
         </div>
         <br />
         <br />
         <br />
-
-        <div class="text">
-          <xsl:value-of select="Page/Corpo/text()" disable-output-escaping="yes"/>
+        <br />
+        <br />
+        <br />
+        <br />
+        <div class="node">
+          DATA DI CREAZIONE:  <xsl:value-of select="Page/DataCreazione/text()" disable-output-escaping="yes"/>
+        </div>
+        <br />
+        <div class="node">
+          DATA DI ULTIMA MODIFICA:  <xsl:value-of select="Page/DataModifica/text()" disable-output-escaping="yes"/>
         </div>
       </body>
     </html>
