@@ -10,7 +10,10 @@ namespace Editor.BE.Model
 		public virtual int Widgetelementid { get; set; }
         public virtual int Elementid { get; set; }
         public virtual int Widgetid { get; set; }
-		public virtual String Value { get; set; }
+		public virtual String Valore { get; set; }
+        public virtual String Name { get; set; }
+        public virtual int Position { get; set; }
+
         public virtual Element Element { get; set; }
         public virtual Widget Widget { get; set; }
 		
@@ -35,7 +38,7 @@ namespace Editor.BE.Model
 			if (Equals(Elementid, obj.Elementid) == false)
 				return false;
 
-			if (Equals(Value, obj.Value) == false)
+            if (Equals(Valore, obj.Valore) == false)
 				return false;
 
 			return true;
@@ -48,7 +51,7 @@ namespace Editor.BE.Model
             result = (result * 397) ^ (Widgetelementid != null ? Widgetelementid.GetHashCode() : 0);
             result = (result * 397) ^ (Widgetid != null ? Widgetid.GetHashCode() : 0);
 			result = (result * 397) ^ (Elementid != null ? Elementid.GetHashCode() : 0);
-			result = (result * 397) ^ (Value != null ? Value.GetHashCode() : 0);			
+            result = (result * 397) ^ (Valore != null ? Valore.GetHashCode() : 0);			
 			return result;
 		}
         public override bool IsPersisted {

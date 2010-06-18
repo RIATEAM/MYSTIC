@@ -13,6 +13,7 @@ using Editor.DTO;
 using Editor.Helper;
 using Iesi.Collections.Generic;
 using NHibernate;
+using System.Text.RegularExpressions;
 
 namespace Editor.Services {
     public class PageServices {
@@ -162,7 +163,7 @@ namespace Editor.Services {
                         WebSiteThumbnail.SaveImage(contrawfile, FolderToSave);
                         //cancello il file temporaneo html
                         File.Delete(contrawfile);
-                        
+
                         transaction.Commit();
 
                     } catch (Exception ex) {
@@ -190,8 +191,13 @@ namespace Editor.Services {
                         //Mappo la PageDTO in Page
                         page = Mapper.Map<PageDTO, Page>(pagedto);
 
+                        Regex punt = new Regex(@"[\t\r\n\e\a._%+-/]");
+
+                        page.Title = punt.Replace(page.Title.Replace("&nbsp;", "").Trim().Replace(" ", "_"), "_");
+
                         if (page.Publictitle != null && page.Contentid > 0 && page.Position > 0) {
-                            if (page.IsNew) {
+                            if (page.IsNew) {                              
+                                
                                 // Salvo la Nuova pagina 
                                 HibernateHelper.Persist(page, session);
 
@@ -280,9 +286,9 @@ namespace Editor.Services {
 
         public PageDTO MovePage(PageDTO pagedto) {
             using (ISession session = HibernateHelper.GetSession().OpenSession()) {
-                using (ITransaction transaction = session.BeginTransaction()) {
-                    try {
-
+                ITransaction transaction = session.BeginTransaction();
+                try {
+                    if (pagedto.Parentpageid > 0) {
                         //Prendo i Figli del nuovo padre della pagina DTO
                         List<Page> Figli = new List<Page>();
                         Figli = EditorServices.GetPageByParent(session, pagedto.Contentid, pagedto.Parentpageid);
@@ -293,35 +299,47 @@ namespace Editor.Services {
 
                         //Controllo se esiste un figlio in posizione 1
 
-                        var uone = (from u in Figli
-                                    where u.Position == 1
-                                    select u).FirstOrDefault<Page>();
+                        //var uone = (from u in Figli
+                        //            where u.Position == 1
+                        //            select u).FirstOrDefault<Page>();
 
+                        int oldpos = 0;
+
+                        var con = (from f in Figli
+                                   where f.Pageid == pagedto.Pageid
+                                   select f).FirstOrDefault<Page>();
+
+                        if (con != null) {
+                            oldpos = con.Position;
+                        }
                         foreach (Page pg in Figli) {
-                            if (pagedto.Position == 1 && pg.Pageid != pagedto.Pageid) {
-                                pg.Position = pg.Position + 1;
-                                pg.Dirty = true;
-                                HibernateHelper.Persist(pg, session);
-                            } else
-                                if (pg.Position >= pagedto.Position) {
-                                    pg.Position = pg.Position + 1;
-                                    pg.Dirty = true;
-                                    HibernateHelper.Persist(pg, session);
-                                } else
-                                    if (uone.Position > 1 && pg.Position < pagedto.Position) {
-                                        pg.Position = pg.Position - 1;
-                                        pg.Dirty = true;
-                                        HibernateHelper.Persist(pg, session);
-                                    }
 
-                            // Se il padre è lo stesso potrebbe verificarsi il clona dell oggetto page
-                            if (pagedto.Pageid == pg.Pageid) {
+                            if (pg.Pageid == pagedto.Pageid) {
+                                oldpos = pg.Position;
                                 pg.Position = pagedto.Position;
                                 pg.Parentpageid = pagedto.Parentpageid;
                                 pg.Dirty = true;
                                 HibernateHelper.Persist(pg, session);
                                 update = true;
-                            }
+                            } else
+                                if (pg.Position > pagedto.Position) {
+                                    pg.Position = pg.Position + 1;
+                                    pg.Dirty = true;
+                                    HibernateHelper.Persist(pg, session);
+                                } else
+                                    if (pg.Position <= pagedto.Position
+                                        //    && pg.Position != 1 
+                                        && con != null) {
+                                        if (pg.Position == pagedto.Position && oldpos > pagedto.Position) {
+                                            pg.Position = pg.Position + 1;
+                                        } else {
+                                            pg.Position = pg.Position - 1;
+                                        }
+                                        pg.Dirty = true;
+                                        HibernateHelper.Persist(pg, session);
+                                    }
+
+
                         }
 
                         if (!update) {
@@ -337,14 +355,36 @@ namespace Editor.Services {
 
                         transaction.Commit();
 
-                    } catch (Exception ex) {
-                        transaction.Rollback();
-                        throw ex;
-                    } finally {
-                        session.Flush();
-                        session.Close();
+                        transaction = session.BeginTransaction();
+
+                        Figli = EditorServices.GetPageByParent(session, pagedto.Contentid, pagedto.Parentpageid);
+
+                        var child = from cd in Figli
+                                    orderby cd.Position ascending
+                                    select cd;
+
+                        int position = 1;
+                        foreach (Page ch in child) {
+
+                            ch.Position = position;
+                            ch.Dirty = true;
+                            position++;
+                            HibernateHelper.Persist(ch, session);
+                        }
+
+                        transaction.Commit();
+
                     }
+
+                } catch (Exception ex) {
+                    transaction.Rollback();
+                    throw ex;
+                } finally {
+                    session.Flush();
+                    session.Close();
+                    transaction.Dispose();
                 }
+
             }
             return pagedto;
         }
@@ -391,10 +431,10 @@ namespace Editor.Services {
                                 RawHtml childraw = new RawHtml();
                                 childraw.IsNew = true;
                                 childraw.Value = cloneraw.Value;
-                                SaveRawHtml(childraw, idItemAmm);                                
+                                SaveRawHtml(childraw, idItemAmm);
                                 child.Rawhtmlid = childraw.Rawhtmlid;
-                                
-                                
+
+
                             }
 
                             HibernateHelper.Persist(child, session);
@@ -445,8 +485,8 @@ namespace Editor.Services {
         public PageDTO ClonePage(PageDTO pagedto) {
 
             return ClonePage(pagedto, 0);
-        } 
-        
+        }
+
         public Boolean DeletePage(PageDTO pagedto) {
             Boolean status = false;
             using (ISession session = HibernateHelper.GetSession().OpenSession()) {
@@ -470,8 +510,10 @@ namespace Editor.Services {
                         if (Cestino != null) {
                             List<Page> Cestinati = new List<Page>();
                             Cestinati = EditorServices.GetPageByParent(session, page.Contentid, Cestino.Pageid);
-                            actualpos = (from c in Cestinati
-                                         select c.Position).Max();
+                            if (Cestinati.Count > 0) {
+                                actualpos = (from c in Cestinati
+                                             select c.Position).Max();
+                            }
                         }
 
                         //Decremento la posizione dei figli successivi al DTO
@@ -505,7 +547,7 @@ namespace Editor.Services {
             }
             return status;
         }
-        
+
         public Boolean PublishPage(int pageID, string pathIdItem) {
             Boolean status = false;
             using (ISession session = HibernateHelper.GetSession().OpenSession()) {
@@ -605,6 +647,8 @@ namespace Editor.Services {
             }
 
         }
+
+
 
 
     }

@@ -11,7 +11,8 @@
     <property name="Title" column="`TITLE`" length="200" />
     <property name="Publictitle" column="`PUBLICTITLE`" length="500" />		
 		<property name="State" column="`STATE`" length="22" />
-		
+    <property name="Position" column="`POSITION`" length="22" />
+    <property name="Structureid" column="`STRUCTUREID`" length="22" />
 		
     <many-to-one name="Content" 
                  class="Content" 

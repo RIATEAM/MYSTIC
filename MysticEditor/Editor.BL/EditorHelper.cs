@@ -31,6 +31,7 @@ namespace Editor.BL {
             dt.Columns.Remove("Deleted");
             dt.Columns.Remove("IsPersisted");
             dt.Columns.Remove("HasChanged");
+            dt.Columns.Remove("Structureid");
 
             dt.Columns["Pageid"].ColumnMapping = MappingType.Attribute;
             dt.Columns["Parentpageid"].ColumnMapping = MappingType.Hidden;
@@ -84,6 +85,14 @@ namespace Editor.BL {
             return docXml;
         }
 
+
+        private static XmlDocument CreateXmlToDataSetWidget(DataTable dt) {
+
+            throw new NotImplementedException();
+        
+        }
+        
+        
         public static DataTable ToDataTable<T>(IList<T> items) {
             var tb = new DataTable(typeof(T).Name);
 
@@ -262,14 +271,6 @@ namespace Editor.BL {
 
 
 
-
-
-
     }
-
-
-
-
-
 
 }

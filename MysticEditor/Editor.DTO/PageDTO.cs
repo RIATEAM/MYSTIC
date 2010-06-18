@@ -19,7 +19,7 @@ namespace Editor.DTO {
 
         public   bool IsPersisted {
             get {
-                return Contentid > 0;
+                return Pageid > 0;
             }
         }
 

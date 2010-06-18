@@ -178,6 +178,34 @@ namespace Editor.BL {
 
         }
         /// <summary>
+        /// Setta la position di ciascun figlio
+        /// </summary>
+        /// <param name="setPage"></param>
+        public static void SetPosition(ISet<Page> List) {
+
+
+            foreach (Page pg in List) {
+                int position = 1;
+                var child = from cd in List
+                            where cd.Parentpageid == pg.Pageid
+                            orderby cd.Position ascending
+                            select cd;
+                foreach (Page ch in child) {
+
+                    ch.Position = position;
+                    ch.Dirty = true;
+                    position++;
+
+                }
+
+
+
+            }
+
+        }
+
+
+        /// <summary>
         /// Restituisce la pagina Padre di una pagina Figlia
         /// </summary>
         /// <param name="child"></param>
@@ -250,7 +278,7 @@ namespace Editor.BL {
         }
 
         public static List<Page> GetPageByParent(ISession session, int tmpCont, int tmpPage) {
-            List<Page> pageList = HibernateHelper.SelectCommand<Page>(session, " PARENTPAGEID =" + tmpPage + " AND CONTENTID =" + tmpCont) as List<Page>;
+            List<Page> pageList = HibernateHelper.SelectCommand<Page>(session, " PARENTPAGEID =" + tmpPage + "AND PAGEID <>" + tmpPage + " AND CONTENTID =" + tmpCont) as List<Page>;
             pageList.Sort(delegate(Page pg1, Page pg2) { return pg1.Position.CompareTo(pg2.Position); });
             return pageList;
         }
@@ -273,6 +301,14 @@ namespace Editor.BL {
 
         }
 
+        public static List<Widget> GetWidgetByContent(NHibernate.ISession session, int contentId) {
+            List<Widget> pageList = HibernateHelper.SelectCommand<Widget>(session, "  CONTENTID =" + contentId) as List<Widget>;
+            pageList.Sort(delegate(Widget pg1, Widget pg2) { return pg1.Position.CompareTo(pg2.Position); });
+
+
+            return pageList;
+        }
+
         public static List<PageElement> GetPageelementByPage(NHibernate.ISession session, int pageid) {
             List<PageElement> pageList = HibernateHelper.SelectCommand<PageElement>(session, "  PAGEID =" + pageid) as List<PageElement>;
             return pageList;
@@ -281,6 +317,18 @@ namespace Editor.BL {
         public static Page GetPageById(int pageId, ISession session) {
             Page page = new Page();
             page = HibernateHelper.SelectIstance<Page>(session, new string[] { "Pageid" }, new object[] { pageId }, new Operators[] { Operators.Eq });
+            return page;
+        }
+
+        public static Widget GetWidgetById(int WidgetId, NHibernate.ISession session) {
+            Widget page = new Widget();
+            page = HibernateHelper.SelectIstance<Widget>(session, new string[] { "Widgetid" }, new object[] { WidgetId }, new Operators[] { Operators.Eq });
+            return page;
+        }
+
+        public static WidgetElement GetWidgetElementById(int WidgetElementId, NHibernate.ISession session) {
+            WidgetElement page = new WidgetElement();
+            page = HibernateHelper.SelectIstance<WidgetElement>(session, new string[] { "Widgetelementid" }, new object[] { WidgetElementId }, new Operators[] { Operators.Eq });
             return page;
         }
 
@@ -344,7 +392,7 @@ namespace Editor.BL {
 
 
             docXml.AppendChild(page);
-            docXml.WriteTo(writer);            
+            docXml.WriteTo(writer);
 
             writer.Close();
 
@@ -452,8 +500,12 @@ namespace Editor.BL {
                         var pages = from f in ListTempPage
                                     orderby f.Position, f.Pageid, f.Parentpageid
                                     select f;
-
                         DataTable dt = ToDataTable<Page>(pages.ToList<Page>());
+
+
+                       
+                        
+
                         string FileThemes = ConfigurationSettings.AppSettings["FileThemes"];
                         string pathSkinConfig = Path.Combine(FileThemes, cont.Skin.Path);
 
@@ -468,6 +520,71 @@ namespace Editor.BL {
                             pathTema.Attributes.Append(attr);
 
                             docXml.GetElementsByTagName("Menu")[0].AppendChild(pathTema);
+
+                            var widgets = from f in cont.Widgets
+                                          orderby f.Position, f.Widgetid
+                                          select f;
+                            XmlNode WIDGETS = docXml.CreateNode(XmlNodeType.Element, "WIDGETS", "");
+                            
+                            foreach (Widget widget in widgets) {
+
+                                XmlNode WIDGET = docXml.CreateNode(XmlNodeType.Element, "WIDGET", "");
+
+                                XmlAttribute Widgetid = docXml.CreateAttribute("Id");
+                                Widgetid.Value = widget.Widgetid.ToString();
+                                WIDGET.Attributes.Append(Widgetid);
+
+                                XmlAttribute Titolo = docXml.CreateAttribute("Titolo");
+                                Titolo.Value = widget.Publictitle.ToString();
+                                WIDGET.Attributes.Append(Titolo);
+
+                                XmlAttribute Position = docXml.CreateAttribute("Position");
+                                Position.Value = widget.Position.ToString();
+                                WIDGET.Attributes.Append(Position);
+                                
+                                XmlAttribute State = docXml.CreateAttribute("State");
+                                State.Value = widget.State.ToString();
+                                WIDGET.Attributes.Append(State);
+
+
+                                // XmlNode WIDGETELEMENTS = docXml.CreateNode(XmlNodeType.Element, "WIDGETELEMENTS", "");
+
+                                foreach (WidgetElement  WDTO in widget.WidgetElements) {
+
+                                    XmlNode WIDGETELEMENT = docXml.CreateNode(XmlNodeType.Element, "WIDGETELEMENT", "");
+
+                                    XmlAttribute Widgetelementid = docXml.CreateAttribute("Id");
+                                    Widgetelementid.Value = WDTO.Widgetelementid.ToString();
+                                    WIDGETELEMENT.Attributes.Append(Widgetelementid);
+
+                                    XmlAttribute Valore = docXml.CreateAttribute("Href");
+                                    Valore.Value = WDTO.Valore.ToString();
+                                    WIDGETELEMENT.Attributes.Append(Valore);
+
+                                    XmlAttribute Name = docXml.CreateAttribute("Titolo");
+                                    Name.Value = WDTO.Name.ToString();
+                                    WIDGETELEMENT.Attributes.Append(Name);
+
+                                    XmlAttribute Position_ = docXml.CreateAttribute("Position");
+                                    Position_.Value = WDTO.Position.ToString();
+                                    WIDGETELEMENT.Attributes.Append(Position_);
+
+                                    XmlAttribute Target = docXml.CreateAttribute("Target");
+                                    Target.Value = "_new";
+                                    WIDGETELEMENT.Attributes.Append(Target);
+
+                                    WIDGET.AppendChild(WIDGETELEMENT);
+                                    //WIDGETELEMENTS.AppendChild(WIDGETELEMENT);
+                                }
+
+                                //WIDGET.AppendChild(WIDGETELEMENTS);
+
+                                WIDGETS.AppendChild(WIDGET);
+                            }
+
+
+                            docXml.GetElementsByTagName("Menu")[0].AppendChild(WIDGETS);
+                            
                             docXml.WriteTo(write);
 
                         }
@@ -514,7 +631,7 @@ namespace Editor.BL {
                         mywriter.Close();
 
                         //Cancello il file XML
-                        File.Delete(xmlpath);
+                        //File.Delete(xmlpath);
 
                         string def = Path.Combine(Path.Combine(FileThemes, cont.Skin.Theme.Path), "default.html");
                         // Path file Html
@@ -567,7 +684,6 @@ namespace Editor.BL {
             }
 
         }
-
 
         public static Content SavePages(List<String> Files, Content contnt, ISession session, string FolderToSave) {
             ITransaction transaction = session.BeginTransaction();
@@ -635,7 +751,8 @@ namespace Editor.BL {
                         menu.Title = "home";
                         string TitoloEL = menu.Publictitle;
                         menu.Publictitle = "HOME";
-                        menu.State = 1;
+                        menu.State = (int)PageStateEnum.Nessuna;
+                        menu.Structureid = 2;
 
                         menu.Skin = SkinHome;
                         menu.Skinid = SkinHome.Skinid;
@@ -764,8 +881,12 @@ namespace Editor.BL {
 
                         page.Publictitle = num.Replace(temp, " ").Replace("&nbsp;", "").Trim();
                         page.Title = punt.Replace(rgx.Replace(title, "").Replace("&nbsp;", "").Trim().Replace(" ", "_"), "_");
-                        page.State = 1;
 
+                        if (page.Level == 1) {
+                            page.State = (int)PageStateEnum.NonCliccabile;
+                        } else {
+                            page.State = (int)PageStateEnum.Nessuna;
+                        }
 
                         String elbody = rgx.Replace(body.Substring(body.IndexOf("</h") + 5), "");
                         elbody = num.Replace(elbody, "");
@@ -784,7 +905,7 @@ namespace Editor.BL {
                         page.Skinid = skinPage.Skinid;
                         page.Content = contnt;
                         page.Contentid = contnt.Contentid;
-
+                        page.Structureid = 1;
                         page.IsNew = true;
                         HibernateHelper.Persist(page, session);
 
@@ -859,7 +980,24 @@ namespace Editor.BL {
                 Cestino.Dirty = true;
                 HibernateHelper.Persist(Cestino, session);
 
+                //Widget Applicativi Link
+                Widget AppLink = new Widget();
+                AppLink.Position = 1;
+                AppLink.Publictitle = "UTILITY e LINK";
+                AppLink.Title = "UTILITY_e_LINK";
+                AppLink.Skinid = 0;
+                AppLink.Skin = skinPage;
+                AppLink.State = (int)PageStateEnum.NonCliccabile;
+                AppLink.Contentid = contnt.Contentid;
+                AppLink.Structureid = 4;
+                AppLink.IsNew = true;
+                HibernateHelper.Persist(AppLink, session);
+
+
+                //Setto il padre di ciascuna pagina
                 SetParentPage(setPage);
+                //Setto le position 
+                SetPosition(setPage);
 
                 contnt.Pages = setPage;
                 setPage = contnt.Pages;

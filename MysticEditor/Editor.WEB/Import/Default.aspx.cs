@@ -65,7 +65,7 @@ namespace Editor.Web {
                         EditorServices.UnZipFiles(fileLocation, pathCont, "", true);
                         List<string> list = EditorServices.Export(Directory.GetFiles(pathCont)[0], pathCont);
 
-                        EditorServices.SavePages(list, cont,session);
+                        EditorServices.SavePages(list, cont,session,fileserver);
 
 
                     } catch (Exception ex) {

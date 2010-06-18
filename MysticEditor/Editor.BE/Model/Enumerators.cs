@@ -10,7 +10,20 @@ namespace Editor.BE.Model.Enumerators {
         LabelText = 1,
         RawHtml = 2,
         Img = 3,
-        Link = 4
+        Link = 4,
+        UtilityLink = 5
+    }
+
+    public enum PageStateEnum : short {
+
+        Nessuna = 1,
+        NonApplicabbile = 2,
+        NonCliccabile = 3,
+        Aggiornato = 4,
+        Nuovo = 5,
+        Eliminato = 99
+
+
     }
 
 

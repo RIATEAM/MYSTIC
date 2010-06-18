@@ -8,8 +8,10 @@
 		</id>
 		<property name="Elementid" column="`ELEMENTID`" length="22" />
 		<property name="Widgetid" column="`WIDGETID`" length="22" />
-		<property name="Value" column="`VALUE`" type="AnsiString"/>
-		
+		<property name="Valore" column="`VALORE`" type="AnsiString"/>
+    <property name="Name" column="`NAME`" type="AnsiString"/>
+    <property name="Position" column="`POSITION`" length="22" />
+    
     <many-to-one name="Element" 
                  class="Element" 
                  column="`ELEMENTID`" 
