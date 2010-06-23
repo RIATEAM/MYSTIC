@@ -44,7 +44,7 @@ namespace Editor.Web.Edit {
                                         TextBox txt = new TextBox();
                                         txt.Width = 600;
                                         txt.Height = 30;
-                                        txt.Text = pgEl.Value;
+                                        txt.Text = pgEl.Valore;
                                         lbTxt.Controls.Add(txt);
                                         row.Cells.Add(lbTxt);
 
@@ -61,7 +61,7 @@ namespace Editor.Web.Edit {
 
                                         TableCell lbBody = new TableCell();
                                         CkEditor editor = new CkEditor();
-                                        editor.Text = pgEl.Value;
+                                        editor.Text = pgEl.Valore;
                                         lbBody.Controls.Add(editor);
                                         riga.Cells.Add(lbBody);
 

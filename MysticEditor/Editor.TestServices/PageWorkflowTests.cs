@@ -118,6 +118,9 @@ namespace Editor.TestServices {
 
             int id = page.Pageid;
 
+            page.PageelementsList[0].Valore = page.PageelementsList[0].Valore + " Modificato";
+            page.PageelementsList[0].Dirty = true;
+
             page = svc.SavePage(page);
 
             Assert.AreEqual("nuova pagina modificata", page.Publictitle, "titolo non modificato!");
@@ -185,7 +188,7 @@ namespace Editor.TestServices {
             PageDTO dad = svc.GetPage(page.Parentpageid);
 
             Assert.IsNotNull(page, "la pagina è stata cancellata fisicamente!");
-            Assert.AreEqual(99, dad.State, "la pagina non è stata cancellata!");
+            Assert.AreEqual(997868574865, dad.State, "la pagina non è stata cancellata!");
         }
 
         /// <summary>

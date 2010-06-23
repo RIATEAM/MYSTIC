@@ -237,7 +237,10 @@ namespace Editor.BL {
         }
 
         private static Boolean IsDeleted(Page Child, ISet<Page> fam) {
+            return IsDeleted(Child, fam.ToList<Page>());
+        }
 
+        private static Boolean IsDeleted(Page Child, List<Page> fam) {
             if (Child.State == 99) {
                 return true;
             } else if (Child.Pageid == Child.Parentpageid && Child.State == 1) {
@@ -246,7 +249,10 @@ namespace Editor.BL {
                 var pg = (from p in fam
                           where p.Pageid == Child.Parentpageid
                           select p).FirstOrDefault<Page>();
-                return IsDeleted(pg, fam);
+                if (pg != null)
+                    return IsDeleted(pg, fam);
+                else
+                    return false;
             }
         }
 
@@ -386,10 +392,28 @@ namespace Editor.BL {
             //Nodo Theme
             XmlNode pathTema = docXml.CreateNode(XmlNodeType.Element, "Theme", null);
             XmlAttribute attr = docXml.CreateAttribute("Path");
-            attr.Value = @"..\..\Themes\" + pagina.Skin.Path;
+            attr.Value = @"\Themes\" + pagina.Skin.Path;
             pathTema.Attributes.Append(attr);
             page.AppendChild(pathTema);
 
+            // Nodo Child
+            XmlNode Childs = docXml.CreateNode(XmlNodeType.Element, "Childs", null);
+
+            List<Page> ListChild = new List<Page>();
+            ListChild = GetPageByParent(session, pagina.Contentid, pagina.Pageid);
+
+            List<Page> ListTempChild = new List<Page>();
+
+            foreach (Page pg in ListChild) {
+                if (!IsDeleted(pg, ListChild)) {
+                    ListTempChild.Add(pg);
+                }
+            }
+            ListTempChild.Sort(delegate(Page p1, Page p2) { return p1.Position.CompareTo(p2.Position); });
+            DataTable dt = ToDataTable<Page>(ListTempChild);
+            Childs.InnerXml = CreateNodeCilds(dt).Replace("<Childs>", "").Replace("</Childs>", "").Replace("<Childs />","");
+
+            page.AppendChild(Childs);
 
             docXml.AppendChild(page);
             docXml.WriteTo(writer);
@@ -449,10 +473,10 @@ namespace Editor.BL {
             mywriter.Close();
 
             //cancello il file XML
-            File.Delete(pathxml);
+            //File.Delete(pathxml);
             return pageName;
         }
-
+        
         public static string PublicContent(int contId, string pathIdItem, string Title) {
             using (ISession session = HibernateHelper.GetSession().OpenSession()) {
                 using (ITransaction transaction = session.BeginTransaction()) {
@@ -503,8 +527,8 @@ namespace Editor.BL {
                         DataTable dt = ToDataTable<Page>(pages.ToList<Page>());
 
 
-                       
-                        
+
+
 
                         string FileThemes = ConfigurationSettings.AppSettings["FileThemes"];
                         string pathSkinConfig = Path.Combine(FileThemes, cont.Skin.Path);
@@ -516,7 +540,7 @@ namespace Editor.BL {
                             docXml = CreateXmlToDataSet(dt);
                             XmlNode pathTema = docXml.CreateNode(XmlNodeType.Element, "Theme", null);
                             XmlAttribute attr = docXml.CreateAttribute("Path");
-                            attr.Value = @"..\..\Themes\" + cont.Skin.Path;
+                            attr.Value = @"\Themes\" + cont.Skin.Path;
                             pathTema.Attributes.Append(attr);
 
                             docXml.GetElementsByTagName("Menu")[0].AppendChild(pathTema);
@@ -525,7 +549,7 @@ namespace Editor.BL {
                                           orderby f.Position, f.Widgetid
                                           select f;
                             XmlNode WIDGETS = docXml.CreateNode(XmlNodeType.Element, "WIDGETS", "");
-                            
+
                             foreach (Widget widget in widgets) {
 
                                 XmlNode WIDGET = docXml.CreateNode(XmlNodeType.Element, "WIDGET", "");
@@ -541,7 +565,7 @@ namespace Editor.BL {
                                 XmlAttribute Position = docXml.CreateAttribute("Position");
                                 Position.Value = widget.Position.ToString();
                                 WIDGET.Attributes.Append(Position);
-                                
+
                                 XmlAttribute State = docXml.CreateAttribute("State");
                                 State.Value = widget.State.ToString();
                                 WIDGET.Attributes.Append(State);
@@ -549,7 +573,7 @@ namespace Editor.BL {
 
                                 // XmlNode WIDGETELEMENTS = docXml.CreateNode(XmlNodeType.Element, "WIDGETELEMENTS", "");
 
-                                foreach (WidgetElement  WDTO in widget.WidgetElements) {
+                                foreach (WidgetElement WDTO in widget.WidgetElements) {
 
                                     XmlNode WIDGETELEMENT = docXml.CreateNode(XmlNodeType.Element, "WIDGETELEMENT", "");
 
@@ -584,7 +608,7 @@ namespace Editor.BL {
 
 
                             docXml.GetElementsByTagName("Menu")[0].AppendChild(WIDGETS);
-                            
+
                             docXml.WriteTo(write);
 
                         }
@@ -710,9 +734,19 @@ namespace Editor.BL {
                 Element Contenuto = new Element();
                 Contenuto = HibernateHelper.SelectIstance<Element>(new string[] { "Elementid" }, new object[] { 2 }, new Operators[] { Operators.Eq });
 
+
+                //Elemento Logo
+                //Element Logo = new Element();
+                //Logo = HibernateHelper.SelectIstance<Element>(new string[] { "Elementid" }, new object[] { 7 }, new Operators[] { Operators.Eq });
+
                 //Elemento Titolo
                 Element TitoloMenu = new Element();
                 TitoloMenu = HibernateHelper.SelectIstance<Element>(new string[] { "Elementid" }, new object[] { 3 }, new Operators[] { Operators.Eq });
+
+                //Elemento Corpo
+                Element CorpoMenu = new Element();
+                CorpoMenu = HibernateHelper.SelectIstance<Element>(new string[] { "Elementid" }, new object[] { 8 }, new Operators[] { Operators.Eq });
+
 
                 //Elemento DataCreazione
                 Element DataCreazione = new Element();
@@ -769,7 +803,7 @@ namespace Editor.BL {
                         //PageElement LogoEl = new PageElement();
                         //LogoEl.Element = Logo;
                         //LogoEl.Elementid = Logo.Elementid;
-                        //LogoEl.Value = "Logo";
+                        //LogoEl.Valore = "Logo";
                         //LogoEl.Filename = "Logo.jpg";
                         //LogoEl.Pageid = menu.Pageid;
                         //LogoEl.Page = menu;
@@ -797,11 +831,46 @@ namespace Editor.BL {
 
                         setMnEl.Add(MemutitleEl);
 
+                        //Add RowHtml
+
+                        PageElement MenuBody = new PageElement();
+                        MenuBody.Pageid = menu.Pageid;
+                        MenuBody.Page = menu;
+                        MenuBody.Element = CorpoMenu;
+                        MenuBody.Elementid = CorpoMenu.Elementid;
+                        MenuBody.IsNew = true;
+
+                        RawHtml MenuRawHtml = new RawHtml();
+                        MenuRawHtml.IsNew = true;
+                        MenuRawHtml.Value = " ";
+                        HibernateHelper.Persist(MenuRawHtml, session);
+
+                        MenuBody.Filename = MenuRawHtml.Rawhtmlid + "_RawHtml.jpg";
+                        MenuBody.Valore = "RawHtml";
+                        MenuBody.Rawhtmlid = MenuRawHtml.Rawhtmlid;
+                        HibernateHelper.Persist(MenuBody, session);
+                        ///Generare JPG e salvarla in FolderToSave
+                        ///  Add immagine blank
+
+                        string emptyfile = Path.Combine(FolderToSave, MenuRawHtml.Rawhtmlid + "_RawHtml.htm");
+
+                        string htmlDocument = "<html><body></body></html>";
+                        FileStream fs = File.OpenWrite(emptyfile);
+                        StreamWriter writer = new StreamWriter(fs, Encoding.UTF8);
+                        writer.Write(htmlDocument);
+                        writer.Close();
+                        Editor.Helper.WebSiteThumbnail.SaveImage(emptyfile, FolderToSave);
+
+                        //cancello il file temporaneo html
+                        File.Delete(emptyfile);
+
+                        setMnEl.Add(MenuBody);
+
                         //Add DataCreazione
                         PageElement DataCreazioneEl = new PageElement();
                         DataCreazioneEl.Element = DataCreazione;
                         DataCreazioneEl.Elementid = DataCreazione.Elementid;
-                        DataCreazioneEl.Valore = DateTime.Now.ToShortDateString();
+                        DataCreazioneEl.Valore = DateTime.Now.Day + "/" + DateTime.Now.Month + "/" + DateTime.Now.Year;
                         DataCreazioneEl.Pageid = menu.Pageid;
                         DataCreazioneEl.Page = menu;
                         DataCreazioneEl.IsNew = true;
@@ -812,7 +881,7 @@ namespace Editor.BL {
                         PageElement DataModificaEL = new PageElement();
                         DataModificaEL.Element = DataModifica;
                         DataModificaEL.Elementid = DataModifica.Elementid;
-                        DataModificaEL.Valore = DateTime.Now.ToShortDateString();
+                        DataModificaEL.Valore = DateTime.Now.Day + "/" + DateTime.Now.Month + "/" + DateTime.Now.Year;
                         DataModificaEL.Pageid = menu.Pageid;
                         DataModificaEL.Page = menu;
                         DataModificaEL.IsNew = true;
@@ -820,39 +889,6 @@ namespace Editor.BL {
 
                         setMnEl.Add(DataModificaEL);
 
-
-                        ////Add RowHtml
-
-                        //PageElement MenuBody = new PageElement();
-                        //MenuBody.Pageid = menu.Pageid;
-                        //MenuBody.Page = menu;
-                        //MenuBody.Element = ContenutoHome;
-                        //MenuBody.Elementid = ContenutoHome.Elementid;
-                        //MenuBody.IsNew = true;
-
-                        //RawHtml MenuRawHtml = new RawHtml();
-                        //MenuRawHtml.IsNew = true;
-                        //MenuRawHtml.Value = " ";
-                        //HibernateHelper.Persist(MenuRawHtml, session);
-
-                        //MenuBody.Filename = MenuRawHtml.Rawhtmlid + "_RawHtml.jpg";
-                        //MenuBody.Value = "RawHtml";
-                        //MenuBody.Rawhtmlid = MenuRawHtml.Rawhtmlid;
-                        //HibernateHelper.Persist(MenuBody, session);
-                        /////Generare JPG e salvarla in FolderToSave
-                        /////  Add immagine blank
-
-                        //string emptyfile = Path.Combine(FolderToSave, MenuRawHtml.Rawhtmlid + "_RawHtml.htm");
-
-                        //string htmlDocument = "<html><body></body></html>";
-                        //FileStream fs = File.OpenWrite(emptyfile);
-                        //StreamWriter writer = new StreamWriter(fs, Encoding.UTF8);
-                        //writer.Write(htmlDocument);
-                        //writer.Close();
-                        //Editor.Helper.WebSiteThumbnail.SaveImage(emptyfile, FolderToSave);
-
-                        ////cancello il file temporaneo html
-                        //File.Delete(emptyfile);
 
                         menu.PageElements = setMnEl;
                         setMnEl = menu.PageElements;

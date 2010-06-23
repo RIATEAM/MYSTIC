@@ -85,6 +85,58 @@ namespace Editor.BL {
             return docXml;
         }
 
+        private static string CreateNodeCilds(DataTable dt) {
+
+            DataSet set = new DataSet();
+            set.DataSetName = "Childs";
+
+            dt.TableName = "Child";
+
+            dt.Columns.Add("Href");
+            dt.Columns.Add("Target");
+            dt.Columns.Remove("Content");
+            dt.Columns.Remove("Skin");
+            dt.Columns.Remove("PageElements");
+            dt.Columns.Remove("PageelementsList");
+            dt.Columns.Remove("Contentid");
+            dt.Columns.Remove("Position");
+            dt.Columns.Remove("Level");
+            dt.Columns.Remove("Skinid");
+            dt.Columns.Remove("IsNew");
+            dt.Columns.Remove("Dirty");
+            dt.Columns.Remove("Deleted");
+            dt.Columns.Remove("IsPersisted");
+            dt.Columns.Remove("HasChanged");
+            dt.Columns.Remove("Structureid");
+
+            dt.Columns["Pageid"].ColumnMapping = MappingType.Attribute;
+            dt.Columns["Parentpageid"].ColumnMapping = MappingType.Hidden;
+            dt.Columns["Title"].ColumnMapping = MappingType.Hidden;
+            dt.Columns["Publictitle"].ColumnMapping = MappingType.Attribute;
+            dt.Columns["Href"].ColumnMapping = MappingType.Attribute;
+            dt.Columns["Target"].ColumnMapping = MappingType.Attribute;
+            dt.Columns["State"].ColumnMapping = MappingType.Attribute;
+
+            dt.Columns["Pageid"].ColumnName = "Id";
+            dt.Columns["Publictitle"].ColumnName = "Titolo";
+
+            set.Tables.Add(dt);
+
+            foreach (DataRow dr in dt.Rows) {
+                if (Convert.ToInt32(dr["Id"]) == Convert.ToInt32(dr["Parentpageid"])) {
+                    dr["Parentpageid"] = DBNull.Value;
+
+                    dr["Href"] = dr["Title"] + ".html";
+
+                } else {
+                    dr["Href"] = dr["Id"] + "_" + dr["Title"] + ".html";
+                }
+                dr["Target"] = "mainframe";
+            }
+
+            return set.GetXml();
+        }
+        
 
         private static XmlDocument CreateXmlToDataSetWidget(DataTable dt) {
 
