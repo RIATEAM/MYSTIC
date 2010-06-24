@@ -196,8 +196,8 @@ namespace Editor.Services {
                         page.Title = punt.Replace(page.Title.Replace("&nbsp;", "").Trim().Replace(" ", "_"), "_");
 
                         if (page.Publictitle != null && page.Contentid > 0 && page.Position > 0) {
-                            if (page.IsNew) {                              
-                                
+                            if (page.IsNew) {
+
                                 // Salvo la Nuova pagina 
                                 HibernateHelper.Persist(page, session);
 
@@ -625,32 +625,27 @@ namespace Editor.Services {
 
         }
 
-        public List<ThemeDTO> GetThemes() {
+        //public List<ThemeDTO> GetThemes() {
 
-            using (ISession session = HibernateHelper.GetSession().OpenSession()) {
-                using (ITransaction transaction = session.BeginTransaction()) {
-                    try {
-                        List<Theme> themes = new List<Theme>();
-                        themes = HibernateHelper.SelectCommand<Theme>(session, "");
+        //    using (ISession session = HibernateHelper.GetSession().OpenSession()) {
+        //        using (ITransaction transaction = session.BeginTransaction()) {
+        //            try {
+        //                List<Theme> themes = new List<Theme>();
+        //                themes = HibernateHelper.SelectCommand<Theme>(session, "");
 
-                        Mapper.CreateMap<Theme, ThemeDTO>();
-                        return Mapper.Map<List<Theme>, List<ThemeDTO>>(themes);
+        //                Mapper.CreateMap<Theme, ThemeDTO>();
+        //                return Mapper.Map<List<Theme>, List<ThemeDTO>>(themes);
 
-                    } catch (Exception ex) {
-                        throw ex;
-                    } finally {
-                        session.Flush();
-                        session.Close();
-                    }
-                }
+        //            } catch (Exception ex) {
+        //                throw ex;
+        //            } finally {
+        //                session.Flush();
+        //                session.Close();
+        //            }
+        //        }
 
-            }
+        //    }
 
-        }
-
-
-
-
+        //}
     }
-
 }

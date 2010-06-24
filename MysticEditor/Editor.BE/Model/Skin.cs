@@ -13,7 +13,8 @@ namespace Editor.BE.Model
         public virtual int Themeid { get; set; }
         public virtual Theme Theme { get; set; }
 		public virtual ISet<ElementSkin> ElementSkins { get; set; }
-		public virtual ISet<Page> Pages { get; set; }
+        public virtual ISet<Page> Pages { get; set; }
+        public virtual String Codice { get; set; }
 
         public override bool Equals(object obj) {
             if (ReferenceEquals(this, obj))
@@ -32,6 +33,9 @@ namespace Editor.BE.Model
 			if (Equals(Description, obj.Description) == false)
 				return false;
 
+            if (Equals(Codice, obj.Codice) == false)
+                return false;
+
 			return true;
 		}
 
@@ -40,6 +44,7 @@ namespace Editor.BE.Model
 
             result = (result * 397) ^ (Skinid != null ? Skinid.GetHashCode() : 0);
             result = (result * 397) ^ (Description != null ? Description.GetHashCode() : 0);
+            result = (result * 397) ^ (Codice != null ? Codice.GetHashCode() : 0);
             return result;
         }
 

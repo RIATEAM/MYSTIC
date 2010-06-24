@@ -8,6 +8,7 @@
     </id>
     <property name="Description" column="`DESCRIPTION`" length="200" />
     <property name="Path" column="`PATH`" length="200" />
+    <property name="Templateid" column="`TEMPLATEID`" length="22" />
 
 
     <set name="Skins"

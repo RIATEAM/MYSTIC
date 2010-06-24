@@ -9,6 +9,7 @@
     <property name="Description" column="`DESCRIPTION`" length="100" />
     <property name="Themeid" column="`THEMEID`" length="22" />
     <property name="Path" column="`PATH`" length="200" />
+    <property name="Codice" column="`CODICE`" length="50" />
 
     <many-to-one name="Theme"
                  class="Theme"

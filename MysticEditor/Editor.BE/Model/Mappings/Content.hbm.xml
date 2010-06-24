@@ -10,8 +10,13 @@
 		<property name="Parentcontentid" column="`PARENTCONTENTID`" length="22" />
 		<property name="Title" column="`TITLE`" length="100" />
     <property name="Skinid" column="`SKINID`" length="100" />
-
-      <set name="Pages"
+    <property name="Themeid" column="`THEMEID`" length="22" />
+    <property name="Iditem" column="`IDITEM`" length="22" />
+    <property name="Repository" column="`REPOSITORY`" length="5" />
+    <property name="Date_creation" column="`DATE_CREATION`" length="20" />
+    <property name="Date_publish" column="`DATE_PUBLISH`" length="20" />
+    
+    <set name="Pages"
             cascade="save-update"
             inverse="true"
             lazy="true">
@@ -33,6 +38,13 @@
           not-null="true"
           update="false"
           insert="false"/>
+
+    <many-to-one name="Theme"
+        class="Theme"
+        column="`THEMEID`"
+        not-null="true"
+        update="false"
+        insert="false"/>
 
   </class>
 </hibernate-mapping>

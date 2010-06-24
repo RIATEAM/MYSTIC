@@ -7,6 +7,11 @@ namespace Editor.DTO {
         public int Parentcontentid { get; set; }
         public String Title { get; set; }
         public int Skinid { get; set; }
+        public int Themeid { get; set; }
+        public int Iditem { get; set; }
+        public String Repository { get; set; }
+        public String Date_creation { get; set; }
+        public String Date_publish { get; set; }
 
         public  bool IsPersisted {
             get {

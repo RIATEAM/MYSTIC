@@ -14,6 +14,12 @@ namespace Editor.BE.Model {
         public virtual Skin Skin { get; set; }
         public virtual ISet<Page> Pages { get; set; }
         public virtual ISet<Widget> Widgets { get; set; }
+        public virtual int Themeid { get; set; }
+        public virtual Theme Theme { get; set; }
+        public virtual int Iditem { get; set; }
+        public virtual String Repository { get; set; }
+        public virtual String Date_creation { get; set; }
+        public virtual String Date_publish { get; set; }
 
         public override bool Equals(object obj) {
             if (ReferenceEquals(this, obj))
@@ -37,6 +43,21 @@ namespace Editor.BE.Model {
             if (Equals(Skinid, obj.Skinid) == false)
                 return false;
 
+            if (Equals(Themeid, obj.Themeid) == false)
+                return false;
+
+            if (Equals(Iditem, obj.Iditem) == false)
+                return false;
+
+            if (Equals(Repository, obj.Repository) == false)
+                return false;
+
+            if (Equals(Date_creation, obj.Date_creation) == false)
+                return false;
+
+            if (Equals(Date_publish, obj.Date_publish) == false)
+                return false;
+
             return true;
         }
 
@@ -47,6 +68,11 @@ namespace Editor.BE.Model {
             result = (result * 397) ^ (Parentcontentid != null ? Parentcontentid.GetHashCode() : 0);
             result = (result * 397) ^ (Title != null ? Title.GetHashCode() : 0);
             result = (result * 397) ^ (Skinid != null ? Skinid.GetHashCode() : 0);
+            result = (result * 397) ^ (Themeid != null ? Themeid.GetHashCode() : 0);
+            result = (result * 397) ^ (Iditem != null ? Iditem.GetHashCode() : 0);
+            result = (result * 397) ^ (Repository != null ? Repository.GetHashCode() : 0);
+            result = (result * 397) ^ (Date_creation != null ? Date_creation.GetHashCode() : 0);
+            result = (result * 397) ^ (Date_publish != null ? Date_publish.GetHashCode() : 0);
             return result;
         }
 

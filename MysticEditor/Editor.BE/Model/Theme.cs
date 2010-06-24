@@ -9,8 +9,9 @@ namespace Editor.BE.Model
 	{
 		public virtual String Path { get; set; }
         public virtual String Description { get; set; }
-		public virtual int Themeid { get; set; }
-		public virtual ISet<Skin> Skins { get; set; }
+        public virtual int Themeid { get; set; }
+        public virtual ISet<Skin> Skins { get; set; }
+        public virtual int Templateid { get; set; }
 		
 		public override bool Equals(object obj)
 		{
@@ -33,6 +34,9 @@ namespace Editor.BE.Model
 			if (Equals(Description, obj.Description) == false)
 				return false;
 
+            if (Equals(Templateid, obj.Templateid) == false)
+                return false;
+
 			return true;
 		}
 		
@@ -42,7 +46,8 @@ namespace Editor.BE.Model
 
 			result = (result * 397) ^ (Themeid != null ? Themeid.GetHashCode() : 0);
 			result = (result * 397) ^ (Path != null ? Path.GetHashCode() : 0);
-			result = (result * 397) ^ (Description != null ? Description.GetHashCode() : 0);			
+            result = (result * 397) ^ (Description != null ? Description.GetHashCode() : 0);
+            result = (result * 397) ^ (Templateid != null ? Templateid.GetHashCode() : 0);		
 			return result;
 		}
         public override bool IsPersisted {
