@@ -140,30 +140,29 @@ namespace Editor.Services {
 
         }
 
-        public void SaveRawHtml(RawHtml Row, int iditemamm) {
+        public void SaveRawHtml(RawHtml Row, string Folder) {
             using (ISession session = HibernateHelper.GetSession().OpenSession()) {
                 using (ITransaction transaction = session.BeginTransaction()) {
                     try {
-
+                        if (Folder.StartsWith(@"\")== true){
+                           Folder= Folder.Remove(0, 1);
+                        }                        
+                        string SavePath = ConfigurationSettings.AppSettings["ServerPath"];
+                        string FolderToSave = Path.Combine(SavePath, Folder);
                         HibernateHelper.Persist(Row, session);
 
+                        if (Row.IsPersisted) {
+                            string contrawfile = Path.Combine(FolderToSave, Row.Rawhtmlid + "_RawHtml.htm");
 
-                        string FolderToSave = ConfigurationSettings.AppSettings["ServerPath"];
-
-                        FolderToSave = Path.Combine(FolderToSave, "contenutiAdm");
-                        FolderToSave = Path.Combine(FolderToSave, iditemamm.ToString());
-
-                        string contrawfile = Path.Combine(FolderToSave, Row.Rawhtmlid + "_RawHtml.htm");
-
-                        string htmlDocument = Row.Value;
-                        FileStream fs = File.OpenWrite(contrawfile);
-                        StreamWriter writer = new StreamWriter(fs, Encoding.UTF8);
-                        writer.Write(htmlDocument);
-                        writer.Close();
-                        WebSiteThumbnail.SaveImage(contrawfile, FolderToSave);
-                        //cancello il file temporaneo html
-                        File.Delete(contrawfile);
-
+                            string htmlDocument = Row.Value;
+                            FileStream fs = File.OpenWrite(contrawfile);
+                            StreamWriter writer = new StreamWriter(fs, Encoding.UTF8);
+                            writer.Write(htmlDocument);
+                            writer.Close();
+                            WebSiteThumbnail.SaveImage(contrawfile, FolderToSave);
+                            //cancello il file temporaneo html
+                            File.Delete(contrawfile);
+                        }
                         transaction.Commit();
 
                     } catch (Exception ex) {
@@ -389,7 +388,8 @@ namespace Editor.Services {
             return pagedto;
         }
 
-        public PageDTO ClonePage(PageDTO pagedto, int idItemAmm) {
+        public PageDTO ClonePage(PageDTO pagedto, int idItemAmm, string FolderToSave) {
+
             using (ISession session = HibernateHelper.GetSession().OpenSession()) {
                 using (ITransaction transaction = session.BeginTransaction()) {
                     try {
@@ -431,7 +431,7 @@ namespace Editor.Services {
                                 RawHtml childraw = new RawHtml();
                                 childraw.IsNew = true;
                                 childraw.Value = cloneraw.Value;
-                                SaveRawHtml(childraw, idItemAmm);
+                                SaveRawHtml(childraw, FolderToSave);
                                 child.Rawhtmlid = childraw.Rawhtmlid;
 
 
@@ -484,7 +484,7 @@ namespace Editor.Services {
 
         public PageDTO ClonePage(PageDTO pagedto) {
 
-            return ClonePage(pagedto, 0);
+            return ClonePage(pagedto, 0,"");
         }
 
         public Boolean DeletePage(PageDTO pagedto) {

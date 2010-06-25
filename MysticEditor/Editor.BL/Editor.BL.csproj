@@ -75,6 +75,9 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -93,6 +96,10 @@
     <ProjectReference Include="..\Editor.BE\Editor.BE.csproj">
       <Project>{E9DC88C5-6F2D-4AEA-B8A8-8294DE0B63DA}</Project>
       <Name>Editor.BE</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Editor.Helper\Editor.Helper.csproj">
+      <Project>{25540E93-D786-48B9-BCFB-B8D802BDFE23}</Project>
+      <Name>Editor.Helper</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

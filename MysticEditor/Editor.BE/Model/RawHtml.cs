@@ -9,5 +9,12 @@ namespace Editor.BE.Model {
 
         public virtual int Rawhtmlid { get; set; }
         public virtual String Value { get; set; }
+
+        public override bool IsPersisted {
+            get {
+                return Rawhtmlid > 0;
+            }
+        }
+    
     }
 }

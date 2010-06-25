@@ -203,8 +203,7 @@ namespace Editor.BL {
             }
 
         }
-
-
+        
         /// <summary>
         /// Restituisce la pagina Padre di una pagina Figlia
         /// </summary>
