@@ -31,7 +31,7 @@ namespace Editor.Services {
             }
         }
 
-        public Boolean SetTheme(int themeID, int contentID) {
+        public bool SetTheme(int themeID, int contentID) {
 
             using (ISession session = HibernateHelper.GetSession().OpenSession()) {
                 using (ITransaction transaction = session.BeginTransaction()) {
@@ -60,6 +60,7 @@ namespace Editor.Services {
                         foreach (Skin s in skins) {
                             if (content.Skin.Codice == s.Codice) {
                                 content.Skinid = s.Skinid;
+                                HibernateHelper.UpdateCommand(content);
                                 break;
                             }
                         }
@@ -69,6 +70,7 @@ namespace Editor.Services {
                             foreach (Skin s in skins) {
                                 if (page.Skin.Codice == s.Codice) {
                                     page.Skinid = s.Skinid;
+                                    HibernateHelper.UpdateCommand(page);
                                     break;
                                 }
                             }
@@ -79,11 +81,13 @@ namespace Editor.Services {
                             foreach (Skin s in skins) {
                                 if (widget.Skin.Codice == s.Codice) {
                                     widget.Skinid = s.Skinid;
+                                    HibernateHelper.UpdateCommand(widget);
                                     break;
                                 }
                             }
                         }
 
+                        transaction.Commit();
                         return true;
 
                     } catch (Exception ex) {
