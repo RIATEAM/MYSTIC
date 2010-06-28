@@ -37,7 +37,7 @@ public partial class cms_Editor_Fx_PageElement_editpageelement : System.Web.UI.P
 
         row.Value = edit.Text;
         row.Dirty = true;
-        pgserv.SaveRawHtml(row, iditemamm);
+        pgserv.SaveRawHtml(row, "");
 
     }
 }

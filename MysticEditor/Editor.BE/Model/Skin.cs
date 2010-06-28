@@ -48,5 +48,11 @@ namespace Editor.BE.Model
             return result;
         }
 
+
+        public override bool IsPersisted {
+            get {
+                return Skinid > 0;
+            }
+        }
 	}
 }

@@ -15,12 +15,11 @@ namespace Editor.Services {
             IList<Content> List = new List<Content>();
             List = EditorServices.GetContents<Content>() as List<Content>;
             Mapper.CreateMap<Content, ContentDTO>();
-            return Mapper.Map<IList<Content>,IList<ContentDTO>>(List);
+            return Mapper.Map<IList<Content>, IList<ContentDTO>>(List);
         }
 
-
-        public ContentDTO SaveContent(ContentDTO contentDto) { 
-              using (ISession session = HibernateHelper.GetSession().OpenSession()) {
+        public ContentDTO SaveContent(ContentDTO contentDto) {
+            using (ISession session = HibernateHelper.GetSession().OpenSession()) {
                 using (ITransaction transaction = session.BeginTransaction()) {
                     try {
                         Content content = new Content();
@@ -35,10 +34,10 @@ namespace Editor.Services {
 
                         //Mappo la ContentDTO in Content
                         contentDto = Mapper.Map<Content, ContentDTO>(content);
-                        
+
                         transaction.Commit();
 
-                     } catch (Exception ex) {
+                    } catch (Exception ex) {
                         transaction.Rollback();
                         throw ex;
                     } finally {
@@ -46,9 +45,42 @@ namespace Editor.Services {
                         session.Close();
                     }
                 }
-              }
-              return contentDto;       
-        
+            }
+            return contentDto;
+
+        }
+
+        public bool SetContentItemid(int contentId, int itemId, string repository) {
+
+            bool status = false;
+            using (ISession session = HibernateHelper.GetSession().OpenSession()) {
+                using (ITransaction transaction = session.BeginTransaction()) {
+                    try {
+                        Content cont = new Content();
+                        cont = EditorServices.GetContentById(contentId, session);
+
+                        cont.Iditem = itemId;
+                        cont.Repository = repository;
+                        cont.Date_creation = DateTime.Now.Day.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Year.ToString() + "-" + DateTime.Now.Hour.ToString() + "-" + DateTime.Now.Minute.ToString() + "-" + DateTime.Now.Second.ToString();
+                        cont.Dirty = true;
+
+                        HibernateHelper.Persist(cont, session);
+                        
+                        transaction.Commit();
+
+                        status = true;
+                        return status;
+                    } catch (Exception ex) {
+                        transaction.Rollback();
+                        return status;
+                        throw ex;
+                    } finally {
+                        session.Flush();
+                        session.Close();
+                    }
+                }
+            }
+
         }
     }
 }

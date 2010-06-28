@@ -1221,6 +1221,20 @@
     <Compile Include="FX\GetXml.ashx.cs">
       <DependentUpon>GetXml.ashx</DependentUpon>
     </Compile>
+    <Compile Include="FX\RawHtmlEditor.aspx.cs">
+      <DependentUpon>RawHtmlEditor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FX\RawHtmlEditor.aspx.designer.cs">
+      <DependentUpon>RawHtmlEditor.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FX\ULEditor.aspx.cs">
+      <DependentUpon>ULEditor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FX\ULEditor.aspx.designer.cs">
+      <DependentUpon>ULEditor.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1267,6 +1281,10 @@
       <Project>{39B7C8A9-4B69-4707-95A4-723016399B81}</Project>
       <Name>Editor.DTO</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Editor.Helper\Editor.Helper.csproj">
+      <Project>{25540E93-D786-48B9-BCFB-B8D802BDFE23}</Project>
+      <Name>Editor.Helper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Editor.Services\Editor.Services.csproj">
       <Project>{7811F6BE-98A3-446C-B531-919DD364683B}</Project>
       <Name>Editor.Services</Name>
@@ -1281,6 +1299,11 @@
     <None Include="console\images\Thumbs.db" />
     <Content Include="crossdomain.xml" />
     <Content Include="diagnostics.aspx" />
+    <Content Include="FX\RawHtmlEditor.aspx" />
+    <Content Include="FX\ULEditor.aspx" />
+    <Content Include="Img\Logo.jpg" />
+    <Content Include="Themes\WindTheme\Skin4\home.xslt" />
+    <Content Include="Themes\WindTheme\Skin4\styles\style.css" />
     <Content Include="WEB-INF\flex\data-management-config.xml" />
     <Content Include="WEB-INF\flex\messaging-config.xml" />
     <Content Include="WEB-INF\flex\remoting-config.xml" />
@@ -1288,6 +1311,7 @@
     <Content Include="WEB-INF\flex\weborb-services-config.xml" />
     <Content Include="weborb.config" />
     <Content Include="FX\GetXml.ashx" />
+    <Content Include="Themes\WindTheme\Skin4\skin.config" />
     <None Include="weborbassets\wdm\weborb.swc" />
     <Content Include="console\AC_OETags.js" />
     <Content Include="console\console.swf" />

@@ -245,5 +245,58 @@ namespace Editor.Services {
             return wid;
         }
 
+        public bool MoveWidgetContent(int ItemId, int NewContentID, string repositoty) {
+            bool status = false; 
+            using (ISession session = HibernateHelper.GetSession().OpenSession()) {
+                using (ITransaction transaction = session.BeginTransaction()) {
+                    try {
+
+                        List<Content> cont = new List<Content>();
+                        cont = HibernateHelper.SelectCommand<Content>(session, "CONTENTID <>" + NewContentID + " AND IDITEM =" + ItemId + " ORDER BY TO_DATE( DATE_CREATION ,'DD-MM-YYYY-HH24-MI-SS') DESC ");
+
+                        if (cont != null && cont.Count > 0) {
+
+                            IList<Widget> widgesnew = new List<Widget>();
+                            widgesnew = EditorServices.GetWidgetByContent(session, NewContentID) as List<Widget>;
+
+                            foreach (Widget wid in widgesnew) {
+                                wid.Deleted = true;
+                                HibernateHelper.Persist(wid, session);
+                            } 
+                            
+                            
+                            
+                            IList<Widget> widges = new List<Widget>();
+                            widges = EditorServices.GetWidgetByContent(session, cont[0].Contentid) as List<Widget>;
+
+                            foreach (Widget wid in widges) {
+                                wid.Contentid = NewContentID;
+                                wid.Dirty = true;
+
+                                HibernateHelper.Persist(wid, session);
+
+                            }
+
+ 
+
+
+                            transaction.Commit();
+
+                        status = true;
+                        }
+                        return status;
+                    } catch (Exception ex) {
+                        transaction.Rollback();
+                        return status;
+                        throw ex;
+                    } finally {
+                        session.Flush();
+                        session.Close();
+                    }
+                }
+             }
+        
+        }
+
     }
 }
