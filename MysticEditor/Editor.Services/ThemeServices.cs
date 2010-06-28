@@ -31,6 +31,33 @@ namespace Editor.Services {
             }
         }
 
+        public List<ThemeDTO> GetThemeByContentID(int contentID) {
+
+            using (ISession session = HibernateHelper.GetSession().OpenSession()) {
+                using (ITransaction transaction = session.BeginTransaction()) {
+                    try {
+                        string strSQL = "CONTENTID = " + contentID;
+                        List<Content> content = HibernateHelper.SelectCommand<Content>(session, strSQL);
+
+                        int themeid = content[0].Themeid;
+
+
+                        strSQL = "THEMEID = " + themeid.ToString();
+                        List<Theme> themes = HibernateHelper.SelectCommand<Theme>(session, strSQL);
+
+                        Mapper.CreateMap<Theme, ThemeDTO>();
+                        return Mapper.Map<List<Theme>, List<ThemeDTO>>(themes);
+
+                    } catch (Exception ex) {
+                        throw ex;
+                    } finally {
+                        session.Flush();
+                        session.Close();
+                    }
+                }
+            }
+        }
+
         public bool SetTheme(int themeID, int contentID) {
 
             using (ISession session = HibernateHelper.GetSession().OpenSession()) {
@@ -60,17 +87,21 @@ namespace Editor.Services {
                         foreach (Skin s in skins) {
                             if (content.Skin.Codice == s.Codice) {
                                 content.Skinid = s.Skinid;
-                                HibernateHelper.UpdateCommand(content);
+                                HibernateHelper.UpdateCommand(session, content);
                                 break;
                             }
                         }
 
                         for (int i = 0; i < pages.Count; i++) {
                             Page page = pages[i];
+
+                            if (page.State == 99) {
+                                continue;
+                            }
                             foreach (Skin s in skins) {
                                 if (page.Skin.Codice == s.Codice) {
                                     page.Skinid = s.Skinid;
-                                    HibernateHelper.UpdateCommand(page);
+                                    HibernateHelper.UpdateCommand(session, page);
                                     break;
                                 }
                             }
@@ -81,7 +112,7 @@ namespace Editor.Services {
                             foreach (Skin s in skins) {
                                 if (widget.Skin.Codice == s.Codice) {
                                     widget.Skinid = s.Skinid;
-                                    HibernateHelper.UpdateCommand(widget);
+                                    HibernateHelper.UpdateCommand(session, widget);
                                     break;
                                 }
                             }

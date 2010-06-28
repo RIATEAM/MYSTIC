@@ -208,6 +208,15 @@ namespace Editor.BE {
             }
         }
 
+        public static object UpdateCommand(ISession session, object obj) {
+            ITransaction transaction = session.BeginTransaction();
+            try {
+                session.Update(obj);
+            } catch (HibernateException ex) {
+                throw ex;
+            }
+            return obj;
+        }
 
         /// <summary>
         /// Esegue la logica di persistenza dell elemento sul DB
