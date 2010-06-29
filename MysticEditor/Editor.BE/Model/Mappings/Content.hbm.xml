@@ -15,6 +15,7 @@
     <property name="Repository" column="`REPOSITORY`" length="5" />
     <property name="Date_creation" column="`DATE_CREATION`" length="20" />
     <property name="Date_publish" column="`DATE_PUBLISH`" length="20" />
+    <property name="Publish_active" column="`PUBLISH_ACTIVE`" length="1" />
     
     <set name="Pages"
             cascade="save-update"

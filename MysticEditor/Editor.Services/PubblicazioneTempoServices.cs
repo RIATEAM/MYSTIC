@@ -11,7 +11,7 @@ using AutoMapper;
 namespace Editor.Services {
     public class PubblicazioneTempoServices {
 
-        public bool SetPubblicazioneTempo(int contentID, string date) {
+        public bool SetPubblicazioneTempo(int contentID, string date, int active) {
 
             using (ISession session = HibernateHelper.GetSession().OpenSession()) {
                 using (ITransaction transaction = session.BeginTransaction()) {
@@ -26,6 +26,7 @@ namespace Editor.Services {
                         }
 
                         content.Date_publish = date;
+                        content.Publish_active = active;
                         HibernateHelper.UpdateCommand(session, content);
                         transaction.Commit();
                         return true;

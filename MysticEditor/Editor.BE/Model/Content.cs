@@ -20,6 +20,7 @@ namespace Editor.BE.Model {
         public virtual String Repository { get; set; }
         public virtual String Date_creation { get; set; }
         public virtual String Date_publish { get; set; }
+        public virtual int Publish_active { get; set; }
 
         public override bool Equals(object obj) {
             if (ReferenceEquals(this, obj))
@@ -58,6 +59,9 @@ namespace Editor.BE.Model {
             if (Equals(Date_publish, obj.Date_publish) == false)
                 return false;
 
+            if (Equals(Publish_active, obj.Publish_active) == false)
+                return false;
+
             return true;
         }
 
@@ -73,6 +77,7 @@ namespace Editor.BE.Model {
             result = (result * 397) ^ (Repository != null ? Repository.GetHashCode() : 0);
             result = (result * 397) ^ (Date_creation != null ? Date_creation.GetHashCode() : 0);
             result = (result * 397) ^ (Date_publish != null ? Date_publish.GetHashCode() : 0);
+            result = (result * 397) ^ (Publish_active != null ? Publish_active.GetHashCode() : 0);
             return result;
         }
 
