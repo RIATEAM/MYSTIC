@@ -18,6 +18,19 @@ namespace Editor.Services {
             return Mapper.Map<IList<Content>, IList<ContentDTO>>(List);
         }
 
+        public ContentDTO GetContentByID(int id) {
+            string strSQL = "CONTENTID = " + id;
+            List<Content> contents = HibernateHelper.SelectCommand<Content>(strSQL);
+            Content content = null;
+            if (contents.Count > 0) {
+                content = contents[0];
+            } else {
+                throw new Exception("Impossibile trovare il content");
+            }
+            Mapper.CreateMap<Content, ContentDTO>();
+            return Mapper.Map<Content, ContentDTO>(content);
+        }
+
         public ContentDTO SaveContent(ContentDTO contentDto) {
             using (ISession session = HibernateHelper.GetSession().OpenSession()) {
                 using (ITransaction transaction = session.BeginTransaction()) {
@@ -65,7 +78,7 @@ namespace Editor.Services {
                         cont.Dirty = true;
 
                         HibernateHelper.Persist(cont, session);
-                        
+
                         transaction.Commit();
 
                         status = true;
