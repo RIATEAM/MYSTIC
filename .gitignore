@@ -11,11 +11,12 @@ Bin
 bin/
 Bin/
 obj_ReSharper*
-*.csproj.user
 *.resharper.user
 *.user
+*.csproj
 *.suo
 *.cache
 *.dll
 *.pdb
+*.csproj.user
 
