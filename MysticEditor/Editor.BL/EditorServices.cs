@@ -484,7 +484,7 @@ namespace Editor.BL {
                         cont = HibernateHelper.SelectIstance<Content>(session, new string[] { "Contentid" }, new object[] { contId }, new Operators[] { Operators.Eq });
 
                         //creo pagina menu' con l'albero delle pagine 
-                        string fileserver = ConfigurationSettings.AppSettings["FileServer"];
+                        string fileserver = ConfigurationSettings.AppSettings["ServerPath"];
 
                         //creo una cartella sul fileserver
                         //string pathCont = Path.Combine(fileserver, cont.Contentid.ToString() + "_" + cont.Title.Trim().Replace(" ", "_"));
@@ -690,7 +690,7 @@ namespace Editor.BL {
                         Page pg = new Page();
                         pg = HibernateHelper.SelectIstance<Page>(session, new string[] { "Pageid" }, new object[] { idpage }, new Operators[] { Operators.Eq });
 
-                        string fileserver = ConfigurationSettings.AppSettings["FileServer"];
+                        string fileserver = ConfigurationSettings.AppSettings["ServerPath"];
                         string pathCont = Path.Combine(fileserver, pathIdItem);
 
                         string ret = PublicPage(pg, pathCont, pathIdItem, Title, session);
@@ -1018,8 +1018,8 @@ namespace Editor.BL {
                 //Widget Applicativi Link
                 Widget AppLink = new Widget();
                 AppLink.Position = 1;
-                AppLink.Publictitle = "UTILITY e LINK";
-                AppLink.Title = "UTILITY_e_LINK";
+                AppLink.Publictitle = "Link Utili";
+                AppLink.Title = "Link_Utili";
                 AppLink.Skinid = 0;
                 AppLink.Skin = skinPage;
                 AppLink.State = (int)PageStateEnum.NonCliccabile;
