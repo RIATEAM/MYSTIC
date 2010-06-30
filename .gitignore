@@ -4,11 +4,13 @@ release/
 *.user
 bin
 Bin
+bin/
+Bin/
 obj_ReSharper*
 *.csproj.user
 *.resharper.user
 *.suo
 *.cache
 *.dll
-*.pbd
+*.pdb
 
