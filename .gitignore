@@ -3,6 +3,7 @@ release/
 Debug/
 ckeditor/
 ckfinder/
+Logs/
 *.suo
 *.user
 bin
