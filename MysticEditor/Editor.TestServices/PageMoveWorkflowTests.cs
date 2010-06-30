@@ -47,9 +47,17 @@ namespace Editor.TestServices {
             D_Move_Page9_to_Page2();
             E_Move_Page10_to_Page1();
             F_Move_Page8_to_Page5();
+
+
+            H_Move_Child_Page1();
+
             G_Move_Page3_to_Page7();
+
         }
 
+
+
+        
         public void A_CreateContent() {
 
             content = new ContentDTO();
@@ -63,7 +71,7 @@ namespace Editor.TestServices {
             Assert.IsTrue(content.Contentid > 0, "Il content non ha un identificativo proprio!");
 
         }
-        
+
         public void B_CreateBasket() {
 
             PageDTO basket = new PageDTO();
@@ -83,7 +91,7 @@ namespace Editor.TestServices {
 
 
         }
-        
+
         public void C_CreateStructurePage() {
 
 
@@ -402,6 +410,185 @@ namespace Editor.TestServices {
 
         }
 
+
+
+
+        private void H_Move_Child_Page1() {
+            // Sposto la page 2 da pos 2 in pos 4
+            page2.Parentpageid = page1.Pageid;
+            page2.Position = 4;
+            page2.Dirty = true;
+
+            page2 = svc.MovePage(page2);
+
+            Assert.IsTrue(page2.Parentpageid == page1.Pageid, "La Page2 non risulta figlia della Page1");
+            Assert.IsTrue(page2.Position == 4, "La Page2 non ha position = 4");
+
+            //La 10 rimane invariata
+            PageDTO page10DB = new PageDTO();
+            page10DB = svc.GetPage(page10.Pageid);
+            //Assert su Oggetto Persistito
+            Assert.IsTrue(page10DB.Parentpageid == page1.Pageid, "Sul DB La Page10 non risulta figlia della Page1");
+            Assert.IsTrue(page10DB.Position == 1, "Sul DB La Page10 non ha position = 1");
+
+            page10 = page10DB;
+
+            //la 3 passa a 2 
+            PageDTO page3DB = new PageDTO();
+            page3DB = svc.GetPage(page3.Pageid);
+            //Assert su Oggetto Persistito
+            Assert.IsTrue(page3DB.Parentpageid == page1.Pageid, "Sul DB La Page3 non risulta figlia della Page1");
+            Assert.IsTrue(page3DB.Position == 2, "Sul DB La Page3 non ha position = 2");
+
+            page3 = page3DB;
+
+            // la 4 passa a 3
+            PageDTO page4DB = new PageDTO();
+            page4DB = svc.GetPage(page4.Pageid);
+            //Assert su Oggetto Persistito
+            Assert.IsTrue(page4DB.Parentpageid == page1.Pageid, "Sul DB La Page4 non risulta figlia della Page1");
+            Assert.IsTrue(page4DB.Position ==3, "Sul DB La Page4 non ha position = 3");
+
+            page4 = page4DB;
+
+
+            //la 2 passa a 4
+            PageDTO page2DB = new PageDTO();
+            page2DB = svc.GetPage(page2.Pageid);
+            //Assert su Oggetto Persistito
+            Assert.IsTrue(page2DB.Parentpageid == page1.Pageid, "Sul DB La Page2 non risulta figlia della Page1");
+            Assert.IsTrue(page2DB.Position == 4, "Sul DB La Page2 non ha position = 4");
+
+            page2 = page2DB;
+
+
+            //la 5 rimane a 5 
+            PageDTO page5DB = new PageDTO();
+            page5DB = svc.GetPage(page5.Pageid);
+            //Assert su Oggetto Persistito
+            Assert.IsTrue(page5DB.Parentpageid == page1.Pageid, "Sul DB La Page5 non risulta figlia della Page1");
+            Assert.IsTrue(page5DB.Position == 5, "Sul DB La Page5 non ha position = 5");
+
+            page5 = page5DB;
+
+
+
+            //Sposto la Pagina 3 dalla posizione 2 alla posizione 3
+            page3.Parentpageid = page1.Pageid;
+            page3.Position = 3;
+            page3.Dirty = true;
+
+            page3 = svc.MovePage(page3);
+
+            Assert.IsTrue(page3.Parentpageid == page1.Pageid, "La Page3 non risulta figlia della Page1");
+            Assert.IsTrue(page3.Position == 3, "La Page3 non ha position = 3");
+
+            // la 10 rimane 1 
+            //La 10 rimane invariata
+            page10DB = new PageDTO();
+            page10DB = svc.GetPage(page10.Pageid);
+            //Assert su Oggetto Persistito
+            Assert.IsTrue(page10DB.Parentpageid == page1.Pageid, "Sul DB La Page10 non risulta figlia della Page1");
+            Assert.IsTrue(page10DB.Position == 1, "Sul DB La Page10 non ha position = 1");
+
+            page10 = page10DB;
+
+
+            // la 4 passa a 2
+            page4DB = new PageDTO();
+            page4DB = svc.GetPage(page4.Pageid);
+            //Assert su Oggetto Persistito
+            Assert.IsTrue(page4DB.Parentpageid == page1.Pageid, "Sul DB La Page4 non risulta figlia della Page1");
+            Assert.IsTrue(page4DB.Position == 2, "Sul DB La Page4 non ha position = 2");
+
+            page4 = page4DB;
+
+            // la 3 passa a 3
+            page3DB = new PageDTO();
+            page3DB = svc.GetPage(page3.Pageid);
+            //Assert su Oggetto Persistito
+            Assert.IsTrue(page3DB.Parentpageid == page1.Pageid, "Sul DB La Page3 non risulta figlia della Page1");
+            Assert.IsTrue(page3DB.Position == 3, "Sul DB La Page3 non ha position = 3");
+
+            page3 = page3DB;
+            
+            // la 2 rimane 4
+            page2DB = new PageDTO();
+            page2DB = svc.GetPage(page2.Pageid);
+            //Assert su Oggetto Persistito
+            Assert.IsTrue(page2DB.Parentpageid == page1.Pageid, "Sul DB La Page2 non risulta figlia della Page1");
+            Assert.IsTrue(page2DB.Position == 4, "Sul DB La Page2 non ha position = 4");
+
+            page2 = page2DB;
+
+            // la 5 rimane 5
+
+            page5DB = new PageDTO();
+            page5DB = svc.GetPage(page5.Pageid);
+            //Assert su Oggetto Persistito
+            Assert.IsTrue(page5DB.Parentpageid == page1.Pageid, "Sul DB La Page5 non risulta figlia della Page1");
+            Assert.IsTrue(page5DB.Position == 5, "Sul DB La Page5 non ha position = 5");
+
+            page5 = page5DB;
+
+
+            //Sposto la Pagina 3 dalla posizione 2 alla posizione 3
+            page3.Parentpageid = page1.Pageid;
+            page3.Position = 2;
+            page3.Dirty = true;
+
+            page3 = svc.MovePage(page3);
+
+
+            // la 10 rimane 1 
+            //La 10 rimane invariata
+            page10DB = new PageDTO();
+            page10DB = svc.GetPage(page10.Pageid);
+            //Assert su Oggetto Persistito
+            Assert.IsTrue(page10DB.Parentpageid == page1.Pageid, "Sul DB La Page10 non risulta figlia della Page1");
+            Assert.IsTrue(page10DB.Position == 1, "Sul DB La Page10 non ha position = 1");
+
+            page10 = page10DB;
+
+            // la 3 passa a 2
+            page3DB = new PageDTO();
+            page3DB = svc.GetPage(page3.Pageid);
+            //Assert su Oggetto Persistito
+            Assert.IsTrue(page3DB.Parentpageid == page1.Pageid, "Sul DB La Page3 non risulta figlia della Page1");
+            Assert.IsTrue(page3DB.Position == 2, "Sul DB La Page3 non ha position = 2");
+
+            page3 = page3DB;
+
+            // la 4 passa a 3
+            page4DB = new PageDTO();
+            page4DB = svc.GetPage(page4.Pageid);
+            //Assert su Oggetto Persistito
+            Assert.IsTrue(page4DB.Parentpageid == page1.Pageid, "Sul DB La Page4 non risulta figlia della Page1");
+            Assert.IsTrue(page4DB.Position == 3, "Sul DB La Page4 non ha position = 3");
+
+            page4 = page4DB;
+
+            // la 2 rimane 4
+            page2DB = new PageDTO();
+            page2DB = svc.GetPage(page2.Pageid);
+            //Assert su Oggetto Persistito
+            Assert.IsTrue(page2DB.Parentpageid == page1.Pageid, "Sul DB La Page2 non risulta figlia della Page1");
+            Assert.IsTrue(page2DB.Position == 4, "Sul DB La Page2 non ha position = 4");
+
+            page2 = page2DB;
+
+            // la 5 rimane 5
+
+            page5DB = new PageDTO();
+            page5DB = svc.GetPage(page5.Pageid);
+            //Assert su Oggetto Persistito
+            Assert.IsTrue(page5DB.Parentpageid == page1.Pageid, "Sul DB La Page5 non risulta figlia della Page1");
+            Assert.IsTrue(page5DB.Position == 5, "Sul DB La Page5 non ha position = 5");
+
+            page5 = page5DB;
+        }
+
+
         public void G_Move_Page3_to_Page7() {
 
             page3.Parentpageid = page7.Pageid;
@@ -429,11 +616,11 @@ namespace Editor.TestServices {
 
             page3 = page3DB;
         }
-
         /// <summary>
         ///Ottiene o imposta il contesto del test che fornisce
         ///le informazioni e le funzionalità per l'esecuzione del test corrente.
         ///</summary>
+
         public TestContext TestContext {
             get {
                 return testContextInstance;
