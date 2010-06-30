@@ -1,5 +1,8 @@
 build/
 release/
+Debug/
+ckeditor/
+ckfinder/
 *.suo
 *.user
 bin
