@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Editor.Helper", "Editor.Helper\Editor.Helper.csproj", "{25540E93-D786-48B9-BCFB-B8D802BDFE23}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Editor.vsmdi
@@ -59,6 +61,10 @@ Global
 		{CF730E92-F2C6-4A30-9BC5-29BA7105A617}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF730E92-F2C6-4A30-9BC5-29BA7105A617}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF730E92-F2C6-4A30-9BC5-29BA7105A617}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25540E93-D786-48B9-BCFB-B8D802BDFE23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25540E93-D786-48B9-BCFB-B8D802BDFE23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25540E93-D786-48B9-BCFB-B8D802BDFE23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25540E93-D786-48B9-BCFB-B8D802BDFE23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

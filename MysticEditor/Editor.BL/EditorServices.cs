@@ -203,7 +203,7 @@ namespace Editor.BL {
             }
 
         }
-        
+
         /// <summary>
         /// Restituisce la pagina Padre di una pagina Figlia
         /// </summary>
@@ -410,9 +410,19 @@ namespace Editor.BL {
             }
             ListTempChild.Sort(delegate(Page p1, Page p2) { return p1.Position.CompareTo(p2.Position); });
             DataTable dt = ToDataTable<Page>(ListTempChild);
-            Childs.InnerXml = CreateNodeCilds(dt).Replace("<Childs>", "").Replace("</Childs>", "").Replace("<Childs />","");
+            Childs.InnerXml = CreateNodeCilds(dt).Replace("<Childs>", "").Replace("</Childs>", "").Replace("<Childs />", "");
 
             page.AppendChild(Childs);
+
+            if (pagina.Pageid == pagina.Parentpageid && pagina.Level == 0) {
+                XmlNode WIDGETS = docXml.CreateNode(XmlNodeType.Element, "WIDGETS", "");
+                var widgets = from f in pagina.Content.Widgets
+                              orderby f.Position, f.Widgetid
+                              select f;
+                WIDGETS = CreateWidgetXML(WIDGETS, docXml, widgets);
+                page.AppendChild(WIDGETS);
+            }
+
 
             docXml.AppendChild(page);
             docXml.WriteTo(writer);
@@ -525,10 +535,6 @@ namespace Editor.BL {
                                     select f;
                         DataTable dt = ToDataTable<Page>(pages.ToList<Page>());
 
-
-
-
-
                         string FileThemes = ConfigurationSettings.AppSettings["FileThemes"];
                         string pathSkinConfig = Path.Combine(FileThemes, cont.Skin.Path);
 
@@ -549,63 +555,8 @@ namespace Editor.BL {
                                           select f;
                             XmlNode WIDGETS = docXml.CreateNode(XmlNodeType.Element, "WIDGETS", "");
 
-                            foreach (Widget widget in widgets) {
-
-                                XmlNode WIDGET = docXml.CreateNode(XmlNodeType.Element, "WIDGET", "");
-
-                                XmlAttribute Widgetid = docXml.CreateAttribute("Id");
-                                Widgetid.Value = widget.Widgetid.ToString();
-                                WIDGET.Attributes.Append(Widgetid);
-
-                                XmlAttribute Titolo = docXml.CreateAttribute("Titolo");
-                                Titolo.Value = widget.Publictitle.ToString();
-                                WIDGET.Attributes.Append(Titolo);
-
-                                XmlAttribute Position = docXml.CreateAttribute("Position");
-                                Position.Value = widget.Position.ToString();
-                                WIDGET.Attributes.Append(Position);
-
-                                XmlAttribute State = docXml.CreateAttribute("State");
-                                State.Value = widget.State.ToString();
-                                WIDGET.Attributes.Append(State);
-
-
-                                // XmlNode WIDGETELEMENTS = docXml.CreateNode(XmlNodeType.Element, "WIDGETELEMENTS", "");
-
-                                foreach (WidgetElement WDTO in widget.WidgetElements) {
-
-                                    XmlNode WIDGETELEMENT = docXml.CreateNode(XmlNodeType.Element, "WIDGETELEMENT", "");
-
-                                    XmlAttribute Widgetelementid = docXml.CreateAttribute("Id");
-                                    Widgetelementid.Value = WDTO.Widgetelementid.ToString();
-                                    WIDGETELEMENT.Attributes.Append(Widgetelementid);
-
-                                    XmlAttribute Valore = docXml.CreateAttribute("Href");
-                                    Valore.Value = WDTO.Valore.ToString();
-                                    WIDGETELEMENT.Attributes.Append(Valore);
-
-                                    XmlAttribute Name = docXml.CreateAttribute("Titolo");
-                                    Name.Value = WDTO.Name.ToString();
-                                    WIDGETELEMENT.Attributes.Append(Name);
-
-                                    XmlAttribute Position_ = docXml.CreateAttribute("Position");
-                                    Position_.Value = WDTO.Position.ToString();
-                                    WIDGETELEMENT.Attributes.Append(Position_);
-
-                                    XmlAttribute Target = docXml.CreateAttribute("Target");
-                                    Target.Value = "_new";
-                                    WIDGETELEMENT.Attributes.Append(Target);
-
-                                    WIDGET.AppendChild(WIDGETELEMENT);
-                                    //WIDGETELEMENTS.AppendChild(WIDGETELEMENT);
-                                }
-
-                                //WIDGET.AppendChild(WIDGETELEMENTS);
-
-                                WIDGETS.AppendChild(WIDGET);
-                            }
-
-
+                            WIDGETS = CreateWidgetXML(WIDGETS, docXml, widgets);
+                            
                             docXml.GetElementsByTagName("Menu")[0].AppendChild(WIDGETS);
 
                             docXml.WriteTo(write);
@@ -675,6 +626,65 @@ namespace Editor.BL {
                     }
                 }
             }
+        }
+        
+        private static XmlNode CreateWidgetXML(XmlNode WIDGETS, XmlDocument docXml, IOrderedEnumerable<Widget> widgets) {
+            foreach (Widget widget in widgets) {
+
+                XmlNode WIDGET = docXml.CreateNode(XmlNodeType.Element, "WIDGET", "");
+
+                XmlAttribute Widgetid = docXml.CreateAttribute("Id");
+                Widgetid.Value = widget.Widgetid.ToString();
+                WIDGET.Attributes.Append(Widgetid);
+
+                XmlAttribute Titolo = docXml.CreateAttribute("Titolo");
+                Titolo.Value = widget.Publictitle.ToString();
+                WIDGET.Attributes.Append(Titolo);
+
+                XmlAttribute Position = docXml.CreateAttribute("Position");
+                Position.Value = widget.Position.ToString();
+                WIDGET.Attributes.Append(Position);
+
+                XmlAttribute State = docXml.CreateAttribute("State");
+                State.Value = widget.State.ToString();
+                WIDGET.Attributes.Append(State);
+
+
+                // XmlNode WIDGETELEMENTS = docXml.CreateNode(XmlNodeType.Element, "WIDGETELEMENTS", "");
+
+                foreach (WidgetElement WDTO in widget.WidgetElements) {
+
+                    XmlNode WIDGETELEMENT = docXml.CreateNode(XmlNodeType.Element, "WIDGETELEMENT", "");
+
+                    XmlAttribute Widgetelementid = docXml.CreateAttribute("Id");
+                    Widgetelementid.Value = WDTO.Widgetelementid.ToString();
+                    WIDGETELEMENT.Attributes.Append(Widgetelementid);
+
+                    XmlAttribute Valore = docXml.CreateAttribute("Href");
+                    Valore.Value = WDTO.Valore.ToString();
+                    WIDGETELEMENT.Attributes.Append(Valore);
+
+                    XmlAttribute Name = docXml.CreateAttribute("Titolo");
+                    Name.Value = WDTO.Name.ToString();
+                    WIDGETELEMENT.Attributes.Append(Name);
+
+                    XmlAttribute Position_ = docXml.CreateAttribute("Position");
+                    Position_.Value = WDTO.Position.ToString();
+                    WIDGETELEMENT.Attributes.Append(Position_);
+
+                    XmlAttribute Target = docXml.CreateAttribute("Target");
+                    Target.Value = "_new";
+                    WIDGETELEMENT.Attributes.Append(Target);
+
+                    WIDGET.AppendChild(WIDGETELEMENT);
+                    //WIDGETELEMENTS.AppendChild(WIDGETELEMENT);
+                }
+
+                //WIDGET.AppendChild(WIDGETELEMENTS);
+
+                WIDGETS.AppendChild(WIDGET);
+            }
+            return WIDGETS;
         }
 
         public static string PublicContent(int contId) {

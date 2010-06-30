@@ -6,6 +6,8 @@ using System.IO;
 using System.Reflection;
 using System.Xml;
 using ICSharpCode.SharpZipLib.Zip;
+using Iesi.Collections.Generic;
+using Editor.BE.Model;
 
 namespace Editor.BL {
     public partial class EditorServices {
@@ -136,15 +138,13 @@ namespace Editor.BL {
 
             return set.GetXml();
         }
-        
 
         private static XmlDocument CreateXmlToDataSetWidget(DataTable dt) {
 
             throw new NotImplementedException();
         
         }
-        
-        
+                
         public static DataTable ToDataTable<T>(IList<T> items) {
             var tb = new DataTable(typeof(T).Name);
 
@@ -221,8 +221,7 @@ namespace Editor.BL {
                 CopyAll(diSourceSubDir, nextTargetSubDir);
             }
         }
-
-
+        
         public static void ZipFiles(string inputFolderPath, string outputPathAndFile, string password) {
             ArrayList ar = GenerateFileList(inputFolderPath); // generate file list
             int TrimLength = inputFolderPath.Length;
