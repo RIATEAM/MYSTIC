@@ -18,7 +18,7 @@ namespace Editor.Web.Public {
                     Editor.BE.Model.Page pagina = new Editor.BE.Model.Page();
                     pagina = HibernateHelper.SelectIstance<Editor.BE.Model.Page>(session, new string[] { "Pageid" }, new object[] { 1 }, new Operators[] { Operators.Eq });
 
-                    EditorServices.PublicPage(pagina, " "," "," ", session);
+                    EditorServices.PublicPage(pagina, " "," "," ");
 
                     EditorServices.PublicPage(pagina.Pageid, "", Title);
 

@@ -337,12 +337,63 @@ namespace Editor.BL {
             return page;
         }
 
+
+        public static string PublicPage(int idpage, string pathIdItem, string Title) {
+
+            using (ISession session = HibernateHelper.GetSession().OpenSession()) {
+                using (ITransaction transaction = session.BeginTransaction()) {
+                    try {
+
+                        Page pg = new Page();
+                        pg = HibernateHelper.SelectIstance<Page>(session, new string[] { "Pageid" }, new object[] { idpage }, new Operators[] { Operators.Eq });
+
+                        string fileserver = ConfigurationSettings.AppSettings["ServerPath"];
+                        string pathCont = Path.Combine(fileserver, pathIdItem);
+
+                        string ret = PublicPage(pg, pathCont, pathIdItem, Title);
+
+                        return pathIdItem + @"\" + ret;
+
+                    } catch (Exception ex) {
+                        throw ex;
+                    } finally {
+                        session.Flush();
+                        session.Close();
+                    }
+                }
+            }
+
+        }
+
+        public static string PublicPage(Page pagina, string fileserver, string pathIdItem, string Title) {
+            using (ISession _session = HibernateHelper.GetSession().OpenSession()) {
+                using (ITransaction transaction = _session.BeginTransaction()) {
+                    try {
+                        XmlDocument docXml = new XmlDocument();
+                        var widgets = from f in pagina.Content.Widgets
+                                      orderby f.Position, f.Widgetid
+                                      select f;
+                        XmlNode WIDGETS = docXml.CreateNode(XmlNodeType.Element, "WIDGETS", "");
+
+                        WIDGETS = CreateWidgetXML(WIDGETS, docXml, widgets);
+
+                        return PublicPage(pagina, fileserver, pathIdItem, Title, WIDGETS, docXml, _session);
+
+                    } catch (Exception ex) {
+                        throw ex;
+                    } finally {
+                        _session.Flush();
+                        _session.Close();
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Publica una pagina in formato html sul fileserver
         /// </summary>
         /// <param name="pageid"></param>
-        public static string PublicPage(Page pagina, string fileserver, string pathIdItem, string Title, ISession session) {
-
+        private static string PublicPage(Page pagina, string fileserver, string pathIdItem, string Title, XmlNode WIDGETS, XmlDocument docXml, ISession session) {
             //crea file xml con la struttura della pagina
             string pathxml = Path.Combine(fileserver, pagina.Pageid + "_" + pagina.Title.Trim().Replace(" ", "_") + ".xml");
             if (File.Exists(pathxml)) {
@@ -351,7 +402,6 @@ namespace Editor.BL {
 
             XmlTextWriter writer = new XmlTextWriter(pathxml, null);
 
-            XmlDocument docXml = new XmlDocument();
             docXml.AppendChild(docXml.CreateXmlDeclaration("1.0", "utf-8", "yes"));
 
             XmlNode page = docXml.CreateNode(XmlNodeType.Element, "Page", null);
@@ -414,15 +464,7 @@ namespace Editor.BL {
 
             page.AppendChild(Childs);
 
-            if (pagina.Pageid == pagina.Parentpageid && pagina.Level == 0) {
-                XmlNode WIDGETS = docXml.CreateNode(XmlNodeType.Element, "WIDGETS", "");
-                var widgets = from f in pagina.Content.Widgets
-                              orderby f.Position, f.Widgetid
-                              select f;
-                WIDGETS = CreateWidgetXML(WIDGETS, docXml, widgets);
-                page.AppendChild(WIDGETS);
-            }
-
+            page.AppendChild(WIDGETS);
 
             docXml.AppendChild(page);
             docXml.WriteTo(writer);
@@ -485,7 +527,11 @@ namespace Editor.BL {
             //File.Delete(pathxml);
             return pageName;
         }
-        
+
+        public static string PublicContent(int contId) {
+            return PublicContent(contId, " ", " ");
+        }
+
         public static string PublicContent(int contId, string pathIdItem, string Title) {
             using (ISession session = HibernateHelper.GetSession().OpenSession()) {
                 using (ITransaction transaction = session.BeginTransaction()) {
@@ -519,12 +565,20 @@ namespace Editor.BL {
                         //Publico tutte le pagine del content
 
                         List<Page> ListTempPage = new List<Page>();
+                        XmlDocument docXml = new XmlDocument();
+                        var widgets = from f in cont.Widgets
+                                      orderby f.Position, f.Widgetid
+                                      select f;
+                        XmlNode WIDGETS = docXml.CreateNode(XmlNodeType.Element, "WIDGETS", "");
+
+                        WIDGETS = CreateWidgetXML(WIDGETS, docXml, widgets);
 
                         foreach (Page pg in cont.Pages) {
 
                             if (!IsDeleted(pg, cont.Pages)) {
-                                PublicPage(pg, pathCont, pathIdItem, Title, session);
+                                PublicPage(pg, pathCont, pathIdItem, Title, WIDGETS, docXml, session);
                                 ListTempPage.Add(pg);
+                                docXml.RemoveAll();
                             }
                         }
 
@@ -537,12 +591,13 @@ namespace Editor.BL {
 
                         string FileThemes = ConfigurationSettings.AppSettings["FileThemes"];
                         string pathSkinConfig = Path.Combine(FileThemes, cont.Skin.Path);
-
+                        
+                        docXml.RemoveAll();
                         string xmlpath = Path.Combine(pathCont, "content.xml");
                         using (XmlWriter write = new XmlTextWriter(xmlpath, null)) {
 
-                            XmlDocument docXml = new XmlDocument();
-                            docXml = CreateXmlToDataSet(dt);
+
+                            docXml = CreateXmlToDataSet(dt, docXml);
                             XmlNode pathTema = docXml.CreateNode(XmlNodeType.Element, "Theme", null);
                             XmlAttribute attr = docXml.CreateAttribute("Path");
                             attr.Value = @"\Themes\" + cont.Skin.Path;
@@ -550,13 +605,6 @@ namespace Editor.BL {
 
                             docXml.GetElementsByTagName("Menu")[0].AppendChild(pathTema);
 
-                            var widgets = from f in cont.Widgets
-                                          orderby f.Position, f.Widgetid
-                                          select f;
-                            XmlNode WIDGETS = docXml.CreateNode(XmlNodeType.Element, "WIDGETS", "");
-
-                            WIDGETS = CreateWidgetXML(WIDGETS, docXml, widgets);
-                            
                             docXml.GetElementsByTagName("Menu")[0].AppendChild(WIDGETS);
 
                             docXml.WriteTo(write);
@@ -627,7 +675,7 @@ namespace Editor.BL {
                 }
             }
         }
-        
+
         private static XmlNode CreateWidgetXML(XmlNode WIDGETS, XmlDocument docXml, IOrderedEnumerable<Widget> widgets) {
             foreach (Widget widget in widgets) {
 
@@ -685,37 +733,6 @@ namespace Editor.BL {
                 WIDGETS.AppendChild(WIDGET);
             }
             return WIDGETS;
-        }
-
-        public static string PublicContent(int contId) {
-            return PublicContent(contId, " ", " ");
-        }
-
-        public static string PublicPage(int idpage, string pathIdItem, string Title) {
-
-            using (ISession session = HibernateHelper.GetSession().OpenSession()) {
-                using (ITransaction transaction = session.BeginTransaction()) {
-                    try {
-
-                        Page pg = new Page();
-                        pg = HibernateHelper.SelectIstance<Page>(session, new string[] { "Pageid" }, new object[] { idpage }, new Operators[] { Operators.Eq });
-
-                        string fileserver = ConfigurationSettings.AppSettings["ServerPath"];
-                        string pathCont = Path.Combine(fileserver, pathIdItem);
-
-                        string ret = PublicPage(pg, pathCont, pathIdItem, Title, session);
-
-                        return pathIdItem + @"\" + ret;
-
-                    } catch (Exception ex) {
-                        throw ex;
-                    } finally {
-                        session.Flush();
-                        session.Close();
-                    }
-                }
-            }
-
         }
 
         public static Content SavePages(List<String> Files, Content contnt, ISession session, string FolderToSave) {

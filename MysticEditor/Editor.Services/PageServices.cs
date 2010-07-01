@@ -563,7 +563,7 @@ namespace Editor.Services {
                             Directory.CreateDirectory(pathCont);
                         }
 
-                        EditorServices.PublicPage(pg, pathCont, pathIdItem, " ", session);
+                        EditorServices.PublicPage(pg, pathCont, pathIdItem, " ");
 
                     } catch (Exception ex) {
                         transaction.Rollback();

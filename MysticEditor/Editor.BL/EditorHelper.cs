@@ -12,7 +12,7 @@ using Editor.BE.Model;
 namespace Editor.BL {
     public partial class EditorServices {
 
-        private static XmlDocument CreateXmlToDataSet(DataTable dt) {
+        private static XmlDocument CreateXmlToDataSet(DataTable dt, XmlDocument docXml) {
             DataSet set = new DataSet();
             set.DataSetName = "Menu";
 
@@ -80,11 +80,11 @@ namespace Editor.BL {
             }
 
 
-            XmlDocument docXml = new XmlDocument();
+           
             docXml.AppendChild(docXml.CreateXmlDeclaration("1.0", "utf-8", "yes"));
             docXml.InnerXml += set.GetXml();
 
-            return docXml;
+            return docXml;            
         }
 
         private static string CreateNodeCilds(DataTable dt) {
