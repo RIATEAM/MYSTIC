@@ -24,10 +24,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Editor.Helper", "Editor.Helper\Editor.Helper.csproj", "{25540E93-D786-48B9-BCFB-B8D802BDFE23}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Editor.Scheduler", "Editor.Scheduler\Editor.Scheduler.csproj", "{55085537-2534-4E25-A8BB-083501223F59}"
+EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Editor.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -65,6 +64,10 @@ Global
 		{25540E93-D786-48B9-BCFB-B8D802BDFE23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25540E93-D786-48B9-BCFB-B8D802BDFE23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25540E93-D786-48B9-BCFB-B8D802BDFE23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55085537-2534-4E25-A8BB-083501223F59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55085537-2534-4E25-A8BB-083501223F59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55085537-2534-4E25-A8BB-083501223F59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55085537-2534-4E25-A8BB-083501223F59}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,5 +75,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{CF730E92-F2C6-4A30-9BC5-29BA7105A617} = {FAFEA76B-2201-4202-A66C-60973C4810A9}
 		{D823EDAA-5E59-4EF7-94A7-193F239849D3} = {FAFEA76B-2201-4202-A66C-60973C4810A9}
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Editor.vsmdi
 	EndGlobalSection
 EndGlobal
