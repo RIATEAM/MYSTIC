@@ -825,26 +825,6 @@ namespace Editor.BL {
                         //PageElement
                         ISet<PageElement> setMnEl = new HashedSet<PageElement>();
 
-                        ////Add Logo 
-                        //PageElement LogoEl = new PageElement();
-                        //LogoEl.Element = Logo;
-                        //LogoEl.Elementid = Logo.Elementid;
-                        //LogoEl.Valore = "Logo";
-                        //LogoEl.Filename = "Logo.jpg";
-                        //LogoEl.Pageid = menu.Pageid;
-                        //LogoEl.Page = menu;
-                        //LogoEl.IsNew = true;
-                        //HibernateHelper.Persist(LogoEl, session);
-
-
-                        //string originimg = Path.Combine(ConfigurationSettings.AppSettings["Img"], "Logo.jpg");
-                        //if (File.Exists(Path.Combine(FolderToSave, "Logo.jpg"))) {
-                        //    File.Delete(Path.Combine(FolderToSave, "Logo.jpg"));
-                        //}
-                        //File.Copy(originimg, Path.Combine(FolderToSave, "Logo.jpg"));
-
-                        //setMnEl.Add(LogoEl);
-
                         //Add Titolo
                         PageElement MemutitleEl = new PageElement();
                         MemutitleEl.Element = TitoloMenu;
@@ -933,7 +913,9 @@ namespace Editor.BL {
                         string pattern = "<[^<>]+>";
                         Regex rgx = new Regex(pattern);
                         Regex num = new Regex("[0-9]");
-                        Regex punt = new Regex(@"[\t\r\n\e\a._%+-/]");
+                        Regex punt = new Regex(@"[\t\r\n\e\a._%+-/€’‘]");
+
+                        Regex puntPub = new Regex(@"[\t\r\n\e\a._%+-/]");
 
                         Page page = new Page();
                         page.Position = actualpos + Convert.ToInt32(pos);
@@ -941,7 +923,7 @@ namespace Editor.BL {
                         string temp = rgx.Replace(title, "");
                         temp = punt.Replace(temp, " ");
 
-                        page.Publictitle = num.Replace(temp, " ").Replace("&nbsp;", "").Trim();
+                        page.Publictitle = ReplaceCharacters(num.Replace(rgx.Replace(puntPub.Replace(title," "), ""), "").Trim());
                         page.Title = punt.Replace(rgx.Replace(title, "").Replace("&nbsp;", "").Trim().Replace(" ", "_"), "_");
 
                         if (page.Level == 1) {
@@ -999,6 +981,7 @@ namespace Editor.BL {
                         RawHtml contraw = new RawHtml();
                         contraw.IsNew = true;
                         contraw.Value = body.Substring(body.IndexOf("</h") + 5);
+                        contraw.Value = ReplaceCharacters(contraw.Value);
                         HibernateHelper.Persist(contraw, session);
 
                         contEl.Filename = contraw.Rawhtmlid + "_RawHtml.jpg";

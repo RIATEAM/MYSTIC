@@ -12,6 +12,19 @@ using Editor.BE.Model;
 namespace Editor.BL {
     public partial class EditorServices {
 
+        public static string ReplaceCharacters(string origin) {
+
+            origin = origin.Replace("“", "\"");
+            origin = origin.Replace("”", "\"");
+            origin = origin.Replace("‘", "'");
+            origin = origin.Replace("’", "'");
+            origin = origin.Replace("&nbsp;", " ");
+            origin = origin.Replace("€", "EUR");
+            origin.Trim();
+
+            return origin;
+        }
+        
         private static XmlDocument CreateXmlToDataSet(DataTable dt, XmlDocument docXml) {
             DataSet set = new DataSet();
             set.DataSetName = "Menu";

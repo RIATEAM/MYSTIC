@@ -81,7 +81,9 @@ namespace Editor.Services {
                         widget.Title = punt.Replace(widget.Title.Replace("&nbsp;", "").Trim().Replace(" ", "_"), "_");
 
                         if (widget.Publictitle != null && widget.Contentid > 0 && widget.Position > 0) {
-
+                            
+                            widget.Publictitle = EditorServices.ReplaceCharacters(widget.Publictitle);
+                            
                             HibernateHelper.Persist(widget, session);
 
                             //Foreach delle pageelements
@@ -159,9 +161,8 @@ namespace Editor.Services {
                         widget = Mapper.Map<WidgetElementDTO, WidgetElement>(wid);
 
                         if (widget.Name != null && widget.Widgetid > 0 && widget.Position > 0) {
-
+                            widget.Name = EditorServices.ReplaceCharacters(widget.Name);
                             HibernateHelper.Persist(widget, session);
-
                         }
 
                         Mapper.CreateMap<WidgetElement, WidgetElementDTO>();
@@ -246,7 +247,7 @@ namespace Editor.Services {
         }
 
         public bool MoveWidgetContent(int ItemId, int NewContentID, string repositoty) {
-            bool status = false; 
+            bool status = false;
             using (ISession session = HibernateHelper.GetSession().OpenSession()) {
                 using (ITransaction transaction = session.BeginTransaction()) {
                     try {
@@ -262,10 +263,10 @@ namespace Editor.Services {
                             foreach (Widget wid in widgesnew) {
                                 wid.Deleted = true;
                                 HibernateHelper.Persist(wid, session);
-                            } 
-                            
-                            
-                            
+                            }
+
+
+
                             IList<Widget> widges = new List<Widget>();
                             widges = EditorServices.GetWidgetByContent(session, cont[0].Contentid) as List<Widget>;
 
@@ -277,12 +278,12 @@ namespace Editor.Services {
 
                             }
 
- 
+
 
 
                             transaction.Commit();
 
-                        status = true;
+                            status = true;
                         }
                         return status;
                     } catch (Exception ex) {
@@ -294,8 +295,8 @@ namespace Editor.Services {
                         session.Close();
                     }
                 }
-             }
-        
+            }
+
         }
 
     }

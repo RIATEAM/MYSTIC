@@ -195,6 +195,9 @@ namespace Editor.Services {
                         page.Title = punt.Replace(page.Title.Replace("&nbsp;", "").Trim().Replace(" ", "_"), "_");
 
                         if (page.Publictitle != null && page.Contentid > 0 && page.Position > 0) {
+
+                            page.Publictitle = EditorServices.ReplaceCharacters(page.Publictitle);
+                            
                             if (page.IsNew) {
 
                                 // Salvo la Nuova pagina 
@@ -214,13 +217,13 @@ namespace Editor.Services {
                                         PaElement.Elementid = el.Elementid;
                                         PaElement.Page = page;
                                         PaElement.Pageid = page.Pageid;
-                                        PaElement.Valore = el.Description;
+                                        PaElement.Valore = EditorServices.ReplaceCharacters(el.Description);
                                         PaElement.IsNew = true;
 
                                         if (el.Elementtypeid == (int)ElementTypeEnum.RawHtml) {
                                             //solo RawHtml 
                                             RawHtml raw = new RawHtml();
-                                            raw.Value = el.Description;
+                                            raw.Value = EditorServices.ReplaceCharacters(el.Description);
                                             raw.IsNew = true;
                                             HibernateHelper.Persist(raw, session);
                                             PaElement.Rawhtmlid = raw.Rawhtmlid;
@@ -251,11 +254,12 @@ namespace Editor.Services {
 
                                     //Foreach delle pageelements
                                     foreach (PageElement el in page.PageelementsList) {
-                                        el.Pageid = page.Pageid;
+                                        el.Pageid = page.Pageid;                                        
                                         if (el.Deleted) {
                                             HibernateHelper.Persist(el, session);
                                             page.PageelementsList.Remove(el);
                                         } else {
+                                            el.Valore = EditorServices.ReplaceCharacters(el.Valore);
                                             HibernateHelper.Persist(el, session);
                                         }
                                     }
@@ -418,7 +422,7 @@ namespace Editor.Services {
                             child.IsNew = true;
                             child.Page = page;
                             child.Pageid = page.Pageid;
-                            child.Valore = el.Valore;
+                            child.Valore = EditorServices.ReplaceCharacters(el.Valore);
                             child.Filename = el.Filename;
                             child.Element = el.Element;
                             child.Elementid = el.Elementid;
@@ -430,7 +434,7 @@ namespace Editor.Services {
 
                                 RawHtml childraw = new RawHtml();
                                 childraw.IsNew = true;
-                                childraw.Value = cloneraw.Value;
+                                childraw.Value = EditorServices.ReplaceCharacters(cloneraw.Value);
                                 SaveRawHtml(childraw, FolderToSave);
                                 child.Rawhtmlid = childraw.Rawhtmlid;
 
