@@ -85,10 +85,10 @@ namespace Editor.Scheduler {
             } else if (type == "com") {
                 //Contenuti Commerciali
 
-                cms.Entities.Document doc = new cms.Entities.Document(Convert.ToInt32(iditemamm));
-                doc.Load();
+                //cms.Entities.Document doc = new cms.Entities.Document(Convert.ToInt32(iditemamm));
+                //doc.Load();
 
-                string Title = doc.Title.ToString();
+                string Title = customer.GetItemTitle(Convert.ToInt32(iditemamm), type);
              //   string pathIdItem = doc.View("");
                 //string pathIdItemUser = "";
                 //pathIdItemUser = pathIdItem = pathIdItem.Substring(0, pathIdItem.IndexOf("/Editor/")).Replace("/", @"\");
