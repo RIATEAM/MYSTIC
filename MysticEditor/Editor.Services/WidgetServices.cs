@@ -9,6 +9,12 @@ using Editor.BE.Model;
 using AutoMapper;
 using Editor.BL;
 using System.Text.RegularExpressions;
+using Editor.BE.Model.Enumerators;
+using System.Data;
+using Microsoft.Practices.Unity;
+using Microsoft.Practices.Unity.Configuration;
+using System.Configuration;
+
 
 namespace Editor.Services {
     public class WidgetServices {
@@ -81,14 +87,17 @@ namespace Editor.Services {
                         widget.Title = punt.Replace(widget.Title.Replace("&nbsp;", "").Trim().Replace(" ", "_"), "_");
 
                         if (widget.Publictitle != null && widget.Contentid > 0 && widget.Position > 0) {
-                            
+
                             widget.Publictitle = EditorServices.ReplaceCharacters(widget.Publictitle);
-                            
+
                             HibernateHelper.Persist(widget, session);
 
-                            //Foreach delle pageelements
+                            //Foreach delle WidgetElements
                             foreach (WidgetElement el in widget.WidgetElementsList) {
                                 el.Widgetid = widget.Widgetid;
+                                if (el.Type == 0) {
+                                    el.Type = 1;
+                                }
                                 if (el.Deleted) {
                                     HibernateHelper.Persist(el, session);
                                     widget.WidgetElementsList.Remove(el);
@@ -160,6 +169,9 @@ namespace Editor.Services {
 
                         widget = Mapper.Map<WidgetElementDTO, WidgetElement>(wid);
 
+                        if (widget.Type == 0) {
+                            widget.Type = 1;
+                        }
                         if (widget.Name != null && widget.Widgetid > 0 && widget.Position > 0) {
                             widget.Name = EditorServices.ReplaceCharacters(widget.Name);
                             HibernateHelper.Persist(widget, session);
@@ -299,5 +311,119 @@ namespace Editor.Services {
 
         }
 
+        public bool SynchronizeWidgetElement(int contentId, int iditemamm, string type) {
+            bool status = false;
+            using (ISession session = HibernateHelper.GetSession().OpenSession()) {
+                using (ITransaction transaction = session.BeginTransaction()) {
+                    try {
+                        //Ricava il/i Widget del content 
+                        IList<Widget> widges = new List<Widget>();
+                        widges = EditorServices.GetWidgetByContent(session, contentId) as List<Widget>;
+                        var pos = 0;
+                        foreach (Widget wid in widges) {
+
+                            if (wid.WidgetElements != null && wid.WidgetElements.Count > 0) {
+
+                                pos = (from f in wid.WidgetElements
+                                       where f.Type != (int)WidgetElementTypeEnum.Importato
+                                       select f.Position).Max();
+
+                                //Ricava i WidgetElement del Widget
+                                //Cancella gli eventuali WidgetElement di tipo 2 (importati)
+                                foreach (WidgetElement widel in wid.WidgetElements) {
+                                    if (widel.Type == (int)WidgetElementTypeEnum.Importato) {
+                                        widel.Deleted = true;
+                                        HibernateHelper.Persist(widel, session);
+                                    }
+                                }
+                            }
+                            //Ricava per iditemamm e tipo i correlati 
+                            IUnityContainer container = new UnityContainer();
+                            UnityConfigurationSection section = (UnityConfigurationSection)ConfigurationManager.GetSection("unity");
+                            section.Containers.Default.Configure(container);
+                            WidgetHelper unityHelper = container.Resolve<WidgetHelper>();
+
+                            DataSet correlati = new DataSet();
+                            correlati = unityHelper.GetCorrelated(iditemamm, type);
+                            if (correlati.Tables != null && correlati.Tables[0].Rows.Count > 0) {
+                                //Ho trovato dei correlati
+
+                                foreach (DataRow Riga in correlati.Tables[0].Rows) {
+                                    pos++;
+                                    WidgetElement newidel = new WidgetElement();
+                                    newidel.IsNew = true;
+                                    newidel.Type = (int)WidgetElementTypeEnum.Importato;
+                                    newidel.Elementid = 6;
+                                    newidel.Position = pos;
+                                    newidel.Widgetid = wid.Widgetid;
+                                    newidel.Widget = wid;
+
+                                    if (type == "std") {
+                                        if (Riga["ITEM_NAME"] != DBNull.Value) {
+                                            newidel.Name = Riga["ITEM_NAME"].ToString();
+                                        }
+                                        if (Riga["ITEM_LINK"] != DBNull.Value) {
+                                            newidel.Valore = "\\cms\\" + Riga["ITEM_LINK"].ToString();
+                                        }
+
+                                    } else if (type == "com") {
+                                        if (Riga["TITLE"] != DBNull.Value) {
+                                            newidel.Name = Riga["TITLE"].ToString();
+                                        }
+                                        if (Riga["ID_MARKET"] != DBNull.Value && Riga["ID_DOCUMENT"] != DBNull.Value && Riga["ID_FEATURE"] != DBNull.Value && Riga["OPEN_FILE_POPUP"] != DBNull.Value) {
+                                            newidel.Valore = "\\cms\\comm\\document_frameset.aspx?iddocument=" + Riga["ID_DOCUMENT"].ToString() + "&idmarket=" + Riga["ID_MARKET"].ToString()
+                                                + "&idfeature=" + Riga["ID_FEATURE"].ToString() + "&admin=false";
+                                        }
+
+                                    }
+                                    // Inserisce i nuovi WidgetElement
+
+                                    HibernateHelper.Persist(newidel, session);
+
+                                }
+                            }
+
+                        }
+
+                        transaction.Commit();
+
+                        status = true;
+
+                        return status;
+                    } catch (Exception ex) {
+                        transaction.Rollback();
+                        return status;
+                        throw ex;
+                    } finally {
+                        session.Flush();
+                        session.Close();
+                    }
+                }
+            }
+        }
+
     }
+
+    public class WidgetHelper {
+
+        private ICMSServices _CMSServices;
+        [Dependency]
+        public ICMSServices CMSServices {
+            get { return _CMSServices; }
+            set { _CMSServices = value; }
+        }
+        public string GetItemPath(string iditemamm, string type) {
+            return CMSServices.GetItemPath(iditemamm, type);
+        }
+        public string GetItemTitle(int iditemamm, string type) {
+            return CMSServices.GetItemTitle(iditemamm, type);
+        }
+        public string GetItemIdUser(int iditemamm) {
+            return CMSServices.GetItemIdUser(iditemamm);
+        }
+        public DataSet GetCorrelated(int iditemamm, string type) {
+            return CMSServices.GetCorrelated(iditemamm, type);
+        }
+    }
+
 }

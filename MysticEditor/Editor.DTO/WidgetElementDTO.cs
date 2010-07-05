@@ -14,6 +14,7 @@ namespace Editor.DTO {
         public String Valore { get; set; }
         public String Name { get; set; }
         public int Position { get; set; }
+        public int Type { get; set; }
         public ElementDTO Element { get; set; }
 
         public bool IsPersisted {

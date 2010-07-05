@@ -13,6 +13,7 @@ namespace Editor.BE.Model
 		public virtual String Valore { get; set; }
         public virtual String Name { get; set; }
         public virtual int Position { get; set; }
+        public virtual int Type { get; set; }
 
         public virtual Element Element { get; set; }
         public virtual Widget Widget { get; set; }

@@ -11,6 +11,7 @@
 		<property name="Valore" column="`VALORE`" type="AnsiString"/>
     <property name="Name" column="`NAME`" type="AnsiString"/>
     <property name="Position" column="`POSITION`" length="22" />
+    <property name="Type" column="`TYPE`" length="22" />
     
     <many-to-one name="Element" 
                  class="Element" 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Practices.Unity;
 using Editor.Services;
+using System.Data;
 
 namespace Editor.Scheduler {
     public class CMSCustomer {
@@ -22,6 +23,9 @@ namespace Editor.Scheduler {
         }
         public string GetItemIdUser(int iditemamm) {
             return CMSServices.GetItemIdUser(iditemamm);
+        }
+        public DataSet GetCorrelated(int iditemamm, string type) {
+            return CMSServices.GetCorrelated(iditemamm, type);
         }
     }
 }

@@ -15,17 +15,18 @@ namespace Editor.BE.Model.Enumerators {
     }
 
     public enum PageStateEnum : short {
-
         Nessuna = 1,
         NonApplicabbile = 2,
         NonCliccabile = 3,
         Aggiornato = 4,
         Nuovo = 5,
         Eliminato = 99
-
-
     }
 
+    public enum WidgetElementTypeEnum : short {
+        Creato = 1,
+        Importato = 2
+    }
 
 
 }
