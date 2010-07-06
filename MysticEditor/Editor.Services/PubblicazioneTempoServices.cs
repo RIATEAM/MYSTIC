@@ -7,6 +7,7 @@ using NHibernate;
 using Editor.BE;
 using Editor.BE.Model;
 using AutoMapper;
+using Editor.BE.Model.Enumerators;
 
 namespace Editor.Services {
     public class PubblicazioneTempoServices {
@@ -27,6 +28,7 @@ namespace Editor.Services {
 
                         content.Date_publish = date;
                         content.Publish_active = active;
+                        content.State = (int)ContentStateEnum.DaPubblicare;
                         HibernateHelper.UpdateCommand(session, content);
                         transaction.Commit();
                         return true;

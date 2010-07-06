@@ -256,8 +256,8 @@ namespace Editor.Services {
                                     foreach (PageElement el in page.PageelementsList) {
                                         el.Pageid = page.Pageid;                                        
                                         if (el.Deleted) {
-                                            HibernateHelper.Persist(el, session);
-                                            page.PageelementsList.Remove(el);
+                                            page.PageElements.Remove(el);
+                                            HibernateHelper.Persist(el, session);                                            
                                         } else {
                                             el.Valore = EditorServices.ReplaceCharacters(el.Valore);
                                             HibernateHelper.Persist(el, session);

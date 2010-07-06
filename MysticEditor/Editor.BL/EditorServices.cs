@@ -445,6 +445,23 @@ namespace Editor.BL {
             pathTema.Attributes.Append(attr);
             page.AppendChild(pathTema);
 
+            //Nodo Content
+            XmlNode ContentNode = docXml.CreateNode(XmlNodeType.Element, "Content", null);
+            XmlAttribute ContentState = docXml.CreateAttribute("State");
+            ContentState.Value = pagina.Content.State.ToString();
+            ContentNode.Attributes.Append(ContentState);
+            XmlAttribute ContentDataPublish = docXml.CreateAttribute("DatePublish");
+            ContentDataPublish.Value = " ";
+            if (pagina.Content.Date_publish != null) {
+                ContentDataPublish.Value = pagina.Content.Date_publish.ToString();
+            }
+            ContentNode.Attributes.Append(ContentDataPublish);
+            XmlAttribute ContentPublishActive = docXml.CreateAttribute("PublishActive");
+            ContentPublishActive.Value = pagina.Content.Publish_active.ToString();
+            ContentNode.Attributes.Append(ContentPublishActive);
+            page.AppendChild(ContentNode);
+
+
             // Nodo Child
             XmlNode Childs = docXml.CreateNode(XmlNodeType.Element, "Childs", null);
 
@@ -663,8 +680,12 @@ namespace Editor.BL {
 
                         File.Copy(def, Path.Combine(pathCont, "default.html"));
 
-                        return pathIdItem + "/default.html";
+                        cont.State = (int)ContentStateEnum.Pubblicato;
+                        cont.Dirty = true;
+                        HibernateHelper.Persist(cont, session);
+                        transaction.Commit();
 
+                        return pathIdItem + "/default.html";                        
 
                     } catch (Exception ex) {
                         throw ex;

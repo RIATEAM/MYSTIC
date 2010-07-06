@@ -6,6 +6,7 @@ using AutoMapper;
 using NHibernate;
 using System;
 using Editor.BE;
+using Editor.BE.Model.Enumerators;
 
 
 namespace Editor.Services {
@@ -61,6 +62,35 @@ namespace Editor.Services {
             }
             return contentDto;
 
+        }
+
+        public bool SetStateContent(int contentId, int state) { 
+         bool status = false;
+            using (ISession session = HibernateHelper.GetSession().OpenSession()) {
+                using (ITransaction transaction = session.BeginTransaction()) {
+                    try {
+                        Content cont = new Content();
+                        cont = EditorServices.GetContentById(contentId, session);
+
+                        if (state == (int)ContentStateEnum.DaPubblicare || state == (int)ContentStateEnum.NonPubblicato || state == (int)ContentStateEnum.Pubblicato) {
+                            cont.Dirty = true;
+                            cont.State = state;
+                            HibernateHelper.Persist(cont, session);
+                        }
+                        transaction.Commit();
+                        
+                        status = true;
+                        return status;
+                    } catch (Exception ex) {
+                        transaction.Rollback();
+                        return status;
+                        throw ex;
+                    } finally {
+                        session.Flush();
+                        session.Close();
+                    }
+                }
+            }
         }
 
         public bool SetContentItemid(int contentId, int itemId, string repository) {

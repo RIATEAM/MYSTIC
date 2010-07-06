@@ -13,6 +13,7 @@ namespace Editor.DTO {
         public String Date_creation { get; set; }
         public String Date_publish { get; set; }
         public int Publish_active { get; set; }
+        public int State { get; set; }
 
         public  bool IsPersisted {
             get {

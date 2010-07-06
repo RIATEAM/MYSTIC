@@ -28,5 +28,10 @@ namespace Editor.BE.Model.Enumerators {
         Importato = 2
     }
 
+    public enum ContentStateEnum : short {
+        NonPubblicato = 1,
+        Pubblicato = 2,
+        DaPubblicare = 3
+    }
 
 }

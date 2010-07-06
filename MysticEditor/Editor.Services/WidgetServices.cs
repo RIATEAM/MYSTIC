@@ -330,13 +330,16 @@ namespace Editor.Services {
 
                                 //Ricava i WidgetElement del Widget
                                 //Cancella gli eventuali WidgetElement di tipo 2 (importati)
-                                foreach (WidgetElement widel in wid.WidgetElements) {
+                                foreach (WidgetElement widel in wid.WidgetElementsList) {
+                                    
                                     if (widel.Type == (int)WidgetElementTypeEnum.Importato) {
                                         widel.Deleted = true;
+                                        wid.WidgetElements.Remove(widel);
                                         HibernateHelper.Persist(widel, session);
                                     }
                                 }
                             }
+
                             //Ricava per iditemamm e tipo i correlati 
                             IUnityContainer container = new UnityContainer();
                             UnityConfigurationSection section = (UnityConfigurationSection)ConfigurationManager.GetSection("unity");
@@ -380,8 +383,11 @@ namespace Editor.Services {
 
                                     HibernateHelper.Persist(newidel, session);
 
+                                    wid.WidgetElements.Add(newidel);
                                 }
                             }
+                            wid.Dirty = true;
+                            HibernateHelper.Persist(wid, session);
 
                         }
 

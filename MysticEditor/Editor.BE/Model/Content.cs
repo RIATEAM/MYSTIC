@@ -21,6 +21,7 @@ namespace Editor.BE.Model {
         public virtual String Date_creation { get; set; }
         public virtual String Date_publish { get; set; }
         public virtual int Publish_active { get; set; }
+        public virtual int State { get; set; }
 
         public override bool Equals(object obj) {
             if (ReferenceEquals(this, obj))

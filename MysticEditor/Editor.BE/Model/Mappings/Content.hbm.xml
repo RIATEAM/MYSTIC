@@ -16,6 +16,7 @@
     <property name="Date_creation" column="`DATE_CREATION`" length="20" />
     <property name="Date_publish" column="`DATE_PUBLISH`" length="20" />
     <property name="Publish_active" column="`PUBLISH_ACTIVE`" length="1" />
+    <property name="State" column="`STATE`" length="1" />
     
     <set name="Pages"
             cascade="save-update"
