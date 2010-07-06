@@ -680,11 +680,6 @@ namespace Editor.BL {
 
                         File.Copy(def, Path.Combine(pathCont, "default.html"));
 
-                        cont.State = (int)ContentStateEnum.Pubblicato;
-                        cont.Dirty = true;
-                        HibernateHelper.Persist(cont, session);
-                        transaction.Commit();
-
                         return pathIdItem + "/default.html";                        
 
                     } catch (Exception ex) {

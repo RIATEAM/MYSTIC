@@ -373,9 +373,9 @@ namespace Editor.Services {
                                         if (Riga["TITLE"] != DBNull.Value) {
                                             newidel.Name = Riga["TITLE"].ToString();
                                         }
-                                        if (Riga["ID_MARKET"] != DBNull.Value && Riga["ID_DOCUMENT"] != DBNull.Value && Riga["ID_FEATURE"] != DBNull.Value && Riga["OPEN_FILE_POPUP"] != DBNull.Value) {
-                                            newidel.Valore = "\\cms\\comm\\document_frameset.aspx?iddocument=" + Riga["ID_DOCUMENT"].ToString() + "&idmarket=" + Riga["ID_MARKET"].ToString()
-                                                + "&idfeature=" + Riga["ID_FEATURE"].ToString() + "&admin=false";
+                                        if (Riga["ID_MARKET"] != DBNull.Value && Riga["ID_CORRELATED"] != DBNull.Value ) {
+                                            newidel.Valore = "\\cms\\comm\\corr_doc_frameset.aspx?idcorr=" + Riga["ID_CORRELATED"].ToString() + "&idmarket=" + Riga["ID_MARKET"].ToString()
+                                                + "&visInfo=no";
                                         }
 
                                     }
