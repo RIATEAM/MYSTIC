@@ -453,7 +453,7 @@ namespace Editor.BL {
             XmlAttribute ContentDataPublish = docXml.CreateAttribute("DatePublish");
             ContentDataPublish.Value = " ";
             if (pagina.Content.Date_publish != null) {
-                ContentDataPublish.Value = pagina.Content.Date_publish.ToString();
+                ContentDataPublish.Value = pagina.Content.Date_publish.ToString().Replace("-", @"\");
             }
             ContentNode.Attributes.Append(ContentDataPublish);
             XmlAttribute ContentPublishActive = docXml.CreateAttribute("PublishActive");
@@ -716,7 +716,11 @@ namespace Editor.BL {
 
                 // XmlNode WIDGETELEMENTS = docXml.CreateNode(XmlNodeType.Element, "WIDGETELEMENTS", "");
 
-                foreach (WidgetElement WDTO in widget.WidgetElements) {
+                var List = (from c in widget.WidgetElements
+                                         orderby c.Position ascending
+                                         select c).ToList<WidgetElement>();
+
+                foreach (WidgetElement WDTO in List) {
 
                     XmlNode WIDGETELEMENT = docXml.CreateNode(XmlNodeType.Element, "WIDGETELEMENT", "");
 

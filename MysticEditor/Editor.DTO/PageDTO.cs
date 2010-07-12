@@ -13,7 +13,7 @@ namespace Editor.DTO {
         public String Publictitle { get; set; }
         public int? Skinid { get; set; }
         public int State { get; set; }
-
+        public String Path { get; set; }
         public PageElementDTO[] PageelementsList { get; set; }
 
 

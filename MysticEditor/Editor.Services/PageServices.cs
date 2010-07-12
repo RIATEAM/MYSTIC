@@ -4,6 +4,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using AutoMapper;
 using Editor.BE;
 using Editor.BE.Model;
@@ -13,7 +14,6 @@ using Editor.DTO;
 using Editor.Helper;
 using Iesi.Collections.Generic;
 using NHibernate;
-using System.Text.RegularExpressions;
 
 namespace Editor.Services {
     public class PageServices {
@@ -30,7 +30,13 @@ namespace Editor.Services {
                         Mapper.CreateMap<PageElement, PageElementDTO>();
                         Mapper.CreateMap<Element, ElementDTO>();
 
-                        return Mapper.Map<Page, PageDTO>(page);
+                        PageDTO pageToReturn = new PageDTO();
+                        pageToReturn = Mapper.Map<Page, PageDTO>(page);
+                        pageToReturn.Path = GetPathPage(page.Parentpageid);
+                        if (page.Level != 0) {
+                            pageToReturn.Path = pageToReturn.Path + @"\" + page.Publictitle;
+                        }
+                        return pageToReturn;
 
                     } catch (Exception ex) {
                         throw ex;
@@ -41,6 +47,42 @@ namespace Editor.Services {
                 }
 
             }
+        }
+
+        public string GetPathPage(int pageID) {
+            string path = "";
+
+            using (ISession session = HibernateHelper.GetSession().OpenSession()) {
+                using (ITransaction transaction = session.BeginTransaction()) {
+                    try {
+
+                        Page Page = new Page();
+                        Page = EditorServices.GetPageById(pageID, session);
+
+                        while (Page.Pageid != Page.Parentpageid && Page.Level != 0) {
+
+                            if (Page.State != 99) {//Evito il Cestino
+                                path = @"\" + Page.Publictitle + path;
+                            }
+
+                            Page = EditorServices.GetPageById(Page.Parentpageid, session);
+                        }
+
+                        if (Page.State != 99) {//Evito il Cestino
+                            path = @"\" + Page.Publictitle + path;
+                        }
+
+                    } catch (Exception ex) {
+                        throw ex;
+                    } finally {
+                        session.Flush();
+                        session.Close();
+                    }
+                }
+
+            }
+
+            return path;
         }
 
         public IList<PageDTO> GetPagesByContentId(int contentId) {
@@ -144,9 +186,9 @@ namespace Editor.Services {
             using (ISession session = HibernateHelper.GetSession().OpenSession()) {
                 using (ITransaction transaction = session.BeginTransaction()) {
                     try {
-                        if (Folder.StartsWith(@"\")== true){
-                           Folder= Folder.Remove(0, 1);
-                        }                        
+                        if (Folder.StartsWith(@"\") == true) {
+                            Folder = Folder.Remove(0, 1);
+                        }
                         string SavePath = ConfigurationSettings.AppSettings["ServerPath"];
                         string FolderToSave = Path.Combine(SavePath, Folder);
                         HibernateHelper.Persist(Row, session);
@@ -197,7 +239,7 @@ namespace Editor.Services {
                         if (page.Publictitle != null && page.Contentid > 0 && page.Position > 0) {
 
                             page.Publictitle = EditorServices.ReplaceCharacters(page.Publictitle);
-                            
+
                             if (page.IsNew) {
 
                                 // Salvo la Nuova pagina 
@@ -254,10 +296,10 @@ namespace Editor.Services {
 
                                     //Foreach delle pageelements
                                     foreach (PageElement el in page.PageelementsList) {
-                                        el.Pageid = page.Pageid;                                        
+                                        el.Pageid = page.Pageid;
                                         if (el.Deleted) {
                                             page.PageElements.Remove(el);
-                                            HibernateHelper.Persist(el, session);                                            
+                                            HibernateHelper.Persist(el, session);
                                         } else {
                                             el.Valore = EditorServices.ReplaceCharacters(el.Valore);
                                             HibernateHelper.Persist(el, session);
@@ -283,6 +325,9 @@ namespace Editor.Services {
                     }
                 }
             }
+            //Setto lo stato del content a non allineato 
+            ContentServices contSvc = new ContentServices();
+            contSvc.SetStateContent(pagedto.Contentid, (int)ContentStateEnum.NonAllineato);
 
             return pagedto;
         }
@@ -389,6 +434,11 @@ namespace Editor.Services {
                 }
 
             }
+
+            //Setto lo stato del content a non allineato 
+            ContentServices contSvc = new ContentServices();
+            contSvc.SetStateContent(pagedto.Contentid, (int)ContentStateEnum.NonAllineato);
+
             return pagedto;
         }
 
@@ -482,13 +532,18 @@ namespace Editor.Services {
                     }
                 }
             }
+
+            //Setto lo stato del content a non allineato 
+            ContentServices contSvc = new ContentServices();
+            contSvc.SetStateContent(pagedto.Contentid, (int)ContentStateEnum.NonAllineato);
+
             return pagedto;
 
         }
 
         public PageDTO ClonePage(PageDTO pagedto) {
 
-            return ClonePage(pagedto, 0,"");
+            return ClonePage(pagedto, 0, "");
         }
 
         public Boolean DeletePage(PageDTO pagedto) {
@@ -549,6 +604,11 @@ namespace Editor.Services {
                     }
                 }
             }
+
+            //Setto lo stato del content a non allineato 
+            ContentServices contSvc = new ContentServices();
+            contSvc.SetStateContent(pagedto.Contentid, (int)ContentStateEnum.NonAllineato);
+
             return status;
         }
 

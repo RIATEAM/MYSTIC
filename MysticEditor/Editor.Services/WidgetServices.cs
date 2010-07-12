@@ -127,7 +127,10 @@ namespace Editor.Services {
                     }
                 }
             }
-
+            //Setto lo stato del content a non allineato 
+            ContentServices contSvc = new ContentServices();
+            contSvc.SetStateContent(Widgetdto.Contentid, (int)ContentStateEnum.NonAllineato);
+            
             return Widgetdto;
         }
 
@@ -183,8 +186,8 @@ namespace Editor.Services {
                         //Mappo la PageDTO in Page
                         wid = Mapper.Map<WidgetElement, WidgetElementDTO>(widget);
 
+                 
                         transaction.Commit();
-
 
                     } catch (Exception ex) {
                         transaction.Rollback();
@@ -194,6 +197,12 @@ namespace Editor.Services {
                         session.Close();
                     }
                 }
+                //Setto lo stato del content a non allineato 
+                WidgetDTO widg = new WidgetDTO();                
+                widg = GetWidget(wid.Widgetid);
+                ContentServices contSvc = new ContentServices();
+                contSvc.SetStateContent(widg.Contentid, (int)ContentStateEnum.NonAllineato);
+
                 return wid;
             }
 
@@ -311,7 +320,64 @@ namespace Editor.Services {
 
         }
 
-        public bool SynchronizeWidgetElement(int contentId, int iditemamm, string type) {
+
+        public List<WidgetElementDTO> SynchronizeWidgetElement(int contentId, int iditemamm, string type) {
+
+            bool result = false;
+
+            result = _SynchronizeWidgetElement(contentId, iditemamm, type);
+            List<WidgetElementDTO> ListToReturn = new List<WidgetElementDTO>();
+
+            if (result) {
+                using (ISession session = HibernateHelper.GetSession().OpenSession()) {
+                    using (ITransaction transaction = session.BeginTransaction()) {
+                        try {
+                            //Ricava il/i Widget del content 
+                            IList<Widget> widges = new List<Widget>();
+                            widges = EditorServices.GetWidgetByContent(session, contentId) as List<Widget>;
+
+                            foreach (Widget wid in widges) {
+                                if (wid.Structureid == 4) {
+                                    //è Utility e link
+                                    if (wid.WidgetElementsList != null && wid.WidgetElementsList.Count > 0) {
+                                        Mapper.CreateMap<WidgetElement, WidgetElementDTO>();
+                                        Mapper.CreateMap<Element, ElementDTO>();
+
+                                        ListToReturn.AddRange(Mapper.Map<List<WidgetElement>, List<WidgetElementDTO>>(wid.WidgetElementsList));
+                                    }
+                                }
+                            }
+                            //Riordino per widgetid e position
+
+                            var OrderedList = (from c in ListToReturn
+                                               orderby c.Widgetid ascending, c.Position ascending
+                                               select c).ToList<WidgetElementDTO>();
+
+                            return OrderedList;
+
+                        } catch (Exception ex) {
+                            transaction.Rollback();
+                            throw ex;
+                        } finally {
+                            session.Flush();
+                            session.Close();
+                        }
+                    }
+                }
+
+            }
+
+            //Setto lo stato del content a non allineato 
+            ContentServices contSvc = new ContentServices();
+            contSvc.SetStateContent(contentId, (int)ContentStateEnum.NonAllineato);
+
+
+            return ListToReturn;
+
+        }
+        
+
+        private bool _SynchronizeWidgetElement(int contentId, int iditemamm, string type) {
             bool status = false;
             using (ISession session = HibernateHelper.GetSession().OpenSession()) {
                 using (ITransaction transaction = session.BeginTransaction()) {
@@ -321,21 +387,23 @@ namespace Editor.Services {
                         widges = EditorServices.GetWidgetByContent(session, contentId) as List<Widget>;
                         var pos = 0;
                         foreach (Widget wid in widges) {
+                            if (wid.Structureid == 4) {
+                                //è Utility e link
+                                if (wid.WidgetElements != null && wid.WidgetElements.Count > 0) {
 
-                            if (wid.WidgetElements != null && wid.WidgetElements.Count > 0) {
+                                    pos = (from f in wid.WidgetElements
+                                           where f.Type != (int)WidgetElementTypeEnum.Importato
+                                           select f.Position).Max();
 
-                                pos = (from f in wid.WidgetElements
-                                       where f.Type != (int)WidgetElementTypeEnum.Importato
-                                       select f.Position).Max();
+                                    //Ricava i WidgetElement del Widget
+                                    //Cancella gli eventuali WidgetElement di tipo 2 (importati)
+                                    foreach (WidgetElement widel in wid.WidgetElementsList) {
 
-                                //Ricava i WidgetElement del Widget
-                                //Cancella gli eventuali WidgetElement di tipo 2 (importati)
-                                foreach (WidgetElement widel in wid.WidgetElementsList) {
-                                    
-                                    if (widel.Type == (int)WidgetElementTypeEnum.Importato) {
-                                        widel.Deleted = true;
-                                        wid.WidgetElements.Remove(widel);
-                                        HibernateHelper.Persist(widel, session);
+                                        if (widel.Type == (int)WidgetElementTypeEnum.Importato) {
+                                            widel.Deleted = true;
+                                            wid.WidgetElements.Remove(widel);
+                                            HibernateHelper.Persist(widel, session);
+                                        }
                                     }
                                 }
                             }
@@ -373,7 +441,7 @@ namespace Editor.Services {
                                         if (Riga["TITLE"] != DBNull.Value) {
                                             newidel.Name = Riga["TITLE"].ToString();
                                         }
-                                        if (Riga["ID_MARKET"] != DBNull.Value && Riga["ID_CORRELATED"] != DBNull.Value ) {
+                                        if (Riga["ID_MARKET"] != DBNull.Value && Riga["ID_CORRELATED"] != DBNull.Value) {
                                             newidel.Valore = "\\cms\\comm\\corr_doc_frameset.aspx?idcorr=" + Riga["ID_CORRELATED"].ToString() + "&idmarket=" + Riga["ID_MARKET"].ToString()
                                                 + "&visInfo=no";
                                         }
@@ -407,6 +475,7 @@ namespace Editor.Services {
                 }
             }
         }
+
 
     }
 

@@ -72,7 +72,7 @@ namespace Editor.Services {
                         Content cont = new Content();
                         cont = EditorServices.GetContentById(contentId, session);
 
-                        if (state == (int)ContentStateEnum.DaPubblicare || state == (int)ContentStateEnum.NonPubblicato || state == (int)ContentStateEnum.Pubblicato) {
+                        if (state == (int)ContentStateEnum.Allineato || state == (int)ContentStateEnum.NonAllineato ) {
                             cont.Dirty = true;
                             cont.State = state;
                             HibernateHelper.Persist(cont, session);

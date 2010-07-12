@@ -10,6 +10,8 @@ using System.Data.OracleClient;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
 using System.IO;
+using Editor.Services;
+using Editor.BE.Model.Enumerators;
 
 namespace Editor.Scheduler {
     public class Program {
@@ -45,6 +47,10 @@ namespace Editor.Scheduler {
             string idcont = content.Contentid.ToString();
             string iditemamm = content.Iditem.ToString();
             string type = content.Repository;
+
+            //Allineo lo stato del content
+            ContentServices svc = new ContentServices();
+            svc.SetStateContent(content.Contentid, (int)ContentStateEnum.Allineato);
 
             if (type == "std") {
                 //Contenuti Standard
