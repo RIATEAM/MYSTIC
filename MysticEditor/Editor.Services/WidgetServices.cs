@@ -130,7 +130,7 @@ namespace Editor.Services {
             //Setto lo stato del content a non allineato 
             ContentServices contSvc = new ContentServices();
             contSvc.SetStateContent(Widgetdto.Contentid, (int)ContentStateEnum.NonAllineato);
-            
+
             return Widgetdto;
         }
 
@@ -170,14 +170,35 @@ namespace Editor.Services {
                         Mapper.CreateMap<WidgetElementDTO, WidgetElement>();
                         Mapper.CreateMap<ElementDTO, Element>();
 
-                        widget = Mapper.Map<WidgetElementDTO, WidgetElement>(wid);
+                        WidgetElementDTO widgetDTO = new WidgetElementDTO();
+                        if (wid.IsNew || wid.Deleted) {
+                            widget = Mapper.Map<WidgetElementDTO, WidgetElement>(wid);
+                        } else {
+                            widgetDTO = GetWidgetElement(wid.Widgetelementid);
+                            widget = Mapper.Map<WidgetElementDTO, WidgetElement>(widgetDTO);
+                        }
 
                         if (widget.Type == 0) {
                             widget.Type = 1;
                         }
                         if (widget.Name != null && widget.Widgetid > 0 && widget.Position > 0) {
-                            widget.Name = EditorServices.ReplaceCharacters(widget.Name);
-                            HibernateHelper.Persist(widget, session);
+
+                            if (wid.Dirty) {
+                                if (widget.Name != wid.Name) {
+                                    //Sto rinominando il link
+                                    widget.Name = EditorServices.ReplaceCharacters(wid.Name);
+                                } else {
+                                    if (widget.Valore != wid.Valore) {
+                                        widget.Valore = wid.Valore;
+                                    }
+                                }
+                            }
+                            widget.Dirty = wid.Dirty;
+                            widget.Deleted = wid.Deleted;
+                            widget.IsNew = wid.IsNew;
+
+                            HibernateHelper.Persist(widget, session);    
+                        
                         }
 
                         Mapper.CreateMap<WidgetElement, WidgetElementDTO>();
@@ -186,7 +207,7 @@ namespace Editor.Services {
                         //Mappo la PageDTO in Page
                         wid = Mapper.Map<WidgetElement, WidgetElementDTO>(widget);
 
-                 
+
                         transaction.Commit();
 
                     } catch (Exception ex) {
@@ -198,7 +219,7 @@ namespace Editor.Services {
                     }
                 }
                 //Setto lo stato del content a non allineato 
-                WidgetDTO widg = new WidgetDTO();                
+                WidgetDTO widg = new WidgetDTO();
                 widg = GetWidget(wid.Widgetid);
                 ContentServices contSvc = new ContentServices();
                 contSvc.SetStateContent(widg.Contentid, (int)ContentStateEnum.NonAllineato);
@@ -375,7 +396,7 @@ namespace Editor.Services {
             return ListToReturn;
 
         }
-        
+
 
         private bool _SynchronizeWidgetElement(int contentId, int iditemamm, string type) {
             bool status = false;
@@ -385,15 +406,19 @@ namespace Editor.Services {
                         //Ricava il/i Widget del content 
                         IList<Widget> widges = new List<Widget>();
                         widges = EditorServices.GetWidgetByContent(session, contentId) as List<Widget>;
-                        var pos = 0;
+                        int max = 0;
                         foreach (Widget wid in widges) {
                             if (wid.Structureid == 4) {
                                 //è Utility e link
                                 if (wid.WidgetElements != null && wid.WidgetElements.Count > 0) {
 
-                                    pos = (from f in wid.WidgetElements
+                                    var  pos = (from f in wid.WidgetElements
                                            where f.Type != (int)WidgetElementTypeEnum.Importato
-                                           select f.Position).Max();
+                                           select f.Position);
+                                    
+                                    if (pos.Count() > 0) {                                        
+                                        max = pos.Max();                                    
+                                    }
 
                                     //Ricava i WidgetElement del Widget
                                     //Cancella gli eventuali WidgetElement di tipo 2 (importati)
@@ -420,12 +445,12 @@ namespace Editor.Services {
                                 //Ho trovato dei correlati
 
                                 foreach (DataRow Riga in correlati.Tables[0].Rows) {
-                                    pos++;
+                                    max++;
                                     WidgetElement newidel = new WidgetElement();
                                     newidel.IsNew = true;
                                     newidel.Type = (int)WidgetElementTypeEnum.Importato;
                                     newidel.Elementid = 6;
-                                    newidel.Position = pos;
+                                    newidel.Position = max;
                                     newidel.Widgetid = wid.Widgetid;
                                     newidel.Widget = wid;
 
