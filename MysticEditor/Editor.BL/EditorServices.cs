@@ -943,8 +943,8 @@ namespace Editor.BL {
                         string temp = rgx.Replace(title, "");
                         temp = punt.Replace(temp, " ");
 
-                        page.Publictitle = ReplaceCharacters(num.Replace(rgx.Replace(puntPub.Replace(title," "), ""), "").Trim());
-                        page.Title = punt.Replace(rgx.Replace(title, "").Replace("&nbsp;", "").Trim().Replace(" ", "_"), "_");
+                        page.Publictitle = ReplaceCharacters(num.Replace(rgx.Replace(puntPub.Replace(title," "), ""), "").Trim()).Trim();
+                        //page.Title = punt.Replace(rgx.Replace(title, "").Replace("&nbsp;", "").Trim().Replace(" ", "_"), "_");
 
                         if (page.Level == 1) {
                             page.State = (int)PageStateEnum.NonCliccabile;
@@ -1025,6 +1025,7 @@ namespace Editor.BL {
                         page.PageElements = setPgEl;
                         setPgEl = page.PageElements;
                         page.Parentpageid = page.Pageid;
+                        page.Title = page.Pageid + "_page";
                         page.Dirty = true;
                         HibernateHelper.Persist(page, session);
 
@@ -1035,7 +1036,8 @@ namespace Editor.BL {
                 Page Cestino = new Page();
                 Cestino.Title = Cestino.Publictitle = "Cestino";
                 Cestino.Structureid = 3;
-                Cestino.Skin = null;
+                Cestino.Skinid = 0;
+                Cestino.Skin = skinPage;
                 Cestino.State = 99;
                 Cestino.Position = 1;
                 Cestino.IsNew = true;
