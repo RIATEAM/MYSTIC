@@ -64,21 +64,24 @@ namespace Editor.Services {
 
         }
 
-        public bool SetStateContent(int contentId, int state) { 
-         bool status = false;
+        public bool SetStateContent(int contentId, int state) {
+            bool status = false;
             using (ISession session = HibernateHelper.GetSession().OpenSession()) {
                 using (ITransaction transaction = session.BeginTransaction()) {
                     try {
                         Content cont = new Content();
                         cont = EditorServices.GetContentById(contentId, session);
 
-                        if (state == (int)ContentStateEnum.Allineato || state == (int)ContentStateEnum.NonAllineato ) {
+                        if (state == (int)ContentStateEnum.Allineato || state == (int)ContentStateEnum.NonAllineato) {
+                            if (state == (int)ContentStateEnum.Allineato && cont.Publish_active == 1) {
+                                cont.Publish_active = 0;
+                            }
                             cont.Dirty = true;
                             cont.State = state;
                             HibernateHelper.Persist(cont, session);
                         }
                         transaction.Commit();
-                        
+
                         status = true;
                         return status;
                     } catch (Exception ex) {
