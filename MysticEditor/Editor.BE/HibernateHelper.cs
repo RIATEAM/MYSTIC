@@ -19,18 +19,22 @@ namespace Editor.BE {
         /// </summary>
         private static string AssemblyName = "Editor.BE";
 
-        private static Configuration cfg;
-        private static ISessionFactory factory;
+        //private static Configuration cfg;
 
+        private static readonly object LockSession = new object();
+
+        private static ISessionFactory factory;
         public static ISessionFactory GetSession() {
             try {
-                if (cfg == null) {
-                    cfg = new Configuration();
-                    cfg.AddAssembly(AssemblyName);
-                }
-
-                if (factory == null) {
-                    factory = cfg.BuildSessionFactory();
+                //if (cfg == null) {
+                //    cfg = new Configuration();
+                //    cfg.AddAssembly(AssemblyName);
+                //}
+                lock (LockSession) {
+                    if (factory == null) {
+                        Configuration cfg = new Configuration().AddAssembly(AssemblyName);
+                        factory = cfg.BuildSessionFactory();
+                    }
                 }
                 return factory;
             } catch (Exception ex) {

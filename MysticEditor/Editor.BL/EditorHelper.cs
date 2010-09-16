@@ -20,6 +20,7 @@ namespace Editor.BL {
             origin = origin.Replace("’", "'");
             origin = origin.Replace("&nbsp;", " ");
             origin = origin.Replace("€", "EUR");
+            origin = origin.Replace("–","-");
             origin.Trim();
 
             return origin;

@@ -73,7 +73,7 @@ namespace Editor.Services {
                         cont = EditorServices.GetContentById(contentId, session);
 
                         if (state == (int)ContentStateEnum.Allineato || state == (int)ContentStateEnum.NonAllineato) {
-                            if (state == (int)ContentStateEnum.Allineato && cont.Publish_active == 1) {
+                            if (state == (int)ContentStateEnum.Allineato) {
                                 cont.Publish_active = 0;
                             }
                             cont.Dirty = true;

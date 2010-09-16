@@ -400,93 +400,94 @@ namespace Editor.BL {
                 File.Delete(pathxml);
             }
 
-            XmlTextWriter writer = new XmlTextWriter(pathxml, null);
+            using (XmlTextWriter writer = new XmlTextWriter(pathxml, null)) {
 
-            docXml.AppendChild(docXml.CreateXmlDeclaration("1.0", "utf-8", "yes"));
+                docXml.AppendChild(docXml.CreateXmlDeclaration("1.0", "utf-8", "yes"));
 
-            XmlNode page = docXml.CreateNode(XmlNodeType.Element, "Page", null);
+                XmlNode page = docXml.CreateNode(XmlNodeType.Element, "Page", null);
 
-            //Nodo TitoloContent
-            XmlNode TitoloContent = docXml.CreateNode(XmlNodeType.Element, "TitoloContent", null);
-            XmlNode TitoloContentValue = docXml.CreateNode(XmlNodeType.CDATA, null, null);
-            TitoloContentValue.Value = Title;
-            TitoloContent.AppendChild(TitoloContentValue);
-            page.AppendChild(TitoloContent);
+                //Nodo TitoloContent
+                XmlNode TitoloContent = docXml.CreateNode(XmlNodeType.Element, "TitoloContent", null);
+                XmlNode TitoloContentValue = docXml.CreateNode(XmlNodeType.CDATA, null, null);
+                TitoloContentValue.Value = Title;
+                TitoloContent.AppendChild(TitoloContentValue);
+                page.AppendChild(TitoloContent);
 
-            foreach (PageElement pel in pagina.PageElements) {
-                XmlNode nodo = docXml.CreateNode(XmlNodeType.Element, pel.Element.Description, null);
-                XmlNode nodoValue = docXml.CreateNode(XmlNodeType.CDATA, null, null);
+                foreach (PageElement pel in pagina.PageElements) {
+                    XmlNode nodo = docXml.CreateNode(XmlNodeType.Element, pel.Element.Description, null);
+                    XmlNode nodoValue = docXml.CreateNode(XmlNodeType.CDATA, null, null);
 
-                if (pel.Element.Elementtypeid == (int)ElementTypeEnum.RawHtml) {
-                    RawHtml rw = new RawHtml();
-                    rw = GetRawHtmlById(pel.Rawhtmlid, session);
-                    nodoValue.Value = rw.Value;
-                } else
-                    if (pel.Element.Elementtypeid == (int)ElementTypeEnum.Img) {
-                        nodoValue.Value = pel.Filename;
+                    if (pel.Element.Elementtypeid == (int)ElementTypeEnum.RawHtml) {
+                        RawHtml rw = new RawHtml();
+                        rw = GetRawHtmlById(pel.Rawhtmlid, session);
+                        nodoValue.Value = rw.Value;
+                    } else
+                        if (pel.Element.Elementtypeid == (int)ElementTypeEnum.Img) {
+                            nodoValue.Value = pel.Filename;
 
-                    } else {
-                        nodoValue.Value = pel.Valore;
-                    }
+                        } else {
+                            nodoValue.Value = pel.Valore;
+                        }
 
-                nodo.AppendChild(nodoValue);
+                    nodo.AppendChild(nodoValue);
 
-                var el = (from c in pel.Element.ElementSkins
-                          where c.Elementid == pel.Element.Elementid
-                          select c).FirstOrDefault();
+                    var el = (from c in pel.Element.ElementSkins
+                              where c.Elementid == pel.Element.Elementid
+                              select c).FirstOrDefault();
 
-                page.AppendChild(nodo);
-            }
-
-            //Nodo Theme
-            XmlNode pathTema = docXml.CreateNode(XmlNodeType.Element, "Theme", null);
-            XmlAttribute attr = docXml.CreateAttribute("Path");
-            attr.Value = @"\Themes\" + pagina.Skin.Path;
-            pathTema.Attributes.Append(attr);
-            page.AppendChild(pathTema);
-
-            //Nodo Content
-            XmlNode ContentNode = docXml.CreateNode(XmlNodeType.Element, "Content", null);
-            XmlAttribute ContentState = docXml.CreateAttribute("State");
-            ContentState.Value = pagina.Content.State.ToString();
-            ContentNode.Attributes.Append(ContentState);
-            XmlAttribute ContentDataPublish = docXml.CreateAttribute("DatePublish");
-            ContentDataPublish.Value = " ";
-            if (pagina.Content.Date_publish != null) {
-                ContentDataPublish.Value = pagina.Content.Date_publish.ToString().Replace("-", @"\");
-            }
-            ContentNode.Attributes.Append(ContentDataPublish);
-            XmlAttribute ContentPublishActive = docXml.CreateAttribute("PublishActive");
-            ContentPublishActive.Value = pagina.Content.Publish_active.ToString();
-            ContentNode.Attributes.Append(ContentPublishActive);
-            page.AppendChild(ContentNode);
-
-
-            // Nodo Child
-            XmlNode Childs = docXml.CreateNode(XmlNodeType.Element, "Childs", null);
-
-            List<Page> ListChild = new List<Page>();
-            ListChild = GetPageByParent(session, pagina.Contentid, pagina.Pageid);
-
-            List<Page> ListTempChild = new List<Page>();
-
-            foreach (Page pg in ListChild) {
-                if (!IsDeleted(pg, ListChild)) {
-                    ListTempChild.Add(pg);
+                    page.AppendChild(nodo);
                 }
+
+                //Nodo Theme
+                XmlNode pathTema = docXml.CreateNode(XmlNodeType.Element, "Theme", null);
+                XmlAttribute attr = docXml.CreateAttribute("Path");
+                attr.Value = @"\Themes\" + pagina.Skin.Path;
+                pathTema.Attributes.Append(attr);
+                page.AppendChild(pathTema);
+
+                //Nodo Content
+                XmlNode ContentNode = docXml.CreateNode(XmlNodeType.Element, "Content", null);
+                XmlAttribute ContentState = docXml.CreateAttribute("State");
+                ContentState.Value = pagina.Content.State.ToString();
+                ContentNode.Attributes.Append(ContentState);
+                XmlAttribute ContentDataPublish = docXml.CreateAttribute("DatePublish");
+                ContentDataPublish.Value = " ";
+                if (pagina.Content.Date_publish != null) {
+                    ContentDataPublish.Value = pagina.Content.Date_publish.ToString().Replace("-", @"\");
+                }
+                ContentNode.Attributes.Append(ContentDataPublish);
+                XmlAttribute ContentPublishActive = docXml.CreateAttribute("PublishActive");
+                ContentPublishActive.Value = pagina.Content.Publish_active.ToString();
+                ContentNode.Attributes.Append(ContentPublishActive);
+                page.AppendChild(ContentNode);
+
+
+                // Nodo Child
+                XmlNode Childs = docXml.CreateNode(XmlNodeType.Element, "Childs", null);
+
+                List<Page> ListChild = new List<Page>();
+                ListChild = GetPageByParent(session, pagina.Contentid, pagina.Pageid);
+
+                List<Page> ListTempChild = new List<Page>();
+
+                foreach (Page pg in ListChild) {
+                    if (!IsDeleted(pg, ListChild)) {
+                        ListTempChild.Add(pg);
+                    }
+                }
+                ListTempChild.Sort(delegate(Page p1, Page p2) { return p1.Position.CompareTo(p2.Position); });
+                DataTable dt = ToDataTable<Page>(ListTempChild);
+                Childs.InnerXml = CreateNodeCilds(dt).Replace("<Childs>", "").Replace("</Childs>", "").Replace("<Childs />", "");
+
+                page.AppendChild(Childs);
+
+                page.AppendChild(WIDGETS);
+
+                docXml.AppendChild(page);
+                docXml.WriteTo(writer);
+
+                writer.Close();
             }
-            ListTempChild.Sort(delegate(Page p1, Page p2) { return p1.Position.CompareTo(p2.Position); });
-            DataTable dt = ToDataTable<Page>(ListTempChild);
-            Childs.InnerXml = CreateNodeCilds(dt).Replace("<Childs>", "").Replace("</Childs>", "").Replace("<Childs />", "");
-
-            page.AppendChild(Childs);
-
-            page.AppendChild(WIDGETS);
-
-            docXml.AppendChild(page);
-            docXml.WriteTo(writer);
-
-            writer.Close();
 
             //Html
             //Leggo il File XMl della pagina
@@ -534,11 +535,19 @@ namespace Editor.BL {
             myXslTrans.Load(readXslt);
 
             XmlTextWriter mywriter = new XmlTextWriter(pagePath, null);
-            myXslTrans.Transform(readXml, null, mywriter);
-
-            readXml.Close();
-            readXslt.Close();
-            mywriter.Close();
+            try {
+                myXslTrans.Transform(readXml, null, mywriter);
+                readXml.Close();
+                readXslt.Close();
+                mywriter.Flush();
+                mywriter.Close();
+            } catch (Exception ex) {
+                readXml.Close();
+                readXslt.Close();                
+                mywriter.Flush();
+                mywriter.Close();
+                throw ex;
+            }
 
             //cancello il file XML
             //File.Delete(pathxml);
@@ -608,11 +617,12 @@ namespace Editor.BL {
 
                         string FileThemes = ConfigurationSettings.AppSettings["FileThemes"];
                         string pathSkinConfig = Path.Combine(FileThemes, cont.Skin.Path);
-                        
+
                         docXml.RemoveAll();
                         string xmlpath = Path.Combine(pathCont, "content.xml");
-                        using (XmlWriter write = new XmlTextWriter(xmlpath, null)) {
 
+                                               
+                        using (XmlWriter write = new XmlTextWriter(xmlpath, null)) {
 
                             docXml = CreateXmlToDataSet(dt, docXml);
                             XmlNode pathTema = docXml.CreateNode(XmlNodeType.Element, "Theme", null);
@@ -626,6 +636,7 @@ namespace Editor.BL {
 
                             docXml.WriteTo(write);
 
+                            write.Close();
                         }
 
                         //Leggo il File XMl del content
@@ -663,12 +674,20 @@ namespace Editor.BL {
 
 
                         XmlTextWriter mywriter = new XmlTextWriter(contPath, null);
-                        myXslTrans.Transform(readXml, null, mywriter);
-
-                        readXml.Close();
-                        readXslt.Close();
-                        mywriter.Close();
-
+                        try {
+                            myXslTrans.Transform(readXml, null, mywriter);
+                            readXml.Close();
+                            readXslt.Close();
+                            mywriter.Flush();
+                            mywriter.Close();                            
+                        } catch (Exception ex) {
+                            readXml.Close();
+                            readXslt.Close();
+                            mywriter.Flush();
+                            mywriter.Close();                            
+                            throw ex;
+                        }
+                        
                         //Cancello il file XML
                         //File.Delete(xmlpath);
 
@@ -680,7 +699,7 @@ namespace Editor.BL {
 
                         File.Copy(def, Path.Combine(pathCont, "default.html"));
 
-                        return pathIdItem + "/default.html";                        
+                        return pathIdItem + "/default.html";
 
                     } catch (Exception ex) {
                         throw ex;
@@ -717,8 +736,8 @@ namespace Editor.BL {
                 // XmlNode WIDGETELEMENTS = docXml.CreateNode(XmlNodeType.Element, "WIDGETELEMENTS", "");
 
                 var List = (from c in widget.WidgetElements
-                                         orderby c.Position ascending
-                                         select c).ToList<WidgetElement>();
+                            orderby c.Position ascending
+                            select c).ToList<WidgetElement>();
 
                 foreach (WidgetElement WDTO in List) {
 
@@ -846,16 +865,16 @@ namespace Editor.BL {
                         ISet<PageElement> setMnEl = new HashedSet<PageElement>();
 
                         //Add Titolo
-                        PageElement MemutitleEl = new PageElement();
-                        MemutitleEl.Element = TitoloMenu;
-                        MemutitleEl.Elementid = TitoloMenu.Elementid;
-                        MemutitleEl.Valore = titlemenu;
-                        MemutitleEl.Pageid = menu.Pageid;
-                        MemutitleEl.Page = menu;
-                        MemutitleEl.IsNew = true;
-                        HibernateHelper.Persist(MemutitleEl, session);
+                        //PageElement MemutitleEl = new PageElement();
+                        //MemutitleEl.Element = TitoloMenu;
+                        //MemutitleEl.Elementid = TitoloMenu.Elementid;
+                        //MemutitleEl.Valore = titlemenu;
+                        //MemutitleEl.Pageid = menu.Pageid;
+                        //MemutitleEl.Page = menu;
+                        //MemutitleEl.IsNew = true;
+                        //HibernateHelper.Persist(MemutitleEl, session);
 
-                        setMnEl.Add(MemutitleEl);
+                        //setMnEl.Add(MemutitleEl);
 
                         //Add RowHtml
 
@@ -935,15 +954,23 @@ namespace Editor.BL {
                         Regex num = new Regex("[0-9]");
                         Regex punt = new Regex(@"[\t\r\n\e\a._%+-/€’‘]");
 
-                        Regex puntPub = new Regex(@"[\t\r\n\e\a._%+-/]");
+                        Regex puntPub = new Regex(@"[\t\r\n\e\a]");
 
                         Page page = new Page();
                         page.Position = actualpos + Convert.ToInt32(pos);
                         page.Level = Convert.ToInt32(lev);
-                        string temp = rgx.Replace(title, "");
-                        temp = punt.Replace(temp, " ");
+                        //string temp = rgx.Replace(title, "");
+                        //temp = punt.Replace(temp, " ");
 
-                        page.Publictitle = ReplaceCharacters(num.Replace(rgx.Replace(puntPub.Replace(title," "), ""), "").Trim()).Trim();
+                        Regex numeri = new Regex("^[0-9/.]*");
+                        title = rgx.Replace(title, "");
+                        title = ReplaceCharacters(title);
+                        title = numeri.Replace(title, "");
+                        title = puntPub.Replace(title, " ");
+
+                        page.Publictitle = title.Trim();
+
+                        //page.Publictitle = ReplaceCharacters(num.Replace(rgx.Replace(puntPub.Replace(title," "), ""), "").Trim()).Trim();                    
                         //page.Title = punt.Replace(rgx.Replace(title, "").Replace("&nbsp;", "").Trim().Replace(" ", "_"), "_");
 
                         if (page.Level == 1) {
