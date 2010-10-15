@@ -101,6 +101,7 @@ namespace Editor.Helper {
                 if (elapsedTime.Seconds >= timeout)
                 {
                     mre.Set();
+                    break;
                 }
                 System.Windows.Forms.Application.DoEvents();
             }
