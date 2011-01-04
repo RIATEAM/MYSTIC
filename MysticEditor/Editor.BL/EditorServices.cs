@@ -414,6 +414,7 @@ namespace Editor.BL {
                 page.AppendChild(TitoloContent);
 
                 foreach (PageElement pel in pagina.PageElements) {
+
                     XmlNode nodo = docXml.CreateNode(XmlNodeType.Element, pel.Element.Description, null);
                     XmlNode nodoValue = docXml.CreateNode(XmlNodeType.CDATA, null, null);
 
@@ -543,7 +544,7 @@ namespace Editor.BL {
                 mywriter.Close();
             } catch (Exception ex) {
                 readXml.Close();
-                readXslt.Close();                
+                readXslt.Close();
                 mywriter.Flush();
                 mywriter.Close();
                 throw ex;
@@ -590,6 +591,11 @@ namespace Editor.BL {
 
                         //Publico tutte le pagine del content
 
+                        //Elemento DataModifica
+                        Element DataModifica = new Element();
+                        DataModifica = HibernateHelper.SelectIstance<Element>(new string[] { "Elementid" }, new object[] { 5 }, new Operators[] { Operators.Eq });
+
+
                         List<Page> ListTempPage = new List<Page>();
                         XmlDocument docXml = new XmlDocument();
                         var widgets = from f in cont.Widgets
@@ -602,6 +608,17 @@ namespace Editor.BL {
                         foreach (Page pg in cont.Pages) {
 
                             if (!IsDeleted(pg, cont.Pages)) {
+                                //Aggiorno dataModifica in caso di pagina home
+                                if (pg.Structureid == 2 && cont.State == (int)ContentStateEnum.Allineato) {
+                                    foreach (PageElement pel in pg.PageElements) {
+                                        if (pel.Element.Elementid == DataModifica.Elementid) {
+                                            pel.Valore = DateTime.Now.Day + "/" + DateTime.Now.Month + "/" + DateTime.Now.Year;
+                                            pel.Dirty = true;
+                                            HibernateHelper.Persist(pel, session);
+                                        }
+                                    }
+                                }
+
                                 PublicPage(pg, pathCont, pathIdItem, Title, WIDGETS, docXml, session);
                                 ListTempPage.Add(pg);
                                 docXml.RemoveAll();
@@ -621,7 +638,7 @@ namespace Editor.BL {
                         docXml.RemoveAll();
                         string xmlpath = Path.Combine(pathCont, "content.xml");
 
-                                               
+
                         using (XmlWriter write = new XmlTextWriter(xmlpath, null)) {
 
                             docXml = CreateXmlToDataSet(dt, docXml);
@@ -679,15 +696,15 @@ namespace Editor.BL {
                             readXml.Close();
                             readXslt.Close();
                             mywriter.Flush();
-                            mywriter.Close();                            
+                            mywriter.Close();
                         } catch (Exception ex) {
                             readXml.Close();
                             readXslt.Close();
                             mywriter.Flush();
-                            mywriter.Close();                            
+                            mywriter.Close();
                             throw ex;
                         }
-                        
+
                         //Cancello il file XML
                         //File.Delete(xmlpath);
 
@@ -698,6 +715,8 @@ namespace Editor.BL {
                         }
 
                         File.Copy(def, Path.Combine(pathCont, "default.html"));
+
+                        transaction.Commit();
 
                         return pathIdItem + "/default.html";
 
@@ -818,7 +837,7 @@ namespace Editor.BL {
                 DataCreazione = HibernateHelper.SelectIstance<Element>(new string[] { "Elementid" }, new object[] { 4 }, new Operators[] { Operators.Eq });
 
 
-                //Elemento DataCreazione
+                //Elemento DataModifica
                 Element DataModifica = new Element();
                 DataModifica = HibernateHelper.SelectIstance<Element>(new string[] { "Elementid" }, new object[] { 5 }, new Operators[] { Operators.Eq });
 
