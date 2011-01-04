@@ -46,25 +46,36 @@ namespace Editor.BL {
                 bool inserire = false;
                 bool first = true;
                 bool check = true;
+                bool trovatotitle = false;
                 while (((line = sr.ReadLine()) != null)) {
 
                     if ((Titolo.Match(line).Length > 0 && line.StartsWith("<")) ||
                         (Titolo.Match(testo).Length > 0 && testo.StartsWith("<"))) {
-
+                        
                         testo += " " + line + System.Environment.NewLine;
                         while (EndTitolo.Match(line).Length == 0 && (line = sr.ReadLine()) != null) {
                             testo += " " + line + System.Environment.NewLine;
                         }
+
                         testo = "<title>" + Title + "</title>";
-                        //POS                     LIVELLO                
+                        //POS                    LIVELLO                
                         outputText = count.ToString() + "|" + 0 + "|" + testo;
                         Files.Add(outputText);
                         count++;
+                        trovatotitle = true;
                     }
 
 
                     if ((REGEXLIVELLO.Match(line).Length > 0 && line.StartsWith("<")) ||
                         (REGEXLIVELLO.Match(testo).Length > 0 && testo.StartsWith("<"))) {
+                        
+                        if (!trovatotitle) {
+                            outputText = count.ToString() + "|" + 0 + "|" + "<title>" + Title + "</title>";
+                            Files.Add(outputText);
+                            count++;
+                            trovatotitle = true;
+                        }
+
                         testo += " " + line + System.Environment.NewLine;
 
                         if (lastlivello == 0) {//////
