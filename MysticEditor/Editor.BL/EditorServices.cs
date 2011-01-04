@@ -1019,7 +1019,7 @@ namespace Editor.BL {
                         elbody = elbody.Replace("’", "");
                         elbody = elbody.Replace("'", "");
 
-                        if (elbody.StartsWith("nonapplicabile")) {
+                        if (elbody.StartsWith("nonapplicabile") || elbody.StartsWith("na") || elbody.StartsWith("n/a")) {
                             page.State = 2;
                         }
                         page.Skin = skinPage;
