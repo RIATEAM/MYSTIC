@@ -30,6 +30,62 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.1.0.39271, Culture=neutral, PublicKeyToken=3a9cab8f8d22bfb7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core, Version=1.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.DynamicProxy2, Version=2.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\Castle.DynamicProxy2.dll</HintPath>
+    </Reference>
+    <Reference Include="Editor.BE, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\Editor.BE.dll</HintPath>
+    </Reference>
+    <Reference Include="Editor.BL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\Editor.BL.dll</HintPath>
+    </Reference>
+    <Reference Include="Editor.DTO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\Editor.DTO.dll</HintPath>
+    </Reference>
+    <Reference Include="Editor.Helper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\Editor.Helper.dll</HintPath>
+    </Reference>
+    <Reference Include="Editor.Services, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\Editor.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=2.1.2.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate.ByteCode.Castle, Version=2.1.2.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\NHibernate.ByteCode.Castle.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate.Validator, Version=1.2.0.3001, Culture=neutral, PublicKeyToken=70154e18752585bd, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\NHibernate.Validator.dll</HintPath>
+    </Reference>
+    <Reference Include="SyrinxCkEditor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\SyrinxCkEditor.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core">
@@ -51,10 +107,100 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Mobile" />
+    <Reference Include="weborb, Version=3.4.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\weborb.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="console\AC_OETags.js" />
+    <Content Include="console\console.swf" />
+    <Content Include="console\DataManagement.html" />
+    <Content Include="console\DataManagement.swf" />
+    <Content Include="console\gettingstarted.htm" />
+    <Content Include="console\images\Checkmark.jpg" />
+    <Content Include="console\images\class2.gif" />
+    <Content Include="console\images\confused.gif" />
+    <Content Include="console\images\consolebar.jpg" />
+    <Content Include="console\images\down.png" />
+    <Content Include="console\images\extention.as.png" />
+    <Content Include="console\images\folder_closed.png" />
+    <Content Include="console\images\folder_open.png" />
+    <Content Include="console\images\intro.gif" />
+    <Content Include="console\images\mc-logo.gif" />
+    <Content Include="console\images\method2.gif" />
+    <Content Include="console\images\namespace2.gif" />
+    <Content Include="console\images\orboverview.jpg" />
+    <Content Include="console\images\right.png" />
+    <Content Include="console\images\runningwoee.jpg" />
+    <Content Include="console\images\thums-up.gif" />
+    <Content Include="console\images\yesfle1.gif" />
+    <Content Include="console\images\yesfle2.jpg" />
+    <Content Include="console\images\yesfle3.jpg" />
+    <Content Include="console\images\yesfle4.jpg" />
+    <Content Include="console\introduction.htm" />
+    <Content Include="console\playerProductInstall.swf" />
+    <Content Include="console\troubleshooting.htm" />
+    <Content Include="console\woeeoverview.htm" />
+    <Content Include="console\woeestandalone.htm" />
+    <Content Include="console\yesflex-yesdotnet.htm" />
+    <Content Include="crossdomain.xml" />
     <Content Include="Default.aspx" />
+    <Content Include="diagnostics.aspx" />
+    <Content Include="WEB-INF\flex\data-management-config.xml" />
+    <Content Include="WEB-INF\flex\messaging-config.xml" />
+    <Content Include="WEB-INF\flex\remoting-config.xml" />
+    <Content Include="WEB-INF\flex\services-config.xml" />
+    <Content Include="WEB-INF\flex\weborb-services-config.xml" />
     <Content Include="Web.config" />
+    <Content Include="weborbassets\codegen\ajax-client.xslt" />
+    <Content Include="weborbassets\codegen\arp-framework-as3.xslt" />
+    <Content Include="weborbassets\codegen\arp-framework.xslt" />
+    <Content Include="weborbassets\codegen\cairngorm-framework.xslt" />
+    <Content Include="weborbassets\codegen\codegen.invoke.ajax.xslt" />
+    <Content Include="weborbassets\codegen\codegen.invoke.xslt" />
+    <Content Include="weborbassets\codegen\codegen.xslt" />
+    <Content Include="weborbassets\codegen\flashcomm-fms2.xslt" />
+    <Content Include="weborbassets\codegen\flex-remoting-as2-inline.xslt" />
+    <Content Include="weborbassets\codegen\flex-remoting-as2.xslt" />
+    <Content Include="weborbassets\codegen\flex-remoting-as3.xslt" />
+    <Content Include="weborbassets\codegen\pureMVC.xslt" />
+    <Content Include="weborbassets\codegen\wdm\client\codegen.client.domain.xslt" />
+    <Content Include="weborbassets\codegen\wdm\client\codegen.client.ui.testdrive.add.xslt" />
+    <Content Include="weborbassets\codegen\wdm\client\codegen.client.ui.testdrive.xslt" />
+    <Content Include="weborbassets\codegen\wdm\client\codegen.client.ui.unittest.app.xslt" />
+    <Content Include="weborbassets\codegen\wdm\client\codegen.client.ui.unittest.create.xslt" />
+    <Content Include="weborbassets\codegen\wdm\client\codegen.client.ui.unittest.delete.xslt" />
+    <Content Include="weborbassets\codegen\wdm\client\codegen.client.ui.unittest.findfirst.xslt" />
+    <Content Include="weborbassets\codegen\wdm\client\codegen.client.ui.unittest.findlast.xslt" />
+    <Content Include="weborbassets\codegen\wdm\client\codegen.client.ui.unittest.update.xslt" />
+    <Content Include="weborbassets\codegen\wdm\client\codegen.client.ui.unittest.xslt" />
+    <Content Include="weborbassets\codegen\wdm\client\codegen.client.xslt" />
+    <Content Include="weborbassets\codegen\wdm\codegen.xslt" />
+    <Content Include="weborbassets\codegen\wdm\import\codegen.import.keys.xslt" />
+    <Content Include="weborbassets\codegen\wdm\server\codegen.server.xslt" />
+    <Content Include="weborbassets\codegen\wdm\server\csharp\codegen.server.csharp.config.xslt" />
+    <Content Include="weborbassets\codegen\wdm\server\csharp\codegen.server.csharp.domain.xslt" />
+    <Content Include="weborbassets\codegen\wdm\server\csharp\codegen.server.csharp.project.xslt" />
+    <Content Include="weborbassets\codegen\wdm\server\csharp\codegen.server.csharp.xslt" />
+    <Content Include="weborbassets\codegen\wdm\server\csharp\data\codegen.server.csharp.data.xslt" />
+    <Content Include="weborbassets\codegen\wdm\server\csharp\data\mssql\codegen.server.csharp.data.mssql.create.xslt" />
+    <Content Include="weborbassets\codegen\wdm\server\csharp\data\mssql\codegen.server.csharp.data.mssql.findAll.xslt" />
+    <Content Include="weborbassets\codegen\wdm\server\csharp\data\mssql\codegen.server.csharp.data.mssql.findByPrimaryKey.xslt" />
+    <Content Include="weborbassets\codegen\wdm\server\csharp\data\mssql\codegen.server.csharp.data.mssql.load.xslt" />
+    <Content Include="weborbassets\codegen\wdm\server\csharp\data\mssql\codegen.server.csharp.data.mssql.remove.xslt" />
+    <Content Include="weborbassets\codegen\wdm\server\csharp\data\mssql\codegen.server.csharp.data.mssql.save.xslt" />
+    <Content Include="weborbassets\codegen\wdm\server\csharp\data\mssql\codegen.server.csharp.data.mssql.update.xslt" />
+    <Content Include="weborbassets\codegen\wdm\server\csharp\data\mssql\codegen.server.csharp.data.mssql.xslt" />
+    <Content Include="weborbassets\codegen\wdm\server\csharp\data\mysql\codegen.server.csharp.data.mysql.create.xslt" />
+    <Content Include="weborbassets\codegen\wdm\server\csharp\data\mysql\codegen.server.csharp.data.mysql.findAll.xslt" />
+    <Content Include="weborbassets\codegen\wdm\server\csharp\data\mysql\codegen.server.csharp.data.mysql.findByPrimaryKey.xslt" />
+    <Content Include="weborbassets\codegen\wdm\server\csharp\data\mysql\codegen.server.csharp.data.mysql.load.xslt" />
+    <Content Include="weborbassets\codegen\wdm\server\csharp\data\mysql\codegen.server.csharp.data.mysql.remove.xslt" />
+    <Content Include="weborbassets\codegen\wdm\server\csharp\data\mysql\codegen.server.csharp.data.mysql.save.xslt" />
+    <Content Include="weborbassets\codegen\wdm\server\csharp\data\mysql\codegen.server.csharp.data.mysql.update.xslt" />
+    <Content Include="weborbassets\codegen\wdm\server\csharp\data\mysql\codegen.server.csharp.data.mysql.xslt" />
+    <Content Include="weborbassets\codegen\wdm\server\vb\codegen.server.vb.project.xslt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Default.aspx.cs">
@@ -65,6 +211,12 @@
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="console\images\Thumbs.db" />
+    <Content Include="weborb.config" />
+    <Content Include="weborbconsole.html" />
+    <None Include="weborbassets\wdm\weborb.swc" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -84,7 +236,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>4354</DevelopmentServerPort>
+          <DevelopmentServerPort>2531</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

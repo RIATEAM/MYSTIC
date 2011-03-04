@@ -1,0 +1,322 @@
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Protocols.Wolf.RequestParser
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Protocols.Amf.RequestParser
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Inspection.ArgumentDescriptor
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Inspection.MethodDescriptor
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Inspection.ServiceDescriptor
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Reader.Dataset.DataSetInfo
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: System.Object
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.V3Types.AsyncMessage
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.V3Types.ReqMessage
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.V3Types.ReqMessage
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.V3Types.AckMessage
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.V3Types.DataMessage
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.V3Types.PagedMessage
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.V3Types.SeqMessage
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.V3Types.ErrMessage
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.V3Types.ErrDataMessage
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.V3Types.UpdateCollMessage
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.V3Types.UpdateCollRange
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Util.ObjectProxy
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Util.ObjectProxy
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Activation.RequestActivator
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Activation.SessionActivator
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Activation.ApplicationActivator
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Handler.ObjectHandler
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Registering inspection handler - Object Handler
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Handler.WebServiceHandler
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Registering inspection handler - .Net Web Services Handler
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Handler.ObjectHandler
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Registering invocation handler - Object Handler
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Handler.WebServiceHandler
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Registering invocation handler - .Net Web Services Handler
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Security.ORBSecurityFactory
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Management.Security.SecurityRestrictionArgFactory
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.V3Types.BodyHolderFactory
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Service.ArrayUpdateDataObjectFactory
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Management.Configuration.Logging.LoggingPolicyArgFactory
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Examples.ArgumentFactory
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: System.Collections.ICollection
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: System.Collections.ArrayList
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: System.Collections.IList
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: System.Collections.ArrayList
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: System.Collections.IDictionary
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: System.Collections.Hashtable
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Messaging.Channel.SubscriberInfoWriter
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Messaging.Channel.SubscriberInfo
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: NHibernate.Proxy.INHibernateProxy
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Messaging.Channel.SubscribersEventWriter
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Messaging.Channel.SubscribersEvent
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.V3Types.BodyHolderWriter
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.V3Types.BodyHolder
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Messaging.Net.RTMP.Status.StatusObjectWriter
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Messaging.Net.RTMP.Status.StatusObject
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Writer.EnumerationWriter
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Security.WebORBAuthorizationHandler
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Security.WebORBAuthenticationHandler
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Security.WebORBRolesProvider
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Messaging.Message.Handler.MessageDeliveryHandler
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Messaging.Message.Handler.MessageDeliveryHandler
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Messaging.Message.System.JoinCommandMessageFactory
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Messaging.Message.System.DeliverCommandMessageFactory
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Messaging.Message.System.GetSubscribersMessageFactory
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Messaging.Message.System.ChangeLogicalNameCommandMessageFactory
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Messaging.Message.DefaultXMLMessageFactory
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.V3Types.Core.RemotingHandler
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Registered Flex Remoting destination - computerinfo
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Registered Flex Remoting destination - autoupdater
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Registered Flex Remoting destination - ApplicationManager
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Registered Flex Remoting destination - WeborbSecurity
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Registered Flex Remoting destination - WeborbManagement
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Registered Flex Remoting destination - WeborbConfiguration
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Registered Flex Remoting destination - SecureTest
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Registered Flex Remoting destination - AccountBalanceDestination
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Registered Flex Remoting destination - GenericDestination
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Registered Flex Remoting destination - SessionGenericDestination
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Registered Flex Remoting destination - SingletonGenericDestination
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.Messaging.V3.MessagingServiceHandler
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Registered Flex Messaging destination - MyTransientTopic
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Registered Flex Messaging destination - CounterReadings
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Registered Flex Messaging destination - ExampleDestination
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Registered Flex Messaging destination - mqpush
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:loading type: Weborb.V3Types.Core.RemotingHandler
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Registered Flex Remoting destination - MessagingDestination
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Registered Flex Remoting destination - GenericAIRDestination
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Registering dispatcher V3 Dispatcher
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Registering dispatcher Service Inspector
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Registering dispatcher Service Invoker
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Number of dispatchers: 3
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Dispatching request processing to V3 Dispatcher
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:V3 Dispatcher successfully handled request processing
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Beginning to write response
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:got headers 0
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:got bodies 1
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:AMFMessageWriter.write - message version: 3 header length: 0
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Received request for http://localhost:2531/console/weborb.aspx from 127.0.0.1
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Request is in session whathlqfy0ha3k45cv0ualjq
+[Thread-4] WEBORB INSTRUMENTATION:04/03/2011 14.51.14:Request parsing time in ms - 15
+[Thread-4] WEBORB INFO:04/03/2011 14.51.14:Dispatching request processing to V3 Dispatcher
+[Thread-4] WEBORB SECURITY:04/03/2011 14.51.15:access allowed. resource name - 'Weborb.Management.LicenseService#getProductEdition'. reason - 
+[Thread-4] WEBORB SECURITY:04/03/2011 14.51.15:access allowed. resource name - 'Weborb.Handler.ObjectHandler'. reason - 
+[Thread-4] WEBORB INFO:04/03/2011 14.51.15:loading type: Weborb.Management.LicenseService
+[Thread-4] WEBORB INSTRUMENTATION:04/03/2011 14.51.15:clr method invocation time (in ms) - 0 method - getProductEdition
+[Thread-4] WEBORB INFO:04/03/2011 14.51.15:Object Handler handler successfully invoked method getProductEdition on the service Weborb.Management.LicenseService
+[Thread-4] WEBORB INFO:04/03/2011 14.51.15:V3 Dispatcher successfully handled request processing
+[Thread-4] WEBORB INFO:04/03/2011 14.51.15:Beginning to write response
+[Thread-4] WEBORB INFO:04/03/2011 14.51.15:got headers 0
+[Thread-4] WEBORB INFO:04/03/2011 14.51.15:got bodies 1
+[Thread-4] WEBORB INFO:04/03/2011 14.51.15:AMFMessageWriter.write - message version: 3 header length: 0
+[Thread-4] WEBORB INSTRUMENTATION:04/03/2011 14.51.15:Response serialization time in ms - 0
+[Thread-4] WEBORB INSTRUMENTATION:04/03/2011 14.51.15:Total request processing time in ms - 46
+[Thread-8] WEBORB INFO:04/03/2011 14.51.15:Received request for http://localhost:2531/console/weborb.aspx from 127.0.0.1
+[Thread-8] WEBORB INFO:04/03/2011 14.51.15:Request is in session spoyjwybinahr4451ql02r45
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.51.15:Request parsing time in ms - 0
+[Thread-8] WEBORB INFO:04/03/2011 14.51.15:Dispatching request processing to V3 Dispatcher
+[Thread-8] WEBORB SECURITY:04/03/2011 14.51.15:access allowed. resource name - 'Weborb.Management.LicenseService#getProductVersion'. reason - 
+[Thread-8] WEBORB SECURITY:04/03/2011 14.51.15:access allowed. resource name - 'Weborb.Handler.ObjectHandler'. reason - 
+[Thread-8] WEBORB INFO:04/03/2011 14.51.15:loading type: Weborb.Management.LicenseService
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.51.15:clr method invocation time (in ms) - 0 method - getProductVersion
+[Thread-8] WEBORB INFO:04/03/2011 14.51.15:Object Handler handler successfully invoked method getProductVersion on the service Weborb.Management.LicenseService
+[Thread-8] WEBORB INFO:04/03/2011 14.51.15:V3 Dispatcher successfully handled request processing
+[Thread-8] WEBORB INFO:04/03/2011 14.51.15:Beginning to write response
+[Thread-8] WEBORB INFO:04/03/2011 14.51.15:got headers 0
+[Thread-8] WEBORB INFO:04/03/2011 14.51.15:got bodies 1
+[Thread-8] WEBORB INFO:04/03/2011 14.51.15:AMFMessageWriter.write - message version: 3 header length: 0
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.51.15:Response serialization time in ms - 0
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.51.15:Total request processing time in ms - 15
+[Thread-8] WEBORB INFO:04/03/2011 14.51.17:Received request for http://localhost:2531/console/weborb.aspx from 127.0.0.1
+[Thread-8] WEBORB INFO:04/03/2011 14.51.17:Request is in session gxhnm055e2r1cg555qhkyoqs
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.51.17:Request parsing time in ms - 0
+[Thread-8] WEBORB INFO:04/03/2011 14.51.17:Dispatching request processing to V3 Dispatcher
+[Thread-8] WEBORB SECURITY:04/03/2011 14.51.17:access allowed. resource name - 'Weborb.Management.ManagementService#ping'. reason - 
+[Thread-8] WEBORB SECURITY:04/03/2011 14.51.17:access allowed. resource name - 'Weborb.Handler.ObjectHandler'. reason - 
+[Thread-8] WEBORB INFO:04/03/2011 14.51.17:loading type: Weborb.Management.ManagementService
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.51.17:clr method invocation time (in ms) - 0 method - ping
+[Thread-8] WEBORB INFO:04/03/2011 14.51.17:Object Handler handler successfully invoked method ping on the service Weborb.Management.ManagementService
+[Thread-8] WEBORB INFO:04/03/2011 14.51.17:V3 Dispatcher successfully handled request processing
+[Thread-8] WEBORB INFO:04/03/2011 14.51.17:Beginning to write response
+[Thread-8] WEBORB INFO:04/03/2011 14.51.17:got headers 0
+[Thread-8] WEBORB INFO:04/03/2011 14.51.17:got bodies 1
+[Thread-8] WEBORB INFO:04/03/2011 14.51.17:AMFMessageWriter.write - message version: 3 header length: 0
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.51.17:Response serialization time in ms - 0
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.51.17:Total request processing time in ms - 15
+[Thread-4] WEBORB INFO:04/03/2011 14.51.20:Received request for http://localhost:2531/console/weborb.aspx from 127.0.0.1
+[Thread-4] WEBORB INFO:04/03/2011 14.51.20:Request is in session wocgdij0apsvkiylxkxw4vq2
+[Thread-4] WEBORB INSTRUMENTATION:04/03/2011 14.51.20:Request parsing time in ms - 0
+[Thread-4] WEBORB INFO:04/03/2011 14.51.20:Dispatching request processing to V3 Dispatcher
+[Thread-4] WEBORB SECURITY:04/03/2011 14.51.20:access allowed. resource name - 'Weborb.Management.ManagementService#ping'. reason - 
+[Thread-4] WEBORB SECURITY:04/03/2011 14.51.20:access allowed. resource name - 'Weborb.Handler.ObjectHandler'. reason - 
+[Thread-4] WEBORB INFO:04/03/2011 14.51.20:loading type: Weborb.Management.ManagementService
+[Thread-4] WEBORB INSTRUMENTATION:04/03/2011 14.51.20:clr method invocation time (in ms) - 0 method - ping
+[Thread-4] WEBORB INFO:04/03/2011 14.51.20:Object Handler handler successfully invoked method ping on the service Weborb.Management.ManagementService
+[Thread-4] WEBORB INFO:04/03/2011 14.51.20:V3 Dispatcher successfully handled request processing
+[Thread-4] WEBORB INFO:04/03/2011 14.51.20:Beginning to write response
+[Thread-4] WEBORB INFO:04/03/2011 14.51.20:got headers 0
+[Thread-4] WEBORB INFO:04/03/2011 14.51.20:got bodies 1
+[Thread-4] WEBORB INFO:04/03/2011 14.51.20:AMFMessageWriter.write - message version: 3 header length: 0
+[Thread-4] WEBORB INSTRUMENTATION:04/03/2011 14.51.20:Response serialization time in ms - 0
+[Thread-4] WEBORB INSTRUMENTATION:04/03/2011 14.51.20:Total request processing time in ms - 15
+[Thread-8] WEBORB INFO:04/03/2011 14.51.24:Received request for http://localhost:2531/console/weborb.aspx from 127.0.0.1
+[Thread-8] WEBORB INFO:04/03/2011 14.51.24:Request is in session 0ir3f3rk4frwumihu2awsi3y
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.51.24:Request parsing time in ms - 0
+[Thread-8] WEBORB INFO:04/03/2011 14.51.24:Dispatching request processing to V3 Dispatcher
+[Thread-8] WEBORB SECURITY:04/03/2011 14.51.24:access allowed. resource name - 'Weborb.Management.ManagementService#ping'. reason - 
+[Thread-8] WEBORB SECURITY:04/03/2011 14.51.24:access allowed. resource name - 'Weborb.Handler.ObjectHandler'. reason - 
+[Thread-8] WEBORB INFO:04/03/2011 14.51.24:loading type: Weborb.Management.ManagementService
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.51.24:clr method invocation time (in ms) - 0 method - ping
+[Thread-8] WEBORB INFO:04/03/2011 14.51.24:Object Handler handler successfully invoked method ping on the service Weborb.Management.ManagementService
+[Thread-8] WEBORB INFO:04/03/2011 14.51.24:V3 Dispatcher successfully handled request processing
+[Thread-8] WEBORB INFO:04/03/2011 14.51.24:Beginning to write response
+[Thread-8] WEBORB INFO:04/03/2011 14.51.24:got headers 0
+[Thread-8] WEBORB INFO:04/03/2011 14.51.24:got bodies 1
+[Thread-8] WEBORB INFO:04/03/2011 14.51.24:AMFMessageWriter.write - message version: 3 header length: 0
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.51.24:Response serialization time in ms - 0
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.51.24:Total request processing time in ms - 0
+[Thread-4] WEBORB INFO:04/03/2011 14.51.29:Received request for http://localhost:2531/console/weborb.aspx from 127.0.0.1
+[Thread-4] WEBORB INFO:04/03/2011 14.51.29:Request is in session wykxub55mbpenr4555bhq4jw
+[Thread-4] WEBORB INSTRUMENTATION:04/03/2011 14.51.29:Request parsing time in ms - 0
+[Thread-4] WEBORB INFO:04/03/2011 14.51.29:Dispatching request processing to V3 Dispatcher
+[Thread-4] WEBORB SECURITY:04/03/2011 14.51.29:access allowed. resource name - 'Weborb.Management.ManagementService#ping'. reason - 
+[Thread-4] WEBORB SECURITY:04/03/2011 14.51.29:access allowed. resource name - 'Weborb.Handler.ObjectHandler'. reason - 
+[Thread-4] WEBORB INFO:04/03/2011 14.51.29:loading type: Weborb.Management.ManagementService
+[Thread-4] WEBORB INSTRUMENTATION:04/03/2011 14.51.29:clr method invocation time (in ms) - 0 method - ping
+[Thread-4] WEBORB INFO:04/03/2011 14.51.29:Object Handler handler successfully invoked method ping on the service Weborb.Management.ManagementService
+[Thread-4] WEBORB INFO:04/03/2011 14.51.29:V3 Dispatcher successfully handled request processing
+[Thread-4] WEBORB INFO:04/03/2011 14.51.29:Beginning to write response
+[Thread-4] WEBORB INFO:04/03/2011 14.51.29:got headers 0
+[Thread-4] WEBORB INFO:04/03/2011 14.51.29:got bodies 1
+[Thread-4] WEBORB INFO:04/03/2011 14.51.29:AMFMessageWriter.write - message version: 3 header length: 0
+[Thread-4] WEBORB INSTRUMENTATION:04/03/2011 14.51.29:Response serialization time in ms - 15
+[Thread-4] WEBORB INSTRUMENTATION:04/03/2011 14.51.29:Total request processing time in ms - 15
+[Thread-8] WEBORB INFO:04/03/2011 14.51.35:Received request for http://localhost:2531/console/weborb.aspx from 127.0.0.1
+[Thread-8] WEBORB INFO:04/03/2011 14.51.35:Request is in session 4yq0uqrnk335aw45p3obyna1
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.51.35:Request parsing time in ms - 0
+[Thread-8] WEBORB INFO:04/03/2011 14.51.35:Dispatching request processing to V3 Dispatcher
+[Thread-8] WEBORB SECURITY:04/03/2011 14.51.35:access allowed. resource name - 'Weborb.Management.ManagementService#ping'. reason - 
+[Thread-8] WEBORB SECURITY:04/03/2011 14.51.35:access allowed. resource name - 'Weborb.Handler.ObjectHandler'. reason - 
+[Thread-8] WEBORB INFO:04/03/2011 14.51.35:loading type: Weborb.Management.ManagementService
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.51.35:clr method invocation time (in ms) - 0 method - ping
+[Thread-8] WEBORB INFO:04/03/2011 14.51.35:Object Handler handler successfully invoked method ping on the service Weborb.Management.ManagementService
+[Thread-8] WEBORB INFO:04/03/2011 14.51.35:V3 Dispatcher successfully handled request processing
+[Thread-8] WEBORB INFO:04/03/2011 14.51.35:Beginning to write response
+[Thread-8] WEBORB INFO:04/03/2011 14.51.35:got headers 0
+[Thread-8] WEBORB INFO:04/03/2011 14.51.35:got bodies 1
+[Thread-8] WEBORB INFO:04/03/2011 14.51.35:AMFMessageWriter.write - message version: 3 header length: 0
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.51.35:Response serialization time in ms - 0
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.51.35:Total request processing time in ms - 0
+[Thread-8] WEBORB INFO:04/03/2011 14.51.42:Received request for http://localhost:2531/console/weborb.aspx from 127.0.0.1
+[Thread-8] WEBORB INFO:04/03/2011 14.51.42:Request is in session 30eixz55eyy42u55bmauvt45
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.51.42:Request parsing time in ms - 0
+[Thread-8] WEBORB INFO:04/03/2011 14.51.42:Dispatching request processing to V3 Dispatcher
+[Thread-8] WEBORB SECURITY:04/03/2011 14.51.42:access allowed. resource name - 'Weborb.Management.ManagementService#ping'. reason - 
+[Thread-8] WEBORB SECURITY:04/03/2011 14.51.42:access allowed. resource name - 'Weborb.Handler.ObjectHandler'. reason - 
+[Thread-8] WEBORB INFO:04/03/2011 14.51.42:loading type: Weborb.Management.ManagementService
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.51.42:clr method invocation time (in ms) - 0 method - ping
+[Thread-8] WEBORB INFO:04/03/2011 14.51.42:Object Handler handler successfully invoked method ping on the service Weborb.Management.ManagementService
+[Thread-8] WEBORB INFO:04/03/2011 14.51.42:V3 Dispatcher successfully handled request processing
+[Thread-8] WEBORB INFO:04/03/2011 14.51.42:Beginning to write response
+[Thread-8] WEBORB INFO:04/03/2011 14.51.42:got headers 0
+[Thread-8] WEBORB INFO:04/03/2011 14.51.42:got bodies 1
+[Thread-8] WEBORB INFO:04/03/2011 14.51.42:AMFMessageWriter.write - message version: 3 header length: 0
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.51.42:Response serialization time in ms - 0
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.51.42:Total request processing time in ms - 0
+[Thread-4] WEBORB INFO:04/03/2011 14.51.50:Received request for http://localhost:2531/console/weborb.aspx from 127.0.0.1
+[Thread-4] WEBORB INFO:04/03/2011 14.51.50:Request is in session 2o0tvs45hjiifh55p0fridio
+[Thread-4] WEBORB INSTRUMENTATION:04/03/2011 14.51.50:Request parsing time in ms - 0
+[Thread-4] WEBORB INFO:04/03/2011 14.51.50:Dispatching request processing to V3 Dispatcher
+[Thread-4] WEBORB SECURITY:04/03/2011 14.51.50:access allowed. resource name - 'Weborb.Management.ManagementService#ping'. reason - 
+[Thread-4] WEBORB SECURITY:04/03/2011 14.51.50:access allowed. resource name - 'Weborb.Handler.ObjectHandler'. reason - 
+[Thread-4] WEBORB INFO:04/03/2011 14.51.50:loading type: Weborb.Management.ManagementService
+[Thread-4] WEBORB INSTRUMENTATION:04/03/2011 14.51.50:clr method invocation time (in ms) - 0 method - ping
+[Thread-4] WEBORB INFO:04/03/2011 14.51.50:Object Handler handler successfully invoked method ping on the service Weborb.Management.ManagementService
+[Thread-4] WEBORB INFO:04/03/2011 14.51.50:V3 Dispatcher successfully handled request processing
+[Thread-4] WEBORB INFO:04/03/2011 14.51.50:Beginning to write response
+[Thread-4] WEBORB INFO:04/03/2011 14.51.50:got headers 0
+[Thread-4] WEBORB INFO:04/03/2011 14.51.50:got bodies 1
+[Thread-4] WEBORB INFO:04/03/2011 14.51.50:AMFMessageWriter.write - message version: 3 header length: 0
+[Thread-4] WEBORB INSTRUMENTATION:04/03/2011 14.51.50:Response serialization time in ms - 0
+[Thread-4] WEBORB INSTRUMENTATION:04/03/2011 14.51.50:Total request processing time in ms - 0
+[Thread-8] WEBORB INFO:04/03/2011 14.51.59:Received request for http://localhost:2531/console/weborb.aspx from 127.0.0.1
+[Thread-8] WEBORB INFO:04/03/2011 14.51.59:Request is in session sxwvwuv2g3aa00jmooonco55
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.51.59:Request parsing time in ms - 0
+[Thread-8] WEBORB INFO:04/03/2011 14.51.59:Dispatching request processing to V3 Dispatcher
+[Thread-8] WEBORB SECURITY:04/03/2011 14.51.59:access allowed. resource name - 'Weborb.Management.ManagementService#ping'. reason - 
+[Thread-8] WEBORB SECURITY:04/03/2011 14.51.59:access allowed. resource name - 'Weborb.Handler.ObjectHandler'. reason - 
+[Thread-8] WEBORB INFO:04/03/2011 14.51.59:loading type: Weborb.Management.ManagementService
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.51.59:clr method invocation time (in ms) - 0 method - ping
+[Thread-8] WEBORB INFO:04/03/2011 14.51.59:Object Handler handler successfully invoked method ping on the service Weborb.Management.ManagementService
+[Thread-8] WEBORB INFO:04/03/2011 14.51.59:V3 Dispatcher successfully handled request processing
+[Thread-8] WEBORB INFO:04/03/2011 14.51.59:Beginning to write response
+[Thread-8] WEBORB INFO:04/03/2011 14.51.59:got headers 0
+[Thread-8] WEBORB INFO:04/03/2011 14.51.59:got bodies 1
+[Thread-8] WEBORB INFO:04/03/2011 14.51.59:AMFMessageWriter.write - message version: 3 header length: 0
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.51.59:Response serialization time in ms - 0
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.51.59:Total request processing time in ms - 0
+[Thread-8] WEBORB INFO:04/03/2011 14.52.09:Received request for http://localhost:2531/console/weborb.aspx from 127.0.0.1
+[Thread-8] WEBORB INFO:04/03/2011 14.52.09:Request is in session dnsm23jozpajkdaxvv2u4h45
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.52.09:Request parsing time in ms - 0
+[Thread-8] WEBORB INFO:04/03/2011 14.52.09:Dispatching request processing to V3 Dispatcher
+[Thread-8] WEBORB SECURITY:04/03/2011 14.52.09:access allowed. resource name - 'Weborb.Management.ManagementService#ping'. reason - 
+[Thread-8] WEBORB SECURITY:04/03/2011 14.52.09:access allowed. resource name - 'Weborb.Handler.ObjectHandler'. reason - 
+[Thread-8] WEBORB INFO:04/03/2011 14.52.09:loading type: Weborb.Management.ManagementService
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.52.09:clr method invocation time (in ms) - 0 method - ping
+[Thread-8] WEBORB INFO:04/03/2011 14.52.09:Object Handler handler successfully invoked method ping on the service Weborb.Management.ManagementService
+[Thread-8] WEBORB INFO:04/03/2011 14.52.09:V3 Dispatcher successfully handled request processing
+[Thread-8] WEBORB INFO:04/03/2011 14.52.09:Beginning to write response
+[Thread-8] WEBORB INFO:04/03/2011 14.52.09:got headers 0
+[Thread-8] WEBORB INFO:04/03/2011 14.52.09:got bodies 1
+[Thread-8] WEBORB INFO:04/03/2011 14.52.09:AMFMessageWriter.write - message version: 3 header length: 0
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.52.09:Response serialization time in ms - 0
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.52.09:Total request processing time in ms - 15
+[Thread-8] WEBORB INFO:04/03/2011 14.52.20:Received request for http://localhost:2531/console/weborb.aspx from 127.0.0.1
+[Thread-8] WEBORB INFO:04/03/2011 14.52.20:Request is in session o3e522yuztgns255b1mbgrze
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.52.20:Request parsing time in ms - 0
+[Thread-8] WEBORB INFO:04/03/2011 14.52.20:Dispatching request processing to V3 Dispatcher
+[Thread-8] WEBORB SECURITY:04/03/2011 14.52.20:access allowed. resource name - 'Weborb.Management.ManagementService#ping'. reason - 
+[Thread-8] WEBORB SECURITY:04/03/2011 14.52.20:access allowed. resource name - 'Weborb.Handler.ObjectHandler'. reason - 
+[Thread-8] WEBORB INFO:04/03/2011 14.52.20:loading type: Weborb.Management.ManagementService
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.52.20:clr method invocation time (in ms) - 0 method - ping
+[Thread-8] WEBORB INFO:04/03/2011 14.52.20:Object Handler handler successfully invoked method ping on the service Weborb.Management.ManagementService
+[Thread-8] WEBORB INFO:04/03/2011 14.52.20:V3 Dispatcher successfully handled request processing
+[Thread-8] WEBORB INFO:04/03/2011 14.52.20:Beginning to write response
+[Thread-8] WEBORB INFO:04/03/2011 14.52.20:got headers 0
+[Thread-8] WEBORB INFO:04/03/2011 14.52.20:got bodies 1
+[Thread-8] WEBORB INFO:04/03/2011 14.52.20:AMFMessageWriter.write - message version: 3 header length: 0
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.52.20:Response serialization time in ms - 0
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.52.20:Total request processing time in ms - 0
+[Thread-8] WEBORB INFO:04/03/2011 14.53.02:Received request for http://localhost:2531/console/weborb.aspx from 127.0.0.1
+[Thread-8] WEBORB INFO:04/03/2011 14.53.02:Request is in session veeu5i55xdy3kdfnd01xsh55
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.53.02:Request parsing time in ms - 0
+[Thread-8] WEBORB INFO:04/03/2011 14.53.02:Dispatching request processing to V3 Dispatcher
+[Thread-8] WEBORB SECURITY:04/03/2011 14.53.02:access allowed. resource name - 'WeborbSecurity#getRestrictionTypes'. reason - 
+[Thread-8] WEBORB SECURITY:04/03/2011 14.53.02:access allowed. resource name - 'Weborb.Handler.ObjectHandler'. reason - 
+[Thread-8] WEBORB INFO:04/03/2011 14.53.02:loading type: Weborb.Management.SecurityService
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.53.02:clr method invocation time (in ms) - 0 method - getRestrictionTypes
+[Thread-8] WEBORB INFO:04/03/2011 14.53.02:Object Handler handler successfully invoked method getRestrictionTypes on the service Weborb.Management.SecurityService
+[Thread-8] WEBORB SECURITY:04/03/2011 14.53.02:access allowed. resource name - 'WeborbManagement#getServices'. reason - 
+[Thread-8] WEBORB SECURITY:04/03/2011 14.53.02:access allowed. resource name - 'Weborb.Handler.ObjectHandler'. reason - 
+[Thread-8] WEBORB INFO:04/03/2011 14.53.02:loading type: Weborb.Management.ManagementService
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.53.03:clr method invocation time (in ms) - 96 method - getServices
+[Thread-8] WEBORB INFO:04/03/2011 14.53.03:Object Handler handler successfully invoked method getServices on the service Weborb.Management.ManagementService
+[Thread-8] WEBORB INFO:04/03/2011 14.53.03:V3 Dispatcher successfully handled request processing
+[Thread-8] WEBORB INFO:04/03/2011 14.53.03:Beginning to write response
+[Thread-8] WEBORB INFO:04/03/2011 14.53.03:got headers 0
+[Thread-8] WEBORB INFO:04/03/2011 14.53.03:got bodies 2
+[Thread-8] WEBORB INFO:04/03/2011 14.53.03:AMFMessageWriter.write - message version: 3 header length: 0
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.53.03:Response serialization time in ms - 15
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.53.03:Total request processing time in ms - 1000
+[Thread-8] WEBORB INFO:04/03/2011 14.53.03:Received request for http://localhost:2531/console/weborb.aspx from 127.0.0.1
+[Thread-8] WEBORB INFO:04/03/2011 14.53.03:Request is in session qn0wxf452ux2q4vki0ucsw3z
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.53.03:Request parsing time in ms - 0
+[Thread-8] WEBORB INFO:04/03/2011 14.53.03:Dispatching request processing to V3 Dispatcher
+[Thread-8] WEBORB SECURITY:04/03/2011 14.53.03:access allowed. resource name - 'WeborbSecurity#getRoles'. reason - 
+[Thread-8] WEBORB SECURITY:04/03/2011 14.53.03:access allowed. resource name - 'Weborb.Handler.ObjectHandler'. reason - 
+[Thread-8] WEBORB INFO:04/03/2011 14.53.03:loading type: Weborb.Management.SecurityService
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.53.03:clr method invocation time (in ms) - 1 method - getRoles
+[Thread-8] WEBORB INFO:04/03/2011 14.53.03:Object Handler handler successfully invoked method getRoles on the service Weborb.Management.SecurityService
+[Thread-8] WEBORB INFO:04/03/2011 14.53.03:V3 Dispatcher successfully handled request processing
+[Thread-8] WEBORB INFO:04/03/2011 14.53.03:Beginning to write response
+[Thread-8] WEBORB INFO:04/03/2011 14.53.03:got headers 0
+[Thread-8] WEBORB INFO:04/03/2011 14.53.03:got bodies 1
+[Thread-8] WEBORB INFO:04/03/2011 14.53.03:AMFMessageWriter.write - message version: 3 header length: 0
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.53.03:Response serialization time in ms - 0
+[Thread-8] WEBORB INSTRUMENTATION:04/03/2011 14.53.03:Total request processing time in ms - 15
