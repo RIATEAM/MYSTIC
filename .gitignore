@@ -13,7 +13,6 @@ Bin/
 obj_ReSharper*
 *.resharper.user
 *.user
-*.csproj
 *.suo
 *.cache
 *.dll
