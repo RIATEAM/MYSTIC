@@ -904,7 +904,7 @@ namespace Editor.BL {
                         StreamWriter writer = new StreamWriter(fs, Encoding.UTF8);
                         writer.Write(htmlDocument);
                         writer.Close();
-                        Editor.Helper.WebSiteThumbnail.SaveImage(emptyfile, FolderToSave);
+                        //Editor.Helper.WebSiteThumbnail.SaveImage(emptyfile, FolderToSave);
 
                         //cancello il file temporaneo html
                         File.Delete(emptyfile);
@@ -1045,7 +1045,7 @@ namespace Editor.BL {
                         StreamWriter writer = new StreamWriter(fs, Encoding.UTF8);
                         writer.Write(htmlDocument);
                         writer.Close();
-                        Editor.Helper.WebSiteThumbnail.SaveImage(contrawfile, FolderToSave);
+                        //Editor.Helper.WebSiteThumbnail.SaveImage(contrawfile, FolderToSave);
                         //cancello il file temporaneo html
                         File.Delete(contrawfile);
 
@@ -1058,6 +1058,8 @@ namespace Editor.BL {
 
                         setPage.Add(page);
                     }
+
+                    //fix cpu usage  
 
                 }
                 Page Cestino = new Page();

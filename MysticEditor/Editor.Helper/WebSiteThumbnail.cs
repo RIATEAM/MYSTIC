@@ -28,7 +28,8 @@ namespace Editor.Helper {
         public static void SaveImage(string emptyfile, string FolderToSave) {
 
              // Generate thumbnail of a webpage at 800X600 resolution
-            Bitmap thumbnail = GetSiteThumbnail(emptyfile, 480, 360, 800, 600, FolderToSave);
+            //Bitmap thumbnail = GetSiteThumbnail(emptyfile, 480, 360, 800, 600, FolderToSave);
+            Bitmap thumbnail = new Bitmap(20, 20);
             
             thumbnail.Save(Path.Combine( FolderToSave,Path.GetFileNameWithoutExtension( emptyfile)+".jpg"));
         
