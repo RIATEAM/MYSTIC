@@ -54,7 +54,7 @@ namespace Editor.Scheduler {
 
             if (type == "std") {
                 //Contenuti Standard
-            //    cms.CoreLib.Net1.validation validation = new cms.CoreLib.Net1.validation();
+                //cms.CoreLib.Net1.validation validation = new cms.CoreLib.Net1.validation();
 
                 string Title = customer.GetItemTitle(Convert.ToInt32(iditemamm), type);
                 string pathIdItem = customer.GetItemPath(iditemamm, type);
@@ -85,6 +85,11 @@ namespace Editor.Scheduler {
 
                 CopyDirectory(Path.Combine(fileserver, pathIdItem), Path.Combine(fileserver, pathIdItemUser), true);
 
+                //LUCENE
+                customer.IndexItem(iditemuser);
+                //EAI
+                customer.UpdStdDoc(iditemuser);
+
                 //response = "~/" + @"contenuti/" + iditemuser + @"/default.html";
 
                 //Response.Redirect(response);
@@ -95,7 +100,7 @@ namespace Editor.Scheduler {
                 //doc.Load();
 
                 string Title = customer.GetItemTitle(Convert.ToInt32(iditemamm), type);
-             //   string pathIdItem = doc.View("");
+                //string pathIdItem = doc.View("");
                 //string pathIdItemUser = "";
                 //pathIdItemUser = pathIdItem = pathIdItem.Substring(0, pathIdItem.IndexOf("/Editor/")).Replace("/", @"\");
                 //pathIdItemUser = pathIdItem + @"\";
@@ -110,7 +115,10 @@ namespace Editor.Scheduler {
                 EditorServices.PublicContent(Convert.ToInt32(idcont), pathIdItem, Title);
 
                 CopyDirectory(Path.Combine(fileserver, pathIdItem), Path.Combine(fileserver, pathIdItemUser), true);
-
+                
+                //EAI
+                customer.UpdCommDoc(Convert.ToInt32(iditemamm));
+                
                 //pathIdItemUser = pathIdItemUser.Replace(@"\", "/");
                 //response = "~/" + pathIdItemUser + @"/default.html";
 

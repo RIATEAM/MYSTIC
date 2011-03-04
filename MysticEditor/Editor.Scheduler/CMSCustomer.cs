@@ -27,5 +27,15 @@ namespace Editor.Scheduler {
         public DataSet GetCorrelated(int iditemamm, string type) {
             return CMSServices.GetCorrelated(iditemamm, type);
         }
+        public void IndexItem(int iditemuser) {
+            CMSServices.IndexItem(iditemuser);
+        }
+        public void UpdStdDoc(int iditemuser) { 
+            CMSServices.UpdStdDoc(iditemuser); 
+        }
+        public void UpdCommDoc(int iditemamm) { 
+            CMSServices.UpdCommDoc(iditemamm); 
+        }
+
     }
 }

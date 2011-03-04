@@ -10,5 +10,8 @@ namespace Editor.Services {
         string GetItemTitle(int iditemamm, string type);
         string GetItemIdUser(int iditemamm);
         DataSet GetCorrelated(int iditemamm, string type);
+        void IndexItem(int iditemuser);
+        void UpdStdDoc(int iditemuser);
+        void UpdCommDoc(int iditemamm);
     }
 }
