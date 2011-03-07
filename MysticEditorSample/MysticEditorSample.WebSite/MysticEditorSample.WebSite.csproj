@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{DB1D94B4-17BF-4292-B979-C2B9A36C4877}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
@@ -210,12 +210,30 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Import.aspx.cs">
+      <DependentUpon>Import.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Import.aspx.designer.cs">
+      <DependentUpon>Import.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XpowUploader\fileProcessingScripts\DirUpload.aspx.cs">
+      <DependentUpon>DirUpload.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="XpowUploader\fileProcessingScripts\DirUpload.aspx.designer.cs">
+      <DependentUpon>DirUpload.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="console\images\Thumbs.db" />
+    <Content Include="Import.aspx" />
     <Content Include="weborb.config" />
     <Content Include="weborbconsole.html" />
+    <Content Include="XpowUploader\ActiveXPowUpload.cab" />
+    <Content Include="XpowUploader\fileProcessingScripts\DirUpload.aspx" />
+    <Content Include="XpowUploader\scripts\ActivateActiveControlWorkaround.js" />
     <None Include="weborbassets\wdm\weborb.swc" />
   </ItemGroup>
   <ItemGroup>
@@ -241,9 +259,6 @@
           <IISUrl>
           </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
