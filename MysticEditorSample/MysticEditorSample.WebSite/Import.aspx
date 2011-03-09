@@ -1,6 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Import.aspx.cs" Inherits="MysticEditorSample.WebSite.Import" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <title>DocToHelpNew</title>
@@ -179,8 +180,8 @@
         <tr>
             <td align="center" height="40">
                 <span class="txtantracite">
-                    <asp:Button ID="Close" Visible="false" runat="server" Text="Chiudi" CssClass="formbot"
-                        Style="width: 150px;" />
+                    <asp:Button ID="Close" Visible="false" runat="server" Text="Torna Indietro" CssClass="formbot"
+                        Style="width: 150px;" PostBackUrl="~/Default.aspx" />
                 </span>
             </td>
         </tr>

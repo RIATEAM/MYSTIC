@@ -28,7 +28,7 @@ namespace MysticEditorSample.WebSite
                 Upload.Attributes.Add("onClick", "return StartUpload()");
 
             }
-            Close.Attributes.Add("onClick", "javascript:window.close();");
+            //Close.Attributes.Add("onClick", "javascript:window.close();");
         }
 
         protected void Upload_Compila(object sender, EventArgs e)
@@ -86,7 +86,6 @@ namespace MysticEditorSample.WebSite
 
                                 //Creo le pagine del content passando il percorso
                                 EditorServices.SavePages(ListFile, cont, session, FolderToSave);
-
 
                                 //Session["id_content"] = cont.Contentid;
 

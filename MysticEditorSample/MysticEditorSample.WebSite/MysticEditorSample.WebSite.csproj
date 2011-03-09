@@ -34,6 +34,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libs\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="AutoMapper, Version=1.1.0.188, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="Castle.Core, Version=1.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libs\Castle.Core.dll</HintPath>
@@ -210,12 +214,22 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Editor\FX\GetXml.ashx.cs">
+      <DependentUpon>GetXml.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Import.aspx.cs">
       <DependentUpon>Import.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Import.aspx.designer.cs">
       <DependentUpon>Import.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\FX\Index.aspx.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Editor\FX\Index.aspx.designer.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XpowUploader\fileProcessingScripts\DirUpload.aspx.cs">
@@ -228,12 +242,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="console\images\Thumbs.db" />
+    <Content Include="Editor\default.html" />
+    <Content Include="Editor\Img\bgPixel.png" />
+    <Content Include="Editor\Img\btnOver.gif" />
+    <Content Include="Editor\Img\Logo.jpg" />
+    <Content Include="Editor\Img\salva.png" />
+    <Content Include="Editor\Img\spacer.png" />
     <Content Include="Import.aspx" />
+    <Content Include="Editor\FX\Index.aspx" />
     <Content Include="weborb.config" />
     <Content Include="weborbconsole.html" />
     <Content Include="XpowUploader\ActiveXPowUpload.cab" />
     <Content Include="XpowUploader\fileProcessingScripts\DirUpload.aspx" />
     <Content Include="XpowUploader\scripts\ActivateActiveControlWorkaround.js" />
+    <Content Include="Editor\FX\GetXml.ashx" />
+    <None Include="Editor\Img\Thumbs.db" />
     <None Include="weborbassets\wdm\weborb.swc" />
   </ItemGroup>
   <ItemGroup>
