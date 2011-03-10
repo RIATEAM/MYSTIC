@@ -1,0 +1,42 @@
+.title
+{
+	width: 100%;
+	color: #FF6600;
+	font-size: 50px;
+	font-weight: bold;
+	font-family: Arial;
+	text-align: center;
+	position: relative;
+}
+.images
+{
+	text-align:center;
+	position: relative;
+}
+.text
+{
+	width: 100%;
+	font-size: 15px;
+	font-weight: bold;
+	font-family: Arial;
+	padding-left: 50;
+	padding-right: 50;
+}
+.node
+{
+	width: 100%;
+	color: #66645A;
+	font-size: 15px;
+	font-weight: bold;
+	font-family: Arial;
+	background-color: #E0DCC7;
+	text-align: center;
+	position: relative;
+}
+body
+{
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	background-color: #FFFBE3;
+}

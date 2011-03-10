@@ -89,6 +89,15 @@ namespace MysticEditorSample.WebSite
 
                                 //Session["id_content"] = cont.Contentid;
 
+                                //creare una nuova directory in /fileserver/
+                                
+                                string Contentpath;
+                                Contentpath = Server.MapPath("") + "\\Fileserver\\";
+
+                                string Stagepath = Path.Combine(Path.Combine(Contentpath, "Stage"), cont.Contentid.ToString());
+                                Directory.CreateDirectory(Stagepath);
+                                string Pubblicpath = Path.Combine(Path.Combine(Contentpath, "Pubblic"), cont.Contentid.ToString());
+                                Directory.CreateDirectory(Stagepath);
                             }
                             catch (Exception ex)
                             {

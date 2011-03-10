@@ -1,0 +1,77 @@
+.title
+{
+	width: 100%;
+	color: #FF6600;
+	font-size: 50px;
+	font-weight: bold;
+	font-family: Arial;
+	text-align: center;
+	position: relative;
+}
+.images
+{
+	text-align: center;
+	position: relative;
+}
+.text
+{
+	width: 100%;
+	font-size: 15px;
+	font-weight: bold;
+	font-family: Arial;
+	padding-left: 50;
+	padding-right: 50;
+}
+.node
+{
+	width: 100%;
+	color: #66645A;
+	font-size: 15px;
+	font-weight: bold;
+	font-family: Arial;
+	background-color: #E0DCC7;
+	text-align: center;
+	position: relative;
+}
+.nodearancione
+{
+	width: 100%;
+	color: #66645A;
+	font-size: 15px;
+	font-weight: bold;
+	font-family: Arial;
+	background-color: #FF6600;
+	text-align: center;
+	position: relative;
+}
+body
+{
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	background-color: #FFFBE3;
+}
+
+.normal
+{
+	width: 100%;
+	font-family: "Trebuchet MS";
+	font-size: 12px;
+	color: #333;
+	padding-left: 70;
+	padding-right: 70;
+}
+.file
+{
+	background: url(images/file.png) no-repeat;
+}
+.fileno
+{
+	background: url(images/file.png) 0 0 no-repeat;
+	background-position-x: 50px;
+}
+a
+{
+	text-decoration: none;
+	color: #333;
+}
