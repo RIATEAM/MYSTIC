@@ -1,4 +1,5 @@
-.title{
+.title
+{
 	width: 100%;
 	color: #FF6600;
 	font-size: 50px;
@@ -12,8 +13,8 @@
 	color: #FF6600;
 	font-size: 25px;
 	font-weight: bold;
-	font-family: Arial;
-	background-color: #E0DCC7;
+	font-family: Arial; 
+	background-color: #EDE7D1;
 	padding-left: 25;
 }
 .text
@@ -32,7 +33,7 @@ body
 	scrollbar-highlight-color: #ECE9D8; 
 	scrollbar-face-color: #C2D3FC; 
 	scrollbar-shadow-color: #9FB5D2; 
-	scrollbar-base-color:none; 
+	scrollbar-base-color:none;  
 	scrollbar-darkshadow-color: #FDFDFD; 
 	scrollbar-track-color: #F7F7F3;
 	margin: 0;
