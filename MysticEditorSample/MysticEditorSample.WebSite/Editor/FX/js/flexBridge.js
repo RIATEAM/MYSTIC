@@ -5,7 +5,8 @@ function getFlashVars(){
                     flashvars.enableDebug = "false";
                     flashvars.contentID = $("#hContentID").attr("value");
                     flashvars.itemID = $("#hItemID").attr("value");
-                    flashvars.rootURL = "http://10.12.150.114/cms/editor/FX/";//"";
+                    flashvars.rootURL = "http://localhost:1285/editor/FX/";//"";
+                    flashvars.ContentsURL = "http://localhost:1285/Fileserver"
                     flashvars.isMockTest = "false";
 	return 	flashvars
 }	
@@ -30,7 +31,7 @@ function showAlert(msg) {
 }
 function showEditing(pageid, itemid, type) {
 
-	var url = "http://10.12.150.114/cms/editor/fx/PageView.aspx?idp=" + pageid + "&iditem=" + itemid + "&type=" + type;
+	var url = "http://localhost:1285/editor/fx/PageView.aspx?idp=" + pageid + "&iditem=" + itemid + "&type=" + type;
 
 
  /*$("parent.contentFrame").attr("location", url);  */
@@ -43,7 +44,7 @@ function showEditing(pageid, itemid, type) {
 
 function showWidgetEditing(widgetid, itemid, type) {
 
-	var url = "http://10.12.150.114/cms/editor/fx/uleditor.aspx?idwel=" + widgetid + "&iditem=" + itemid + "&type=" + type;
+	var url = "http://localhost:1285/editor/fx/uleditor.aspx?idwel=" + widgetid + "&iditem=" + itemid + "&type=" + type;
 
 
  /*$("parent.contentFrame").attr("location", url);  */
@@ -55,7 +56,7 @@ function showWidgetEditing(widgetid, itemid, type) {
 }
 function openPreview(pageid,itemid, type){
 	/*var url = "PageView.aspx?pageid="+pageid+"&iditem="+itemid;*/
-	var url ="http://10.12.150.114/cms/editor/fx/PageView.aspx?idp="+pageid+"&iditem="+itemid + "&type=" + type;
+	var url ="http://localhost:1285/editor/fx/PageView.aspx?idp="+pageid+"&iditem="+itemid + "&type=" + type;
 //	alert("showEditing ="+url );
  /*$("parent.contentFrame").attr("location", url);  */
  parent.contentFrame.location = url;
@@ -63,7 +64,7 @@ function openPreview(pageid,itemid, type){
 }
 
 function showPreview(pageid,itemid, type) {
-	var url ="http://10.12.150.114/cms/editor/fx/anteprimapagina.aspx?idp="+pageid+"&iditem="+itemid + "&type=" + type;
+	var url ="http://localhost:1285/editor/fx/anteprimapagina.aspx?idp="+pageid+"&iditem="+itemid + "&type=" + type;
 	/*var url ="http://10.12.150.114/cms/editor/fx/PageView.aspx?idp="+pageid+"&iditem="+itemid;*/
 	/*var url ="Preview.aspx?idp="+pageid+"&iditem="+itemid;*/
 	
@@ -75,7 +76,7 @@ function showPreview(pageid,itemid, type) {
 }
 
 function showWidgetPreview(widgetid,itemid, type) {
-	var url ="http://10.12.150.114/cms/editor/fx/uleditor.aspx?idwel="+widgetid+"&iditem="+itemid + "&type=" + type;
+	var url ="http://localhost:1285/editor/fx/uleditor.aspx?idwel="+widgetid+"&iditem="+itemid + "&type=" + type;
 	/*var url ="http://10.12.150.114/cms/editor/fx/PageView.aspx?idp="+pageid+"&iditem="+itemid;*/
 	/*var url ="Preview.aspx?idp="+pageid+"&iditem="+itemid;*/
 	
@@ -86,13 +87,13 @@ function showWidgetPreview(widgetid,itemid, type) {
 		
 }
 function doPreviewAll(idc,itemid, type) {
-	var url ="http://10.12.150.114/cms/editor/fx/anteprima.aspx?idc="+idc+"&iditem="+itemid + "&type=" + type;
+	var url ="http://localhost:1285/editor/fx/anteprima.aspx?idc="+idc+"&iditem="+itemid + "&type=" + type;
 	showAlert("doPreviewAll ="+url );
 	window.open(url);	
 }
 
 function doPublishAll(idc,itemid, type) {
-	var url ="http://10.12.150.114/cms/editor/fx/pubblica.aspx?idc="+idc+"&iditem="+itemid + "&type=" + type;
+	var url ="http://localhost:1285/editor/fx/pubblica.aspx?idc="+idc+"&iditem="+itemid + "&type=" + type;
 	showAlert("doPublishAll ="+url );
 	window.open(url);	
 }

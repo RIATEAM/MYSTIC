@@ -22,8 +22,8 @@
                         <HeaderStyle HorizontalAlign="Left" VerticalAlign="Bottom" />
                         <ItemStyle HorizontalAlign="Left" VerticalAlign="Middle" />
                     </asp:BoundField>
-                    <asp:HyperLinkField DataNavigateUrlFields="ContentId" DataNavigateUrlFormatString="~/Editor/FX/GetXml.ashx?contentID={0}"
-                        Text="Edita" />
+                    <asp:HyperLinkField DataNavigateUrlFields="ContentId" DataNavigateUrlFormatString="~/Editor/FX/Index.aspx?idc={0}&iditem={0}&type=test"
+                        Text="Edita" Target="_blank" />
                 </Columns>
             </asp:GridView>
         </div>
