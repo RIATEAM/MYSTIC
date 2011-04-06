@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                   namespace="EAI.BE.Model" assembly="EAI.BE" xmlns="urn:nhibernate-mapping-2.2">
+  <class name="UsersMessage" lazy="true" table="`USERSMESSAGE`">
+
+    <id name="UserMessageID" access="property" column="`USERMESSAGEID`" type="Int32" >
+      <generator class="sequence">
+        <param name="sequence">USERSMESSAGE_SEQ</param>
+      </generator>
+    </id>
+    <property name="MessageID" column="`MESSAGEID`" type="Int32"  not-null="false"/>
+    <property name="UserID" column="`USERID`" type="Int32"  not-null="false"/>
+  </class>
+</hibernate-mapping>
+

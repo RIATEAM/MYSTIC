@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                   namespace="EAI.BE.Model" assembly="EAI.BE" xmlns="urn:nhibernate-mapping-2.2">
+  <class name="Message" lazy="true" table="`MESSAGE`">
+
+    <id name="MessageID" access="property" column="`MESSAGEID`" type="Int32" >
+      <generator class="sequence">
+        <param name="sequence">MESSAGE_SEQ</param>
+      </generator>
+    </id>
+    <property name="Title" column="`TITLE`" type="String"  not-null="false"/>
+    <property name="Body" column="`BODY`" type="String"  not-null="false"/>
+    <property name="DateStart" column="`DATESTART`" type="DateTime"  not-null="false"/>
+    <property name="DateFinish" column="`DATEFINISH`" type="DateTime"  not-null="false"/>
+    <property name="Type" column="`TYPE`" type="Int32"  not-null="false"/>
+  </class>
+</hibernate-mapping>

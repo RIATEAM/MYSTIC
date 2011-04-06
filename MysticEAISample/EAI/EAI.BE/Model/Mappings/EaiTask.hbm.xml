@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                   namespace="EAI.BE.Model" assembly="EAI.BE" xmlns="urn:nhibernate-mapping-2.2">
+  <class name="EaiTask" lazy="true" table="`EAITASK`">
+
+    <id name="TaskID" access="property" column="`TASKID`" type="Int32" >
+      <generator class="sequence">
+        <param name="sequence">EAI_TASK_SEQ</param>
+      </generator>
+    </id>
+    <property name="MessageID" column="`MESSAGEID`" type="Int32"  not-null="false"/>
+    <property name="UserID" column="`USERID`" type="Int32"  not-null="false"/>
+    <property name="Type" column="`TYPE`" type="Int32"  not-null="false"/>
+    <property name="Status" column="`STATUS`" type="Int32"  not-null="false"/>
+  </class>
+</hibernate-mapping>

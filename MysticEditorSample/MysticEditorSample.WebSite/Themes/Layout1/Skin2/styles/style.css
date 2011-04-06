@@ -10,11 +10,11 @@
 .node
 {
 	width: 100%;
-	color: #FF6600;
+	color: #FFFFFF;
 	font-size: 25px;
 	font-weight: bold;
-	font-family: Arial;
-	background-color: #c4d0e1;
+	font-family: font-family: verdana, arial,'trebuchet ms';
+	background-color: #FF7201;
 	padding-left: 25;
 }
 .text
@@ -28,7 +28,7 @@
 }
 body
 {
-		scrollbar-arrow-color: black; 
+	scrollbar-arrow-color: black; 
 	scrollbar-3dlight-color: #EEEDE5; 
 	scrollbar-highlight-color: #ECE9D8; 
 	scrollbar-face-color: #C2D3FC; 

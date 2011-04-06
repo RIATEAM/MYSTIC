@@ -1,0 +1,1 @@
+// compile MysticEditor solution and copy needed dll files //

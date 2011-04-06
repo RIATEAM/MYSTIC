@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                   namespace="EAI.BE.Model" assembly="EAI.BE" xmlns="urn:nhibernate-mapping-2.2">
+  <class name="Users" lazy="true" table="`USERS`">
+
+    <id name="UserID" access="property" column="`USERID`" type="Int32" >
+      <generator class="sequence">
+        <param name="sequence">USERS_SEQ</param>
+      </generator>
+    </id>
+    <property name="Nome" column="`NOME`" type="String"  not-null="false"/>
+    <property name="Cognome" column="`COGNOME`" type="String"  not-null="false"/>
+    <property name="Telefono" column="`TELEFONO`" type="String"  not-null="false"/>
+    <property name="EmailPrivate" column="`EMAILPRIVATE`" type="String"  not-null="false"/>
+    <property name="EmailPubbliche" column="`EMAILPUBBLICHE`" type="String"  not-null="false"/>
+  </class>
+</hibernate-mapping>
