@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{0D6219AC-E843-49A5-91A0-4425135A0E58}</ProjectGuid>
+    <ProjectGuid>{BAE0867A-7A1D-4E25-87B0-51D3A1D015C5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EAI.BL</RootNamespace>
-    <AssemblyName>EAI.BL</AssemblyName>
+    <RootNamespace>EAI.Services</RootNamespace>
+    <AssemblyName>EAI.Services</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,10 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NHibernate, Version=2.1.2.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libs\Hibernate\NHibernate.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -49,14 +45,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TaskLogic.cs" />
-    <Compile Include="UserLogic.cs" />
+    <Compile Include="TaskServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EAI.BE\EAI.BE.csproj">
       <Project>{B42B5B32-7046-4D6F-A28F-D98F0870AA63}</Project>
       <Name>EAI.BE</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EAI.BL\EAI.BL.csproj">
+      <Project>{0D6219AC-E843-49A5-91A0-4425135A0E58}</Project>
+      <Name>EAI.BL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

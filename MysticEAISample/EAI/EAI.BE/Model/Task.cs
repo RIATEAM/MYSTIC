@@ -8,7 +8,7 @@ namespace EAI.BE.Model
     [Serializable]
     public class Task : Persistente
     {
-        public virtual Int32? ID { get; set; }
+        public virtual Int32 ID { get; set; }
         public virtual Int32? Valore { get; set; }
         public virtual String Codice { get; set; }
         public virtual Int32? Type { get; set; }
