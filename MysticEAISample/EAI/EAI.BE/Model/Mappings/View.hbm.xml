@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                   namespace="EAI.BE.Model" assembly="EAI.BE" xmlns="urn:nhibernate-mapping-2.2">
+  <class name="View" lazy="true" table="`EAI_VIEW`">
+
+    <id name="Codice" access="property" column="`CODICE`" type="Int32" >
+    </id>
+    <property name="Type" column="`TYPE`" type="Int32"  not-null="false"/>
+  </class>
+</hibernate-mapping>

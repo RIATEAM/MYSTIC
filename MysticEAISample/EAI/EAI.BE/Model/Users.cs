@@ -5,9 +5,10 @@ using System.Text;
 
 namespace EAI.BE.Model
 {
+    [Serializable]
     public class Users: Persistente
     {
-        public virtual Int32 UserID { get; set; }
+        public virtual Int32? UserID { get; set; }
         public virtual String Nome { get; set; }
         public virtual String Cognome { get; set; }
         public virtual String Telefono { get; set; }

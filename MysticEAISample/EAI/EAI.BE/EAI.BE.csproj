@@ -74,21 +74,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HibernateHelper.cs" />
-    <Compile Include="Model\EaiTask.cs" />
+    <Compile Include="Model\Task.cs" />
     <Compile Include="Model\IPersistente.cs" />
     <Compile Include="Model\Message.cs" />
     <Compile Include="Model\Persistente.cs" />
     <Compile Include="Model\UserMessage.cs" />
     <Compile Include="Model\Users.cs" />
+    <Compile Include="Model\View.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Model\Mappings\Users.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Model\Mappings\EaiTask.hbm.xml" />
+    <Content Include="Model\Mappings\Task.hbm.xml" />
     <Content Include="Model\Mappings\Message.hbm.xml" />
     <Content Include="Model\Mappings\UserMessage.hbm.xml" />
+    <Content Include="Model\Mappings\View.hbm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
